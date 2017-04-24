@@ -1,0 +1,26 @@
+cmake_minimum_required (VERSION 2.8)
+
+# Project bio
+project (jawe)
+set (jawe_VERSION_MAJOR 1)
+set (jawe_VERSION_MINOR 0)
+set (TARGET jawe)
+
+# Configuration file
+configure_file (
+	"${PROJECT_SOURCE_DIR}/config.h.in"
+	"${PROJECT_BINARY_DIR}/config.h"
+)
+
+include_directories ("${PROJECT_SOURCE_DIR}/include")
+include_directories ("${PROJECT_BINARY_DIR}")
+
+file(GLOB SOURCES
+	${PROJECT_SOURCE_DIR}/include/*.hpp
+	${PROJECT_SOURCE_DIR}/src/*.cpp
+)
+
+add_executable(${TARGET} ${SOURCES})
+
+install (TARGETS ${TARGET} DESTINATION bin)
+

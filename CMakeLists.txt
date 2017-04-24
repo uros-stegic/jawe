@@ -1,0 +1,40 @@
+cmake_minimum_required (VERSION 2.8)
+
+# Project bio
+project (jawe)
+set (jawe_VERSION_MAJOR 1)
+set (jawe_VERSION_MINOR 0)
+set (TARGET jawe)
+
+
+# Configuration file
+configure_file (
+	"${PROJECT_SOURCE_DIR}/config.h.in"
+	"${PROJECT_BINARY_DIR}/config.h"
+)
+
+
+# Flex&Bison configuration
+find_package (FLEX 2.5.35)
+find_package (BISON 2.4.1)
+
+BISON_TARGET(MyParser language/lang.ypp ${CMAKE_CURRENT_BINARY_DIR}/lang.syn.cpp VERBOSE)
+FLEX_TARGET(MyScanner language/lang.l ${CMAKE_CURRENT_BINARY_DIR}/lang.lex.cpp)
+ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
+
+
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
+include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
+include_directories ("${PROJECT_SOURCE_DIR}/include")
+
+file(GLOB SOURCES
+	${PROJECT_SOURCE_DIR}/include/*.hpp
+	${PROJECT_SOURCE_DIR}/src/*.cpp
+)
+
+add_executable(${TARGET}
+	${FLEX_MyScanner_OUTPUTS}
+	${BISON_MyParser_OUTPUTS}
+	${SOURCES}
+)
+

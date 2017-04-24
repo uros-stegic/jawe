@@ -1,0 +1,85 @@
+%{
+#include <iostream>
+#include <string>
+
+extern int yylex();
+void yyerror(const std::string& msg) {
+	std::cerr << "[Syntax Error]: " << msg << std::endl;
+}
+%}
+
+%token num_token
+%token log_or_token
+%token log_and_token
+%token bit_or_token
+%token bit_xor_token
+%token bit_and_token
+%token eq_token not_eq_token t_eq_token t_not_eq_token
+%token less_token less_eq_token great_token great_eq_token 
+%token bit_shift_l_token bit_shift_r_token bit_shift_u_token
+%token plus_token minus_token
+%token times_token divide_token mod_token
+%token power_token
+%token inc_token dec_token log_not_token bit_not_token
+
+%left '?' ':'
+%left log_or_token
+%left log_and_token
+%left bit_or_token
+%left bit_xor_token
+%left bit_and_token
+%left eq_token not_eq_token t_eq_token t_not_eq_token
+%left less_token less_eq_token great_token great_eq_token 
+%left bit_shift_l_token bit_shift_r_token bit_shift_u_token
+%left plus_token minus_token
+%left times_token divide_token mod_token
+%left power_token
+%left inc_token dec_token log_not_token bit_not_token uplus_token uminus_token
+%left post_inc post_dec
+
+%%
+
+	/* Expressions */
+Expr	: Expr plus_token Expr
+	 	| Expr minus_token Expr
+	 	| Expr times_token Expr
+	 	| Expr divide_token Expr
+	 	| Expr mod_token Expr
+		| Expr power_token Expr
+		| plus_token Expr %prec uplus_token
+		| minus_token Expr %prec uminus_token
+
+		| inc_token Expr
+		| dec_token Expr
+		| Expr inc_token %prec post_inc
+		| Expr dec_token %prec post_dec
+		
+		| Expr eq_token Expr
+		| Expr not_eq_token Expr
+		| Expr t_eq_token Expr
+		| Expr t_not_eq_token Expr
+		| Expr less_token Expr
+		| Expr less_eq_token Expr
+		| Expr great_token Expr
+		| Expr great_eq_token Expr
+
+		| log_not_token Expr
+		| Expr log_and_token Expr
+		| Expr log_or_token Expr
+
+		| bit_not_token Expr
+		| Expr bit_and_token Expr
+		| Expr bit_or_token Expr
+		| Expr bit_xor_token Expr
+		| Expr bit_shift_l_token Expr
+		| Expr bit_shift_r_token Expr
+		| Expr bit_shift_u_token Expr
+
+		| Expr '?' Expr ':' Expr
+
+		| '(' Expr ')'
+		
+  		| num_token
+  		;
+%%
+
