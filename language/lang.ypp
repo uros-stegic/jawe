@@ -8,78 +8,202 @@ void yyerror(const std::string& msg) {
 }
 %}
 
+%token delim_token
+
+%token id_token
+
+%token undefined_token
+%token null_token
+%token nan_token
+%token true_token
+%token false_token
 %token num_token
+%token string_token
+
+%token return_token
+%token break_token
+%token cont_token
+
+%token if_token
+%token else_token
+%token switch_token
+%token case_token
+%token while_token
+%token for_token
+%token do_token
+
+%token assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
 %token log_or_token
 %token log_and_token
 %token bit_or_token
 %token bit_xor_token
 %token bit_and_token
 %token eq_token not_eq_token t_eq_token t_not_eq_token
-%token less_token less_eq_token great_token great_eq_token 
+%token less_token less_eq_token great_token great_eq_token in_token instanceof_token
 %token bit_shift_l_token bit_shift_r_token bit_shift_u_token
 %token plus_token minus_token
 %token times_token divide_token mod_token
 %token power_token
-%token inc_token dec_token log_not_token bit_not_token
+%token inc_token dec_token log_not_token bit_not_token delete_token void_token typeof_token
+%token new_token
 
-%left '?' ':'
+%nonassoc arr_lit_token
+%right assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
+%right '?' ':'
 %left log_or_token
 %left log_and_token
 %left bit_or_token
 %left bit_xor_token
 %left bit_and_token
 %left eq_token not_eq_token t_eq_token t_not_eq_token
-%left less_token less_eq_token great_token great_eq_token 
+%left less_token less_eq_token great_token great_eq_token in_token instanceof_token
 %left bit_shift_l_token bit_shift_r_token bit_shift_u_token
 %left plus_token minus_token
 %left times_token divide_token mod_token
-%left power_token
-%left inc_token dec_token log_not_token bit_not_token uplus_token uminus_token
-%left post_inc post_dec
+%right power_token
+%right inc_token dec_token log_not_token bit_not_token uplus_token uminus_token delete_token void_token typeof_token
+%nonassoc post_inc post_dec
+%left new_token fn_call_token
+%nonassoc new_args_token
+%left access_token dot_access_token
 
 %%
 
-	/* Expressions */
-Expr	: Expr plus_token Expr
-	 	| Expr minus_token Expr
-	 	| Expr times_token Expr
-	 	| Expr divide_token Expr
-	 	| Expr mod_token Expr
-		| Expr power_token Expr
-		| plus_token Expr %prec uplus_token
-		| minus_token Expr %prec uminus_token
+/**************** Command Structure ****************/
+Program		: Commands
 
-		| inc_token Expr
-		| dec_token Expr
-		| Expr inc_token %prec post_inc
-		| Expr dec_token %prec post_dec
-		
-		| Expr eq_token Expr
-		| Expr not_eq_token Expr
-		| Expr t_eq_token Expr
-		| Expr t_not_eq_token Expr
-		| Expr less_token Expr
-		| Expr less_eq_token Expr
-		| Expr great_token Expr
-		| Expr great_eq_token Expr
+Commands	: Commands delim_token Command
+		 	| Command
+			;
 
-		| log_not_token Expr
-		| Expr log_and_token Expr
-		| Expr log_or_token Expr
+Command		: ExprInit
+		 	|
+			;
+/***************************************************/
 
-		| bit_not_token Expr
-		| Expr bit_and_token Expr
-		| Expr bit_or_token Expr
-		| Expr bit_xor_token Expr
-		| Expr bit_shift_l_token Expr
-		| Expr bit_shift_r_token Expr
-		| Expr bit_shift_u_token Expr
 
-		| Expr '?' Expr ':' Expr
 
-		| '(' Expr ')'
-		
-  		| num_token
-  		;
+/******************* Expressions *******************/
+ExprInit	: id_token Assign ExprInit
+		 	| Expr
+			;
+
+Assign		: assign_token
+			| ass_plus_token
+			| ass_minus_token
+			| ass_pow_token
+			| ass_mult_token
+			| ass_div_token
+			| ass_mod_token
+			| ass_sh_l_token
+			| ass_sh_r_token
+			| ass_sh_u_token
+			| ass_con_b_token
+			| ass_xor_b_token
+			| ass_dis_b_token
+			;
+
+Expr		: Expr plus_token Expr
+	 		| Expr minus_token Expr
+	 		| Expr times_token Expr
+	 		| Expr divide_token Expr
+	 		| Expr mod_token Expr
+			| Expr power_token Expr
+			| plus_token Expr %prec uplus_token
+			| minus_token Expr %prec uminus_token
+
+			| inc_token Expr
+			| dec_token Expr
+			| Expr inc_token %prec post_inc
+			| Expr dec_token %prec post_dec
+			| delete_token Expr
+			| typeof_token Expr
+			| void_token Expr
+			
+			| Expr eq_token Expr
+			| Expr not_eq_token Expr
+			| Expr t_eq_token Expr
+			| Expr t_not_eq_token Expr
+			| Expr less_token Expr
+			| Expr less_eq_token Expr
+			| Expr great_token Expr
+			| Expr great_eq_token Expr
+			| Expr in_token IndexedObj
+			| Expr instanceof_token id_token
+
+			| log_not_token Expr
+			| Expr log_and_token Expr
+			| Expr log_or_token Expr
+
+			| bit_not_token Expr
+			| Expr bit_and_token Expr
+			| Expr bit_or_token Expr
+			| Expr bit_xor_token Expr
+			| Expr bit_shift_l_token Expr
+			| Expr bit_shift_r_token Expr
+			| Expr bit_shift_u_token Expr
+
+			| Expr '?' Expr ':' Expr
+
+			| '(' Expr ')'
+			
+			| new_token id_token
+			| id_token '(' ArgList ')' %prec fn_call_token
+
+			| new_token id_token '(' ArgList ')' %prec new_args_token
+
+			| Atom '[' Expr ']' %prec access_token
+			| Atom '.' DotAccess %prec dot_access_token
+
+  			| Atom
+  			;
+
+ArgList		: ArgList ',' Expr
+		 	| Expr
+			|
+			;
+
+DotAccess	: id_token '.' DotAccess
+		  	| id_token
+
+/***************************************************/
+
+
+/******************** Atoms *********************/
+Atom		: undefined_token
+		 	| null_token
+			| nan_token
+			| true_token
+			| false_token
+			| num_token
+			| string_token
+			| id_token
+			| IndexedObj
+			;
+
+IndexedObj	: ArrayAtom
+			| ObjectAtom
+			;
+
+ArrayAtom	: '[' AtomList ']' %prec arr_lit_token
+		  	;
+AtomList	: AtomList ',' Expr
+		 	| Expr
+			|
+			;
+ObjectAtom	: '{' KeyValsAtom '}'
+		  	;
+KeyValsAtom	: KeyValsAtom ',' KeyValAtom
+		   	| KeyValAtom
+			|
+			;
+KeyValAtom	: Key ':' Expr
+		  	;
+Key			: '"' id_token '"'
+	  		| id_token
+			;
+
+/***************************************************/
+
 %%
 
