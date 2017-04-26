@@ -78,9 +78,6 @@ void yyerror(const std::string& msg) {
 /**************** Command Structure ****************/
 Program		: CodeBlock
 
-OptBlock	: '{' CodeBlock '}'
-		 	| CodeBlock
-
 CodeBlock	: CodeBlock delim_token Command
 		 	| Command
 			;
@@ -92,6 +89,7 @@ Command		: ExprInit
 			| For
 			| DoWhile
 			| SwitchCase
+			| '{' CodeBlock '}'
 			;
 
 Variable	: const_token id_token
@@ -102,28 +100,25 @@ Variable	: const_token id_token
 			| let_token id_token Assign ExprInit
 			;
 
-Cond		: if_token '(' Expr ')' OptBlock
-	  		| if_token '(' Expr ')' OptBlock else_token OptBlock
+Cond		: if_token '(' Expr ')' Command
+	  		| if_token '(' Expr ')' Command else_token Command
 			;
 
-While		: while_token '(' Expr ')' OptBlock
+While		: while_token '(' Expr ')' Command
 	   		;
-For			: for_token '(' Variable ';' Expr ';' Expr ')' OptBlock
+For			: for_token '(' Variable ';' Expr ';' Expr ')' Command
 	  		;
-DoWhile		: do_token OptBlock while_token '(' Expr ')'
+DoWhile		: do_token Command while_token '(' Expr ')'
 		 	;
-SwitchCase	: switch_token '(' Expr ')' OptCase
+SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'
 		   	;
-OptCase		: '{' Cases '}'
-		 	| Cases
-			;
 Cases		: Cases Case
 	   		| Case
 			| Default
 			;
-Case		: case_token Literal ':' OptBlock
+Case		: case_token Literal ':' Command
 	  		;
-Default		: default_token ':' OptBlock
+Default		: default_token ':' Command
 		 	;
 /***************************************************/
 
