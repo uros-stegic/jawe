@@ -91,6 +91,7 @@ TRUE		"true"
 FALSE		"false"
 NAN			"NaN"
 STRING		\"[^\"]*\"
+CHAR		'[^']'
 
 RETURN		"return"
 BREAK		"break"
@@ -103,8 +104,14 @@ CASE		"case"
 WHILE		"while"
 FOR			"for"
 DO			"do"
+DEFAULT		"default"
 
 NEW			"new"
+
+FUNCTION	"function"
+CONST		"const"
+VAR			"var"
+LET			"let"
 
 ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 
@@ -123,8 +130,15 @@ ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 {WHILE}			{ return while_token;		}
 {FOR}			{ return for_token;			}
 {DO}			{ return do_token;			}
+{DEFAULT}		{ return default_token;		}
 
 {NEW}			{ return new_token;			}
+
+{FUNCTION}		{ return function_token;	}
+
+{CONST}			{ return const_token;		}
+{VAR}			{ return var_token;			}
+{LET}			{ return let_token;			}
 
 {COMMA}			{ return comma_token;		}
 {DELIM}			{ return delim_token;		}
@@ -138,6 +152,7 @@ ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 {FALSE}			{ return false_token;		}
 {STRING}		{ return string_token;		}
 {NAN}			{ return nan_token;			}
+{CHAR}			{ return char_token;		}
    
 {ASS_POW}		{ return ass_pow_token;		}
 {ASS_PLUS}		{ return ass_plus_token;	}

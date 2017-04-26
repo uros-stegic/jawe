@@ -19,6 +19,7 @@ void yyerror(const std::string& msg) {
 %token false_token
 %token num_token
 %token string_token
+%token char_token
 
 %token return_token
 %token break_token
@@ -31,6 +32,7 @@ void yyerror(const std::string& msg) {
 %token while_token
 %token for_token
 %token do_token
+%token default_token
 
 %token assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
 %token log_or_token
@@ -46,7 +48,11 @@ void yyerror(const std::string& msg) {
 %token power_token
 %token inc_token dec_token log_not_token bit_not_token delete_token void_token typeof_token
 %token new_token
+%token function_token
+%token const_token let_token var_token
 
+%nonassoc '{' '}'
+%nonassoc else_token
 %left comma_token
 %right assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
 %right '?' ':'
@@ -70,15 +76,55 @@ void yyerror(const std::string& msg) {
 %%
 
 /**************** Command Structure ****************/
-Program		: Commands
+Program		: CodeBlock
 
-Commands	: Commands delim_token Command
+OptBlock	: '{' CodeBlock '}'
+		 	| CodeBlock
+
+CodeBlock	: CodeBlock delim_token Command
 		 	| Command
 			;
 
 Command		: ExprInit
-		 	|
+		 	| Variable
+		 	| Cond
+			| While
+			| For
+			| DoWhile
+			| SwitchCase
 			;
+
+Variable	: const_token id_token
+			| const_token id_token Assign ExprInit
+			| var_token id_token
+			| var_token id_token Assign ExprInit
+			| let_token id_token
+			| let_token id_token Assign ExprInit
+			;
+
+Cond		: if_token '(' Expr ')' OptBlock
+	  		| if_token '(' Expr ')' OptBlock else_token OptBlock
+			;
+
+While		: while_token '(' Expr ')' OptBlock
+	   		;
+For			: for_token '(' Variable ';' Expr ';' Expr ')' OptBlock
+	  		;
+DoWhile		: do_token OptBlock while_token '(' Expr ')'
+		 	;
+SwitchCase	: switch_token '(' Expr ')' OptCase
+		   	;
+OptCase		: '{' Cases '}'
+		 	| Cases
+			;
+Cases		: Cases Case
+	   		| Case
+			| Default
+			;
+Case		: case_token Literal ':' OptBlock
+	  		;
+Default		: default_token ':' OptBlock
+		 	;
 /***************************************************/
 
 
@@ -170,19 +216,24 @@ DotAccess	: id_token '.' DotAccess
 
 
 /******************** Atoms *********************/
-Atom		: undefined_token
+Atom		: Literal
+			| IndexedObj
+			;
+
+Literal		: undefined_token
 		 	| null_token
 			| nan_token
 			| true_token
 			| false_token
 			| num_token
 			| string_token
+			| char_token
 			| id_token
-			| IndexedObj
 			;
 
 IndexedObj	: ArrayAtom
 			| ObjectAtom
+			| FunctionDec
 			;
 
 ArrayAtom	: '[' AtomList ']'
@@ -201,6 +252,13 @@ KeyValAtom	: Key ':' Expr
 		  	;
 Key			: '"' id_token '"'
 	  		| id_token
+			;
+
+FunctionDec	: function_token id_token '(' IDList ')' '{' CodeBlock '}'
+			;
+
+IDList		: IDList comma_token id_token
+			|
 			;
 
 /***************************************************/
