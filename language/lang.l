@@ -80,7 +80,8 @@ TYPEOF		"typeof"
 
 BLANK		[ \t]
 DELIM		[\n;]
-SEPARATOR	[,:]
+SEPARATOR	[:]
+COMMA		","
 
 PARENS		[()\[\]{}"]
 
@@ -125,6 +126,7 @@ ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 
 {NEW}			{ return new_token;			}
 
+{COMMA}			{ return comma_token;		}
 {DELIM}			{ return delim_token;		}
 {SEPARATOR}		{ return *yytext;			}
 

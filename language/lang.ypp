@@ -47,7 +47,7 @@ void yyerror(const std::string& msg) {
 %token inc_token dec_token log_not_token bit_not_token delete_token void_token typeof_token
 %token new_token
 
-%nonassoc arr_lit_token
+%left comma_token
 %right assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
 %right '?' ':'
 %left log_or_token
@@ -158,7 +158,7 @@ Expr		: Expr plus_token Expr
   			| Atom
   			;
 
-ArgList		: ArgList ',' Expr
+ArgList		: ArgList comma_token Expr
 		 	| Expr
 			|
 			;
@@ -185,15 +185,15 @@ IndexedObj	: ArrayAtom
 			| ObjectAtom
 			;
 
-ArrayAtom	: '[' AtomList ']' %prec arr_lit_token
+ArrayAtom	: '[' AtomList ']'
 		  	;
-AtomList	: AtomList ',' Expr
+AtomList	: AtomList comma_token Expr
 		 	| Expr
 			|
 			;
 ObjectAtom	: '{' KeyValsAtom '}'
 		  	;
-KeyValsAtom	: KeyValsAtom ',' KeyValAtom
+KeyValsAtom	: KeyValsAtom comma_token KeyValAtom
 		   	| KeyValAtom
 			|
 			;
