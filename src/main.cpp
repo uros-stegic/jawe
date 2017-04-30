@@ -1,10 +1,10 @@
-#include <lang.syn.hpp>
+#include <control.hpp>
 
-extern int yydebug;
 int main(int argc, char **argv)
 {
-	yydebug = 0;
-	yyparse();
+	jawe::Control proc(argc, argv);
+	proc.run();
+
 	return 0;
 }
 

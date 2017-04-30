@@ -23,6 +23,11 @@ FLEX_TARGET(MyScanner language/lang.l ${CMAKE_CURRENT_BINARY_DIR}/lang.lex.cpp)
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 
 
+# Boost
+find_package(Boost COMPONENTS program_options REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
+
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories ("${PROJECT_SOURCE_DIR}/include")
@@ -37,4 +42,6 @@ add_executable(${TARGET}
 	${BISON_MyParser_OUTPUTS}
 	${SOURCES}
 )
+
+target_link_libraries(${TARGET} ${Boost_LIBRARIES})
 
