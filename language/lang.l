@@ -78,12 +78,12 @@ DELETE		"delete"
 VOID		"void"
 TYPEOF		"typeof"
 
-BLANK		[ \t]
-DELIM		[\n;]
+BLANK		[ \t\n]
+DELIM		[;]
 SEPARATOR	[:]
 COMMA		","
 
-PARENS		[()\[\]{}"]
+PARENS		[(){}]
 
 UNDEF		"undefined"
 NULL		"null"
@@ -114,6 +114,9 @@ VAR			"var"
 LET			"let"
 
 ID			[$_a-zA-Z][$_a-zA-Z0-9]*
+DOT_ACCESS	"."
+BRK_OACCESS	"["
+BRK_CACCESS	"]"
 
 %%
 
@@ -133,6 +136,9 @@ ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 {DEFAULT}		{ return default_token;		}
 
 {NEW}			{ return new_token;			}
+{DOT_ACCESS}	{ return dot_access_token;	}
+{BRK_OACCESS}	{ return bracket_token;		}
+{BRK_CACCESS}	{ return bracket_closed;	}
 
 {FUNCTION}		{ return function_token;	}
 
@@ -141,7 +147,7 @@ ID			[$_a-zA-Z][$_a-zA-Z0-9]*
 {LET}			{ return let_token;			}
 
 {COMMA}			{ return comma_token;		}
-{DELIM}			{ return delim_token;		}
+{DELIM}+		{ return delim_token;		}
 {SEPARATOR}		{ return *yytext;			}
 
 {DECIMAL}		{ return num_token;			}

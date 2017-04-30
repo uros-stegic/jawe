@@ -1,6 +1,7 @@
 %{
 #include <iostream>
 #include <string>
+#define YYDEBUG 1
 
 extern int yylex();
 void yyerror(const std::string& msg) {
@@ -50,8 +51,10 @@ void yyerror(const std::string& msg) {
 %token new_token
 %token function_token
 %token const_token let_token var_token
+%token bracket_token bracket_closed dot_access_token
 
 %nonassoc '{' '}'
+%nonassoc no_else_token
 %nonassoc else_token
 %left comma_token
 %right assign_token ass_plus_token ass_minus_token ass_pow_token ass_mult_token ass_div_token ass_mod_token ass_sh_l_token ass_sh_r_token ass_sh_u_token ass_con_b_token ass_xor_b_token ass_dis_b_token
@@ -69,29 +72,42 @@ void yyerror(const std::string& msg) {
 %right power_token
 %right inc_token dec_token log_not_token bit_not_token uplus_token uminus_token delete_token void_token typeof_token
 %nonassoc post_inc post_dec
-%left new_token fn_call_token
-%nonassoc new_args_token
-%left access_token dot_access_token
+%left '(' fn_call_token
+%nonassoc new_token
+%left bracket_token dot_access_token
+%left prec_parens_token
 
-/* "Dangling-else shift/reduce for which the default behaviour (shift) is fine."*/
-%expect 1
 %%
 
 /**************** Command Structure ****************/
 Program		: CodeBlock
 
-CodeBlock	: CodeBlock delim_token Command
+
+CodeBlock	: Command CodeBlock
 		 	| Command
 			;
 
-Command		: ExprInit
-		 	| Variable
-			| Cond
+Command		: Delimited delim_token
+		 	| Undelimited
+			;
+
+Undelimited	: Cond
 			| While
 			| For
-			| DoWhile
 			| SwitchCase
+			| NamedFun
 			| '{' CodeBlock '}'
+			;
+
+Delimited	: ExprInit
+		 	| Variable
+			| DoWhile
+			| return_token Expr
+			| cont_token
+			| break_token
+			;
+
+NamedFun	: function_token id_token '(' IDList ')' '{' CodeBlock '}'
 			;
 
 Variable	: const_token id_token
@@ -102,13 +118,13 @@ Variable	: const_token id_token
 			| let_token id_token Assign ExprInit
 			;
 
-Cond		: if_token '(' Expr ')' Command 
+Cond		: if_token '(' Expr ')' Command %prec no_else_token
 	  		| if_token '(' Expr ')' Command else_token Command
 			;
 
 While		: while_token '(' Expr ')' Command
 	   		;
-For			: for_token '(' Variable ';' Expr ';' Expr ')' Command
+For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command
 	  		;
 DoWhile		: do_token Command while_token '(' Expr ')'
 		 	;
@@ -188,33 +204,31 @@ Expr		: Expr plus_token Expr
 
 			| Expr '?' Expr ':' Expr
 
-			| '(' Expr ')'
+   			| '(' Expr ')' %prec prec_parens_token
 			
-			| new_token id_token
-			| id_token '(' ArgList ')' %prec fn_call_token
+			| new_token Expr
 
-			| new_token id_token '(' ArgList ')' %prec new_args_token
-
-			| Atom '[' Expr ']' %prec access_token
-			| Atom '.' DotAccess %prec dot_access_token
-
+			| Ref
   			| Atom
   			;
+
+Ref			: Expr '(' ArgList ')' %prec fn_call_token
+			| Expr bracket_token Expr bracket_closed
+			| Expr dot_access_token Expr
+			| id_token
+			;
 
 ArgList		: ArgList comma_token Expr
 		 	| Expr
 			|
 			;
-
-DotAccess	: id_token '.' DotAccess
-		  	| id_token
-
 /***************************************************/
 
 
-/******************** Atoms *********************/
+/********************* Atoms ***********************/
 Atom		: Literal
 			| IndexedObj
+			| FunctionDec
 			;
 
 Literal		: undefined_token
@@ -225,15 +239,13 @@ Literal		: undefined_token
 			| num_token
 			| string_token
 			| char_token
-			| id_token
 			;
 
 IndexedObj	: ArrayAtom
 			| ObjectAtom
-			| FunctionDec
 			;
 
-ArrayAtom	: '[' AtomList ']'
+ArrayAtom	: bracket_token AtomList bracket_closed
 		  	;
 AtomList	: AtomList comma_token Expr
 		 	| Expr
@@ -247,14 +259,15 @@ KeyValsAtom	: KeyValsAtom comma_token KeyValAtom
 			;
 KeyValAtom	: Key ':' Expr
 		  	;
-Key			: '"' id_token '"'
+Key			: string_token
 	  		| id_token
 			;
 
-FunctionDec	: function_token id_token '(' IDList ')' '{' CodeBlock '}'
+FunctionDec	: function_token '(' IDList ')' '{' CodeBlock '}'
 			;
 
 IDList		: IDList comma_token id_token
+			| id_token
 			|
 			;
 
