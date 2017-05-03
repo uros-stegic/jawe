@@ -1,7 +1,13 @@
 %{
 #include <iostream>
 #include <string>
+#include <memory>
+
+#include <syntax.hpp>
+
 #define YYDEBUG 1
+
+jawe::Ast *program;
 
 extern int yylex();
 void yyerror(const std::string& msg) {
@@ -9,16 +15,25 @@ void yyerror(const std::string& msg) {
 }
 %}
 
+%union {
+	jawe::Ast* node;
+	jawe::CommandBlock* block;
+	jawe::Command* command;
+	jawe::Expr* expr;
+	double number;
+	std::string* string;
+}
+
 %token delim_token
 
-%token id_token
+%token<string> id_token
 
 %token undefined_token
 %token null_token
 %token nan_token
 %token true_token
 %token false_token
-%token num_token
+%token<number> num_token
 %token string_token
 %token char_token
 
@@ -77,198 +92,203 @@ void yyerror(const std::string& msg) {
 %left bracket_token dot_access_token
 %left prec_parens_token
 
+%type<command> Command Undelimited Delimited 
+%type<block> CodeBlock
+%type<command> Cond While For DoWhile SwitchCase Cases Case Default
+%type<command> NamedFun Variable ArgList ExprInit
+%type<expr> Expr Assign Ref Atom Literal IndexedObj ArrayAtom AtomList ObjectAtom KeyValsAtom KeyValAtom Key FunctionDec IDList
 %%
 
 /**************** Command Structure ****************/
-Program		: CodeBlock
-
-
-CodeBlock	: Command CodeBlock
-		 	| Command
-			;
-
-Command		: Delimited delim_token
-		 	| Undelimited
-			;
-
-Undelimited	: Cond
-			| While
-			| For
-			| SwitchCase
-			| NamedFun
-			| '{' CodeBlock '}'
-			;
-
-Delimited	: ExprInit
-		 	| Variable
-			| DoWhile
-			| return_token Expr
-			| cont_token
-			| break_token
-			;
-
-NamedFun	: function_token id_token '(' IDList ')' '{' CodeBlock '}'
-			;
-
-Variable	: const_token id_token
-			| const_token id_token Assign ExprInit
-			| var_token id_token
-			| var_token id_token Assign ExprInit
-			| let_token id_token
-			| let_token id_token Assign ExprInit
-			;
-
-Cond		: if_token '(' Expr ')' Command %prec no_else_token
-	  		| if_token '(' Expr ')' Command else_token Command
-			;
-
-While		: while_token '(' Expr ')' Command
-	   		;
-For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command
-	  		;
-DoWhile		: do_token Command while_token '(' Expr ')'
+Program		: CodeBlock									{ program = $1; }
 		 	;
-SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'
-		   	;
-Cases		: Cases Case
-	   		| Case
-			| Default
+
+CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2); }
+		 	| Command									{ $$ = new jawe::CommandBlock($1); }
 			;
-Case		: case_token Literal ':' Command
+
+Command		: Delimited delim_token						{ $$ = $1; }
+		 	| Undelimited								{}
+			;
+
+Undelimited	: Cond										{}
+			| While										{}
+			| For										{}
+			| SwitchCase								{}
+			| NamedFun									{}
+			| '{' CodeBlock '}'							{}
+			;
+
+Delimited	: ExprInit									{ $$ = $1; }
+		 	| Variable									{}
+			| DoWhile									{}
+			| return_token Expr							{}
+			| cont_token								{}
+			| break_token								{}
+			;
+
+NamedFun	: function_token id_token '(' IDList ')' '{' CodeBlock '}'	{}
+			;
+
+Variable	: const_token id_token						{}
+			| const_token id_token Assign ExprInit		{}
+			| var_token id_token						{}
+			| var_token id_token Assign ExprInit		{}
+			| let_token id_token						{}
+			| let_token id_token Assign ExprInit		{}
+			;
+
+Cond		: if_token '(' Expr ')' Command %prec no_else_token	{}
+	  		| if_token '(' Expr ')' Command else_token Command	{}
+			;
+
+While		: while_token '(' Expr ')' Command			{}
+	   		;
+For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command	{}
 	  		;
-Default		: default_token ':' Command
+DoWhile		: do_token Command while_token '(' Expr ')'	{}
+		 	;
+SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{}
+		   	;
+Cases		: Cases Case								{}
+	   		| Case										{}
+			| Default									{}
+			;
+Case		: case_token Literal ':' Command 			{}
+	  		;
+Default		: default_token ':' Command					{}
 		 	;
 /***************************************************/
 
 
 
 /******************* Expressions *******************/
-ExprInit	: id_token Assign ExprInit
-		 	| Expr
+ExprInit	: id_token Assign ExprInit					{}
+		 	| Expr										{ $$ = $1; }
 			;
 
-Assign		: assign_token
-			| ass_plus_token
-			| ass_minus_token
-			| ass_pow_token
-			| ass_mult_token
-			| ass_div_token
-			| ass_mod_token
-			| ass_sh_l_token
-			| ass_sh_r_token
-			| ass_sh_u_token
-			| ass_con_b_token
-			| ass_xor_b_token
-			| ass_dis_b_token
+Assign		: assign_token								{}
+			| ass_plus_token							{}
+			| ass_minus_token							{} 
+			| ass_pow_token								{}
+			| ass_mult_token							{}
+			| ass_div_token								{}
+			| ass_mod_token								{}
+			| ass_sh_l_token							{}
+			| ass_sh_r_token							{}
+			| ass_sh_u_token							{}
+			| ass_con_b_token							{}
+			| ass_xor_b_token							{}
+			| ass_dis_b_token							{}
 			;
 
-Expr		: Expr plus_token Expr
-	 		| Expr minus_token Expr
-	 		| Expr times_token Expr
-	 		| Expr divide_token Expr
-	 		| Expr mod_token Expr
-			| Expr power_token Expr
-			| plus_token Expr %prec uplus_token
-			| minus_token Expr %prec uminus_token
+Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);						}
+	 		| Expr minus_token Expr						{ $$ = new jawe::Minus($1, $3);						}
+	 		| Expr times_token Expr						{ $$ = new jawe::Times($1, $3);						}
+	 		| Expr divide_token Expr					{ $$ = new jawe::Divide($1, $3);					}
+	 		| Expr mod_token Expr						{ $$ = new jawe::Mod($1, $3);						}
+			| Expr power_token Expr						{ $$ = new jawe::Mod($1, $3);						}
+			| plus_token Expr %prec uplus_token			{ $$ = new jawe::UPlus($2);							}
+			| minus_token Expr %prec uminus_token		{ $$ = new jawe::UMinus($2);						}
 
-			| inc_token Expr
-			| dec_token Expr
-			| Expr inc_token %prec post_inc
-			| Expr dec_token %prec post_dec
-			| delete_token Expr
-			| typeof_token Expr
-			| void_token Expr
+			| inc_token Expr							{ $$ = new jawe::Increment($2);						}
+			| dec_token Expr							{ $$ = new jawe::Decrement($2);						}
+			| Expr inc_token %prec post_inc				{ $$ = new jawe::PostIncrement($1);					}
+			| Expr dec_token %prec post_dec				{ $$ = new jawe::PostDecrement($1);					}
+			| delete_token Expr							{ $$ = new jawe::Delete($2); 						}
+			| typeof_token Expr							{ $$ = new jawe::TypeOf($2);						}
+			| void_token Expr							{ $$ = new jawe::Void($2);							}
 			
-			| Expr eq_token Expr
-			| Expr not_eq_token Expr
-			| Expr t_eq_token Expr
-			| Expr t_not_eq_token Expr
-			| Expr less_token Expr
-			| Expr less_eq_token Expr
-			| Expr great_token Expr
-			| Expr great_eq_token Expr
-			| Expr in_token IndexedObj
-			| Expr instanceof_token id_token
+			| Expr eq_token Expr						{ $$ = new jawe::Equals($1, $3);					}
+			| Expr not_eq_token Expr					{ $$ = new jawe::NotEquals($1, $3);					}
+			| Expr t_eq_token Expr						{ $$ = new jawe::TypedEquals($1, $3);				}
+			| Expr t_not_eq_token Expr					{ $$ = new jawe::TypedNotEquals($1, $3);			}
+			| Expr less_token Expr						{ $$ = new jawe::LessThen($1, $3);					}
+			| Expr less_eq_token Expr					{ $$ = new jawe::LessOrEquals($1, $3);				}
+			| Expr great_token Expr						{ $$ = new jawe::GreaterThen($1, $3);				}
+			| Expr great_eq_token Expr					{ $$ = new jawe::GreaterOrEquals($1, $3);			}
+			| Expr in_token IndexedObj					{}
+			| Expr instanceof_token id_token			{}
 
-			| log_not_token Expr
-			| Expr log_and_token Expr
-			| Expr log_or_token Expr
+			| log_not_token Expr						{ $$ = new jawe::LogicNot($2);						}
+			| Expr log_and_token Expr					{ $$ = new jawe::LogicAnd($1, $3);					}
+			| Expr log_or_token Expr					{ $$ = new jawe::LogicOr($1, $3);					}
 
-			| bit_not_token Expr
-			| Expr bit_and_token Expr
-			| Expr bit_or_token Expr
-			| Expr bit_xor_token Expr
-			| Expr bit_shift_l_token Expr
-			| Expr bit_shift_r_token Expr
-			| Expr bit_shift_u_token Expr
+			| bit_not_token Expr						{ $$ = new jawe::BitNot($2);						}
+			| Expr bit_and_token Expr					{ $$ = new jawe::BitAnd($1, $3);					}
+			| Expr bit_or_token Expr					{ $$ = new jawe::BitOr($1, $3);						}
+			| Expr bit_xor_token Expr					{ $$ = new jawe::BitXor($1, $3);					}
+			| Expr bit_shift_l_token Expr				{ $$ = new jawe::BitShiftLeft($1, $3);				}
+			| Expr bit_shift_r_token Expr				{ $$ = new jawe::BitShiftRight($1, $3);				}
+			| Expr bit_shift_u_token Expr				{ $$ = new jawe::BitShiftUnsigned($1, $3);			}
 
-			| Expr '?' Expr ':' Expr
+			| Expr '?' Expr ':' Expr					{ $$ = new jawe::TernaryConditional($1, $3, $5);	}
 
-   			| '(' Expr ')' %prec prec_parens_token
+   			| '(' Expr ')' %prec prec_parens_token		{ $$ = $2; }
 			
-			| new_token Expr
+			| new_token Expr							{ $$ = new jawe::New($2);							}
 
-			| Ref
-  			| Atom
+			| Ref										{ $$ = $1; }
+  			| Atom										{ $$ = $1; }
   			;
 
-Ref			: Expr '(' ArgList ')' %prec fn_call_token
-			| Expr bracket_token Expr bracket_closed
-			| Expr dot_access_token Expr
-			| id_token
+Ref			: Expr '(' ArgList ')' %prec fn_call_token	{}
+			| Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3);				}
+			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3);					}
+			| id_token									{}
 			;
 
-ArgList		: ArgList comma_token Expr
-		 	| Expr
-			|
+ArgList		: ArgList comma_token Expr					{}
+		 	| Expr										{}
+			|											{}
 			;
 /***************************************************/
 
 
 /********************* Atoms ***********************/
-Atom		: Literal
-			| IndexedObj
-			| FunctionDec
+Atom		: Literal									{ $$ = $1; }
+			| IndexedObj								{}
+			| FunctionDec								{}
 			;
 
-Literal		: undefined_token
-		 	| null_token
-			| nan_token
-			| true_token
-			| false_token
-			| num_token
-			| string_token
-			| char_token
+Literal		: undefined_token							{}
+		 	| null_token								{}
+			| nan_token									{}
+			| true_token								{}
+			| false_token								{}
+			| num_token									{ $$ = new jawe::Numeric($1); }
+			| string_token								{}
+			| char_token								{}
 			;
 
-IndexedObj	: ArrayAtom
-			| ObjectAtom
+IndexedObj	: ArrayAtom									{}
+			| ObjectAtom								{}
 			;
 
-ArrayAtom	: bracket_token AtomList bracket_closed
+ArrayAtom	: bracket_token AtomList bracket_closed		{}
 		  	;
-AtomList	: AtomList comma_token Expr
-		 	| Expr
-			|
+AtomList	: AtomList comma_token Expr					{}
+		 	| Expr										{}
+			|											{}
 			;
-ObjectAtom	: '{' KeyValsAtom '}'
+ObjectAtom	: '{' KeyValsAtom '}'						{}
 		  	;
-KeyValsAtom	: KeyValsAtom comma_token KeyValAtom
-		   	| KeyValAtom
-			|
+KeyValsAtom	: KeyValsAtom comma_token KeyValAtom		{}
+		   	| KeyValAtom								{}
+			|											{}
 			;
-KeyValAtom	: Key ':' Expr
+KeyValAtom	: Key ':' Expr								{}
 		  	;
-Key			: string_token
-	  		| id_token
+Key			: string_token								{}
+	  		| id_token									{}
 			;
 
-FunctionDec	: function_token '(' IDList ')' '{' CodeBlock '}'
+FunctionDec	: function_token '(' IDList ')' '{' CodeBlock '}'	{}
 			;
 
-IDList		: IDList comma_token id_token
-			| id_token
-			|
+IDList		: IDList comma_token id_token				{}
+			| id_token									{}
+			|											{}
 			;
 
 /***************************************************/

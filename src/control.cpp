@@ -33,6 +33,7 @@ Control::Control(int argc, char **argv)
 
 extern int yydebug;
 extern FILE* yyin;
+extern Ast* program;
 void Control::run() const
 {
 	if( m_vars.count("verbose") ) {
@@ -53,6 +54,7 @@ void Control::run() const
 			std::exit(EXIT_FAILURE);
 		}
 		yyparse();
+		program->print(std::cout);
 		std::fclose(yyin);
 	}
 	else {

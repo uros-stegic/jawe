@@ -5,7 +5,9 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <memory>
 
+#include <syntax.hpp>
 #include <lang.syn.hpp>
 
 void llerror(const std::string& msg)
@@ -150,8 +152,8 @@ BRK_CACCESS	"]"
 {DELIM}+		{ return delim_token;		}
 {SEPARATOR}		{ return *yytext;			}
 
-{DECIMAL}		{ return num_token;			}
-{INTEGER}		{ return num_token;			}
+{DECIMAL}		{ yylval.number = std::atof(yytext); return num_token;			}
+{INTEGER}		{ yylval.number = std::atoi(yytext); return num_token;			}
 {UNDEF}			{ return undefined_token;	}
 {NULL}			{ return null_token;		}
 {TRUE}			{ return true_token;		}
