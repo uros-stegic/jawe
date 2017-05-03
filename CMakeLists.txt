@@ -6,6 +6,9 @@ set (jawe_VERSION_MAJOR 1)
 set (jawe_VERSION_MINOR 0)
 set (TARGET jawe)
 
+# -std=c++14
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # Configuration file
 configure_file (
@@ -31,10 +34,11 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories ("${PROJECT_SOURCE_DIR}/include")
+include_directories ("${PROJECT_SOURCE_DIR}/include/syntax")
 
 file(GLOB SOURCES
-	${PROJECT_SOURCE_DIR}/include/*.hpp
 	${PROJECT_SOURCE_DIR}/src/*.cpp
+	${PROJECT_SOURCE_DIR}/src/syntax/*.cpp
 )
 
 add_executable(${TARGET}
