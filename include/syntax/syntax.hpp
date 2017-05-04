@@ -4,6 +4,13 @@
 /* Commands */
 #include <ast.hpp>
 #include <command_block.hpp>
+#include <break.hpp>
+#include <continue.hpp>
+#include <return.hpp>
+#include <if_else.hpp>
+#include <while.hpp>
+#include <for.hpp>
+#include <do_while.hpp>
 
 /* Binary arithmetic operators */
 #include <plus.hpp>

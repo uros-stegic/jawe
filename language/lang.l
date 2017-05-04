@@ -93,7 +93,7 @@ TRUE		"true"
 FALSE		"false"
 NAN			"NaN"
 STRING		\"[^\"]*\"
-CHAR		'[^']'
+CHAR		'[^']*'
 
 RETURN		"return"
 BREAK		"break"
@@ -159,8 +159,8 @@ BRK_CACCESS	"]"
 {TRUE}			{ return true_token;		}
 {FALSE}			{ return false_token;		}
 {STRING}		{ return string_token;		}
+{CHAR}			{ return string_token;		}
 {NAN}			{ return nan_token;			}
-{CHAR}			{ return char_token;		}
    
 {ASS_POW}		{ return ass_pow_token;		}
 {ASS_PLUS}		{ return ass_plus_token;	}

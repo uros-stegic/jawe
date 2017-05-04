@@ -35,7 +35,6 @@ void yyerror(const std::string& msg) {
 %token false_token
 %token<number> num_token
 %token string_token
-%token char_token
 
 %token return_token
 %token break_token
@@ -108,23 +107,23 @@ CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2); }
 			;
 
 Command		: Delimited delim_token						{ $$ = $1; }
-		 	| Undelimited								{}
+		 	| Undelimited								{ $$ = $1; }
 			;
 
-Undelimited	: Cond										{}
-			| While										{}
-			| For										{}
-			| SwitchCase								{}
-			| NamedFun									{}
-			| '{' CodeBlock '}'							{}
+Undelimited	: Cond										{ $$ = $1; }
+			| While										{ $$ = $1; }
+			| For										{ $$ = $1; }
+			| SwitchCase								{ $$ = $1; }
+			| NamedFun									{ $$ = $1; }
+			| '{' CodeBlock '}'							{ $$ = $2; }
 			;
 
 Delimited	: ExprInit									{ $$ = $1; }
-		 	| Variable									{}
-			| DoWhile									{}
-			| return_token Expr							{}
-			| cont_token								{}
-			| break_token								{}
+		 	| Variable									{ $$ = $1; }
+			| DoWhile									{ $$ = $1; }
+			| return_token Expr							{ $$ = new jawe::Return($2); }
+			| cont_token								{ $$ = new jawe::Continue(); }
+			| break_token								{ $$ = new jawe::Break(); }
 			;
 
 NamedFun	: function_token id_token '(' IDList ')' '{' CodeBlock '}'	{}
@@ -138,15 +137,15 @@ Variable	: const_token id_token						{}
 			| let_token id_token Assign ExprInit		{}
 			;
 
-Cond		: if_token '(' Expr ')' Command %prec no_else_token	{}
-	  		| if_token '(' Expr ')' Command else_token Command	{}
+Cond		: if_token '(' Expr ')' Command %prec no_else_token	{ $$ = new jawe::IfElse($3, $5); }
+	  		| if_token '(' Expr ')' Command else_token Command	{ $$ = new jawe::IfElse($3, $5, $7); }
 			;
 
-While		: while_token '(' Expr ')' Command			{}
+While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); }
 	   		;
-For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command	{}
+For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command	{ $$ = new jawe::For($3, $5, $7, $9); }
 	  		;
-DoWhile		: do_token Command while_token '(' Expr ')'	{}
+DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); }
 		 	;
 SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{}
 		   	;
@@ -258,7 +257,6 @@ Literal		: undefined_token							{}
 			| false_token								{}
 			| num_token									{ $$ = new jawe::Numeric($1); }
 			| string_token								{}
-			| char_token								{}
 			;
 
 IndexedObj	: ArrayAtom									{}
