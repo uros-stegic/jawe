@@ -36,9 +36,8 @@ include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 include_directories ("${PROJECT_SOURCE_DIR}/include/syntax")
 
-file(GLOB SOURCES
+file(GLOB_RECURSE SOURCES
 	${PROJECT_SOURCE_DIR}/src/*.cpp
-	${PROJECT_SOURCE_DIR}/src/syntax/*.cpp
 )
 
 add_executable(${TARGET}
