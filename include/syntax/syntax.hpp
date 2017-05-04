@@ -70,7 +70,13 @@
 #include <operators/dot_access.hpp>
 
 /* Litrerals */
-#include <numeric.hpp>
+#include <literals/undefined.hpp>
+#include <literals/null.hpp>
+#include <literals/nan.hpp>
+#include <literals/true.hpp>
+#include <literals/false.hpp>
+#include <literals/numeric.hpp>
+#include <literals/string.hpp>
 
 #endif // __SYNTAX_HPP__
 

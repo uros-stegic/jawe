@@ -34,7 +34,7 @@ void yyerror(const std::string& msg) {
 %token true_token
 %token false_token
 %token<number> num_token
-%token string_token
+%token<string> string_token
 
 %token return_token
 %token break_token
@@ -250,13 +250,13 @@ Atom		: Literal									{ $$ = $1; }
 			| FunctionDec								{}
 			;
 
-Literal		: undefined_token							{}
-		 	| null_token								{}
-			| nan_token									{}
-			| true_token								{}
-			| false_token								{}
+Literal		: undefined_token							{ $$ = new jawe::Undefined(); }
+		 	| null_token								{ $$ = new jawe::Null(); }
+			| nan_token									{ $$ = new jawe::Nan(); }
+			| true_token								{ $$ = new jawe::True(); }
+			| false_token								{ $$ = new jawe::False(); }
 			| num_token									{ $$ = new jawe::Numeric($1); }
-			| string_token								{}
+			| string_token								{ $$ = new jawe::String(*$1); delete $1; }
 			;
 
 IndexedObj	: ArrayAtom									{}

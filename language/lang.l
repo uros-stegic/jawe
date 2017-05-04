@@ -92,8 +92,7 @@ NULL		"null"
 TRUE		"true"
 FALSE		"false"
 NAN			"NaN"
-STRING		\"[^\"]*\"
-CHAR		'[^']*'
+STRING		(\"[^\"]*\")|('[^']*')
 
 RETURN		"return"
 BREAK		"break"
@@ -158,8 +157,7 @@ BRK_CACCESS	"]"
 {NULL}			{ return null_token;		}
 {TRUE}			{ return true_token;		}
 {FALSE}			{ return false_token;		}
-{STRING}		{ return string_token;		}
-{CHAR}			{ return string_token;		}
+{STRING}		{ auto tmp = std::string(yytext); yylval.string = new std::string(tmp.substr(1, tmp.size()-2)); return string_token; }
 {NAN}			{ return nan_token;			}
    
 {ASS_POW}		{ return ass_pow_token;		}

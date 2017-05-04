@@ -1,7 +1,7 @@
 #ifndef __NUMERIC_HPP__
 #define __NUMERIC_HPP__
 
-#include <literal.hpp>
+#include <literals/literal.hpp>
 
 namespace jawe {
 class Numeric : public Literal {

@@ -1,5 +1,5 @@
-#include <literal.hpp>
 #include <atom.hpp>
+#include <literals/literal.hpp>
 
 using namespace jawe;
 
