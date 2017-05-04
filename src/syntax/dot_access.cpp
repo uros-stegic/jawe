@@ -1,4 +1,4 @@
-#include <dot_access.hpp>
+#include <operators/dot_access.hpp>
 
 using namespace jawe;
 

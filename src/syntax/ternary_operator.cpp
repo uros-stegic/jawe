@@ -1,4 +1,4 @@
-#include <ternary_operator.hpp>
+#include <operators/ternary_operator.hpp>
 
 using namespace jawe;
 

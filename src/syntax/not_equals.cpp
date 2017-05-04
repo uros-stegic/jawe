@@ -1,4 +1,4 @@
-#include <not_equals.hpp>
+#include <operators/not_equals.hpp>
 
 using namespace jawe;
 

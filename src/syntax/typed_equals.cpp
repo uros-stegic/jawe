@@ -1,4 +1,4 @@
-#include <typed_equals.hpp>
+#include <operators/typed_equals.hpp>
 
 using namespace jawe;
 

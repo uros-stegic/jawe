@@ -1,4 +1,4 @@
-#include <delete.hpp>
+#include <operators/delete.hpp>
 
 using namespace jawe;
 

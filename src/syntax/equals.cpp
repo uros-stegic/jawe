@@ -1,4 +1,4 @@
-#include <equals.hpp>
+#include <operators/equals.hpp>
 
 using namespace jawe;
 

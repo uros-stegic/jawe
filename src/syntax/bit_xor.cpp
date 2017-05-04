@@ -1,4 +1,4 @@
-#include <bit_xor.hpp>
+#include <operators/bit_xor.hpp>
 
 using namespace jawe;
 

@@ -1,4 +1,4 @@
-#include <divide.hpp>
+#include <operators/divide.hpp>
 
 using namespace jawe;
 

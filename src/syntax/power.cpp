@@ -1,4 +1,4 @@
-#include <power.hpp>
+#include <operators/power.hpp>
 
 using namespace jawe;
 

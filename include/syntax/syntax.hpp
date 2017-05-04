@@ -4,70 +4,72 @@
 /* Commands */
 #include <ast.hpp>
 #include <command_block.hpp>
-#include <break.hpp>
-#include <continue.hpp>
-#include <return.hpp>
-#include <if_else.hpp>
-#include <while.hpp>
-#include <for.hpp>
-#include <do_while.hpp>
+
+/* Control flow */
+#include <control_flow/break.hpp>
+#include <control_flow/continue.hpp>
+#include <control_flow/return.hpp>
+#include <control_flow/if_else.hpp>
+#include <control_flow/while.hpp>
+#include <control_flow/for.hpp>
+#include <control_flow/do_while.hpp>
 
 /* Binary arithmetic operators */
-#include <plus.hpp>
-#include <minus.hpp>
-#include <times.hpp>
-#include <divide.hpp>
-#include <mod.hpp>
-#include <power.hpp>
+#include <operators/plus.hpp>
+#include <operators/minus.hpp>
+#include <operators/times.hpp>
+#include <operators/divide.hpp>
+#include <operators/mod.hpp>
+#include <operators/power.hpp>
 
 /* Unary arithmetic operators */
-#include <uminus.hpp>
-#include <uplus.hpp>
-#include <increment.hpp>
-#include <decrement.hpp>
-#include <post_increment.hpp>
-#include <post_decrement.hpp>
+#include <operators/uminus.hpp>
+#include <operators/uplus.hpp>
+#include <operators/increment.hpp>
+#include <operators/decrement.hpp>
+#include <operators/post_increment.hpp>
+#include <operators/post_decrement.hpp>
 
 /* Comparison operators */
-#include <equals.hpp>
-#include <typed_equals.hpp>
-#include <not_equals.hpp>
-#include <typed_not_equals.hpp>
-#include <less_then.hpp>
-#include <less_or_equals.hpp>
-#include <greater_then.hpp>
-#include <greater_or_equals.hpp>
+#include <operators/equals.hpp>
+#include <operators/typed_equals.hpp>
+#include <operators/not_equals.hpp>
+#include <operators/typed_not_equals.hpp>
+#include <operators/less_then.hpp>
+#include <operators/less_or_equals.hpp>
+#include <operators/greater_then.hpp>
+#include <operators/greater_or_equals.hpp>
 
 /* Logical operators */
-#include <logic_not.hpp>
-#include <logic_and.hpp>
-#include <logic_or.hpp>
+#include <operators/logic_not.hpp>
+#include <operators/logic_and.hpp>
+#include <operators/logic_or.hpp>
 
 /* Bitwise operators */
-#include <bit_not.hpp>
-#include <bit_shift_left.hpp>
-#include <bit_shift_right.hpp>
-#include <bit_shift_unsigned.hpp>
-#include <bit_and.hpp>
-#include <bit_xor.hpp>
-#include <bit_or.hpp>
+#include <operators/bit_not.hpp>
+#include <operators/bit_shift_left.hpp>
+#include <operators/bit_shift_right.hpp>
+#include <operators/bit_shift_unsigned.hpp>
+#include <operators/bit_and.hpp>
+#include <operators/bit_xor.hpp>
+#include <operators/bit_or.hpp>
 
 /* Ternary conditional */
-#include <ternary_conditional.hpp>
+#include <operators/ternary_conditional.hpp>
 
 /* Creational and removal operators */
-#include <new.hpp>
-#include <delete.hpp>
+#include <operators/new.hpp>
+#include <operators/delete.hpp>
 
 /* Type checking */
-#include <typeof.hpp>
-#include <void.hpp>
+#include <operators/typeof.hpp>
+#include <operators/void.hpp>
 
 /* Access operators */
-#include <array_access.hpp>
-#include <dot_access.hpp>
+#include <operators/array_access.hpp>
+#include <operators/dot_access.hpp>
 
-/* Constants */
+/* Litrerals */
 #include <numeric.hpp>
 
 #endif // __SYNTAX_HPP__

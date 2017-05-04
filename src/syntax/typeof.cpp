@@ -1,4 +1,4 @@
-#include <typeof.hpp>
+#include <operators/typeof.hpp>
 
 using namespace jawe;
 

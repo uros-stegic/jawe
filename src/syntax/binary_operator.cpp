@@ -1,4 +1,4 @@
-#include <binary_operator.hpp>
+#include <operators/binary_operator.hpp>
 
 using namespace jawe;
 

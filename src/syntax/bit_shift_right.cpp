@@ -1,4 +1,4 @@
-#include <bit_shift_right.hpp>
+#include <operators/bit_shift_right.hpp>
 
 using namespace jawe;
 

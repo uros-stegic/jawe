@@ -1,4 +1,4 @@
-#include <bit_not.hpp>
+#include <operators/bit_not.hpp>
 
 using namespace jawe;
 

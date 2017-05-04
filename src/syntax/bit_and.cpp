@@ -1,4 +1,4 @@
-#include <bit_and.hpp>
+#include <operators/bit_and.hpp>
 
 using namespace jawe;
 

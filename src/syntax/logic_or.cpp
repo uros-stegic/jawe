@@ -1,4 +1,4 @@
-#include <logic_or.hpp>
+#include <operators/logic_or.hpp>
 
 using namespace jawe;
 
