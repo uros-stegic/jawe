@@ -30,3 +30,13 @@ void For::print(std::ostream& out) const
 	out << std::endl;
 }
 
+void For::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ');
+	out << "for" << std::endl;
+	m_init->dump_ast(out, tabs+1);
+	m_cond->dump_ast(out, tabs+1);
+	m_post->dump_ast(out, tabs+1);
+	m_body->dump_ast(out, tabs+1);
+}
+

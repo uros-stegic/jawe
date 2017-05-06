@@ -1,15 +1,16 @@
 #ifndef __NAN_HPP__
 #define __NAN_HPP__
 
-#include <literals/literal.hpp>
+#include <literals/primitive.hpp>
 
 namespace jawe {
-class Nan : public Literal {
+class Nan : public Primitive {
 public:
 	Nan();
 	~Nan();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 };
 }
 #endif // __NAN_HPP__

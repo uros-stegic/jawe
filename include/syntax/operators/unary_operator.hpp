@@ -12,6 +12,7 @@ public:
 	~UnaryOperator();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream& out, int = 0) const override;
 	Expr* operand() const;
 
 private:

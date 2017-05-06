@@ -24,6 +24,7 @@ Control::Control(int argc, char **argv)
 		("help,h", "prints this help message")
 		("version,v", "prints version info")
 		("verbose", "prints verbose parsing information")
+		("dump-ast", "prints parsed abstract syntax tree")
 		("input-file", bpo::value<std::string>(&m_input), "input filename")
 		("output-file", bpo::value<std::string>(&m_output)->default_value("a.out"), "output filename")
 	;
@@ -54,7 +55,12 @@ void Control::run() const
 			std::exit(EXIT_FAILURE);
 		}
 		yyparse();
-		program->print(std::cout);
+		if( m_vars.count("dump-ast") ) {
+			program->dump_ast(std::cout);
+		}
+		else {
+			program->print(std::cout);
+		}
 		std::fclose(yyin);
 	}
 	else {

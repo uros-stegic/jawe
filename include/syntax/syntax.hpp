@@ -4,6 +4,7 @@
 /* Commands */
 #include <ast.hpp>
 #include <command_block.hpp>
+#include <expr.hpp>
 
 /* Control flow */
 #include <control_flow/break.hpp>
@@ -77,6 +78,8 @@
 #include <literals/false.hpp>
 #include <literals/numeric.hpp>
 #include <literals/string.hpp>
+#include <literals/array.hpp>
+#include <literals/object.hpp>
 
 #endif // __SYNTAX_HPP__
 

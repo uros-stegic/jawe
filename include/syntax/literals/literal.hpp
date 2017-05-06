@@ -1,14 +1,15 @@
 #ifndef __LITERAL_HPP__
 #define __LITERAL_HPP__
 
-#include <atom.hpp>
+#include <expr.hpp>
 
 namespace jawe {
-class Literal : public Atom {
+class Literal : public Expr {
 public:
-	using Atom::Atom;
+	Literal();
 	virtual ~Literal();
 };
 }
+
 #endif // __LITERAL_HPP__
 

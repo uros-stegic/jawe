@@ -12,6 +12,7 @@ public:
 	~CommandBlock();
 	void print(std::ostream&) const override;
 	void insert(Command*);
+	void dump_ast(std::ostream&, int = 0) const override;
 
 private:
 	std::vector<Command*> m_commands;

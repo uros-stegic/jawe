@@ -11,6 +11,7 @@ public:
 	~TernaryOperator();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream& out, int = 0) const override;
 	Expr* first_operand() const;
 	Expr* second_operand() const;
 	Expr* third_operand() const;

@@ -1,15 +1,16 @@
 #ifndef __TRUE_HPP__
 #define __TRUE_HPP__
 
-#include <literals/literal.hpp>
+#include <literals/primitive.hpp>
 
 namespace jawe {
-class True : public Literal {
+class True : public Primitive {
 public:
 	True();
 	~True();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 	bool value() const;
 };
 }

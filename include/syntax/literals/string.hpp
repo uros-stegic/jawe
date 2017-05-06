@@ -2,15 +2,16 @@
 #define __STRING_HPP__
 
 #include <string>
-#include <literals/literal.hpp>
+#include <literals/primitive.hpp>
 
 namespace jawe {
-class String : public Literal {
+class String : public Primitive {
 public:
 	String(std::string);
 	~String();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 
 private:
 	std::string m_string;

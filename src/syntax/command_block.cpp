@@ -33,3 +33,16 @@ void CommandBlock::insert(Command* other)
 	m_commands.push_back(other);
 }
 
+void CommandBlock::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ');
+	out << "command-block" << std::endl;
+	std::for_each(
+		std::begin(m_commands),
+		std::end(m_commands),
+		[&](Command* command) {
+			command->dump_ast(out, tabs+1);
+		}
+	);
+}
+

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <utility>
+#include <map>
 
 #include <syntax.hpp>
 
@@ -22,6 +24,9 @@ void yyerror(const std::string& msg) {
 	jawe::Expr* expr;
 	double number;
 	std::string* string;
+	std::vector<jawe::Expr*>* expr_vec;
+	std::map<std::string, jawe::Expr*> *key_vals;
+	std::pair<std::string, jawe::Expr*> *key_val;
 }
 
 %token delim_token
@@ -95,7 +100,11 @@ void yyerror(const std::string& msg) {
 %type<block> CodeBlock
 %type<command> Cond While For DoWhile SwitchCase Cases Case Default
 %type<command> NamedFun Variable ArgList ExprInit
-%type<expr> Expr Assign Ref Atom Literal IndexedObj ArrayAtom AtomList ObjectAtom KeyValsAtom KeyValAtom Key FunctionDec IDList
+%type<expr> Expr Assign Ref Literal Primitive IndexedObj ArrLiteral ObjLiteral FnDecl IDList
+%type<string> Key
+%type<expr_vec> LiteralList
+%type<key_vals> KVLiterals
+%type<key_val> KVLiteral
 %%
 
 /**************** Command Structure ****************/
@@ -153,7 +162,7 @@ Cases		: Cases Case								{}
 	   		| Case										{}
 			| Default									{}
 			;
-Case		: case_token Literal ':' Command 			{}
+Case		: case_token Primitive ':' Command 			{}
 	  		;
 Default		: default_token ':' Command					{}
 		 	;
@@ -228,7 +237,7 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);						}
 			| new_token Expr							{ $$ = new jawe::New($2);							}
 
 			| Ref										{ $$ = $1; }
-  			| Atom										{ $$ = $1; }
+  			| Literal									{ $$ = $1; }
   			;
 
 Ref			: Expr '(' ArgList ')' %prec fn_call_token	{}
@@ -244,13 +253,13 @@ ArgList		: ArgList comma_token Expr					{}
 /***************************************************/
 
 
-/********************* Atoms ***********************/
-Atom		: Literal									{ $$ = $1; }
-			| IndexedObj								{}
-			| FunctionDec								{}
+/********************* Literals ***********************/
+Literal		: Primitive									{ $$ = $1; }
+			| IndexedObj								{ $$ = $1; }
+			| FnDecl									{}
 			;
 
-Literal		: undefined_token							{ $$ = new jawe::Undefined(); }
+Primitive	: undefined_token							{ $$ = new jawe::Undefined(); }
 		 	| null_token								{ $$ = new jawe::Null(); }
 			| nan_token									{ $$ = new jawe::Nan(); }
 			| true_token								{ $$ = new jawe::True(); }
@@ -259,29 +268,33 @@ Literal		: undefined_token							{ $$ = new jawe::Undefined(); }
 			| string_token								{ $$ = new jawe::String(*$1); delete $1; }
 			;
 
-IndexedObj	: ArrayAtom									{}
-			| ObjectAtom								{}
+IndexedObj	: ArrLiteral								{ $$ = $1; }
+			| ObjLiteral								{ $$ = $1; }
 			;
 
-ArrayAtom	: bracket_token AtomList bracket_closed		{}
+ArrLiteral	: bracket_token LiteralList bracket_closed	{ $$ = new jawe::Array(*$2); delete $2; }
 		  	;
-AtomList	: AtomList comma_token Expr					{}
-		 	| Expr										{}
-			|											{}
-			;
-ObjectAtom	: '{' KeyValsAtom '}'						{}
-		  	;
-KeyValsAtom	: KeyValsAtom comma_token KeyValAtom		{}
-		   	| KeyValAtom								{}
-			|											{}
-			;
-KeyValAtom	: Key ':' Expr								{}
-		  	;
-Key			: string_token								{}
-	  		| id_token									{}
+/* TODO: separate LiteralList into LiteralListFull and LiteralList Empty to avoid [1,2,] being correct */
+LiteralList	: LiteralList comma_token Expr				{ $$ = $1; $$->push_back($3); }
+		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1}; }
+			|											{ $$ = new std::vector<jawe::Expr*>(); }
 			;
 
-FunctionDec	: function_token '(' IDList ')' '{' CodeBlock '}'	{}
+ObjLiteral	: '{' KVLiterals '}'						{ $$ = new jawe::Object(*$2); delete $2; }
+		  	;
+
+KVLiterals	: KVLiterals comma_token KVLiteral			{ $$ = $1; (*$$)[$3->first] = $3->second; delete $3;}
+		   	| KVLiteral									{ $$ = new std::map<std::string, jawe::Expr*>; (*$$)[$1->first] = $1->second; delete $1; }
+			|											{ $$ = new std::map<std::string, jawe::Expr*>; }
+			;
+
+KVLiteral	: Key ':' Expr								{ $$ = new std::pair<std::string, jawe::Expr*>(*$1, $3); delete $1;}
+		  	;
+Key			: string_token								{ $$ = $1; }
+	  		| id_token									{ $$ = $1; }
+			;
+
+FnDecl		: function_token '(' IDList ')' '{' CodeBlock '}'	{}
 			;
 
 IDList		: IDList comma_token id_token				{}

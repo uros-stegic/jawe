@@ -24,6 +24,12 @@ void UnaryOperator::print(std::ostream& out) const
 	}
 }
 
+void UnaryOperator::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ') << "operator [" << symbol() << "]" << std::endl;
+	m_operand->dump_ast(out, tabs+1);
+}
+
 Expr* UnaryOperator::operand() const
 {
 	return m_operand;

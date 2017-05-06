@@ -9,6 +9,7 @@ class Ast : public LeakChecker<Ast> {
 public:
 	virtual ~Ast();
 	virtual void print(std::ostream&) const = 0;
+	virtual void dump_ast(std::ostream&, int = 0) const = 0;
 };
 }
 

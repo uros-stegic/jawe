@@ -10,6 +10,7 @@ public:
 	IfElse(Expr*,Command*,Command* = nullptr);
 	~IfElse();
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 
 private:
 	Expr* m_expr;

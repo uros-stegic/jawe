@@ -13,6 +13,7 @@ public:
 	BinaryOperator(Expr*, Expr*, std::string, const Priority&);
 	~BinaryOperator();
 	void print(std::ostream& out) const override;
+	void dump_ast(std::ostream& out, int = 0) const override;
 	Expr* left() const;
 	Expr* right() const;
 

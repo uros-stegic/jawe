@@ -23,3 +23,12 @@ void DoWhile::print(std::ostream& out) const
 	out << std::endl;
 }
 
+void DoWhile::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ');
+	out << "do-while" << std::endl;
+	m_body->dump_ast(out, tabs+1);
+	m_cond->dump_ast(out ,tabs+1);
+}
+
+

@@ -21,8 +21,9 @@ enum Priority {
 	TPostIncrement, TPostDecrement,
 	TNew,
 	TDotAccess, TArrayAccess,
-	TAtom
+	TLiteral
 };
+
 class Expr : public Command {
 public:
 	Expr(const Priority&);

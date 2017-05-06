@@ -38,6 +38,19 @@ void TernaryOperator::print(std::ostream& out) const
 
 	m_third->print(out);
 }
+void TernaryOperator::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ')
+		<< "operator ["
+		<< symbol()
+		<< " "
+		<< m_symbol2
+		<< "]"
+		<< std::endl;
+	m_first->dump_ast(out, tabs+1);
+	m_second->dump_ast(out, tabs+1);
+	m_third->dump_ast(out, tabs+1);
+}
 
 Expr* TernaryOperator::first_operand() const
 {

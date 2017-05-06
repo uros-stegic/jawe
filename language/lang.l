@@ -6,6 +6,8 @@
 #include <string>
 #include <cstdlib>
 #include <memory>
+#include <utility>
+#include <map>
 
 #include <syntax.hpp>
 #include <lang.syn.hpp>
@@ -216,7 +218,7 @@ BRK_CACCESS	"]"
 {COND}			{ return *yytext; 			}
 {PARENS}		{ return *yytext; 			}
 
-{ID}			{ return id_token;			}
+{ID}			{ yylval.string = new std::string(yytext); return id_token;	}
 	
 {BLANK}+		{}
 .				{ llerror(yytext); }

@@ -18,3 +18,10 @@ void Return::print(std::ostream& out) const
 	out << ";" << std::endl;
 }
 
+void Return::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ');
+	out << "return" << std::endl;
+	m_expr->dump_ast(out, tabs+1);
+}
+

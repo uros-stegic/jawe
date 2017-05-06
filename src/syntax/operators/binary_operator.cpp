@@ -34,6 +34,13 @@ void BinaryOperator::print(std::ostream& out) const {
 	}
 }
 
+void BinaryOperator::dump_ast(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ') << "operator [" << symbol() << "]" << std::endl;
+	m_left->dump_ast(out, tabs+1);
+	m_right->dump_ast(out, tabs+1);
+}
+
 Expr* BinaryOperator::left() const
 {
 	return m_left;

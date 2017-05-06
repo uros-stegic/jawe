@@ -1,15 +1,16 @@
 #ifndef __NUMERIC_HPP__
 #define __NUMERIC_HPP__
 
-#include <literals/literal.hpp>
+#include <literals/primitive.hpp>
 
 namespace jawe {
-class Numeric : public Literal {
+class Numeric : public Primitive {
 public:
 	Numeric(double);
 	~Numeric();
 
 	void print(std::ostream&) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 	double value() const;
 
 private:
