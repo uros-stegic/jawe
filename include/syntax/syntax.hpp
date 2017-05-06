@@ -81,5 +81,8 @@
 #include <literals/array.hpp>
 #include <literals/object.hpp>
 
+/* Variables */
+#include <variable.hpp>
+
 #endif // __SYNTAX_HPP__
 

@@ -243,7 +243,7 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);						}
 Ref			: Expr '(' ArgList ')' %prec fn_call_token	{}
 			| Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3);				}
 			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3);					}
-			| id_token									{}
+			| id_token									{ $$ = new jawe::Variable(*$1); delete $1;			}
 			;
 
 ArgList		: ArgList comma_token Expr					{}
