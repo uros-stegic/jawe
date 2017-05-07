@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignMul::AssignMul(Variable* left, Expr* right)
+AssignMul::AssignMul(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "*=", TAssign)
 {}
 

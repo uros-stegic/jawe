@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignBitXor::AssignBitXor(Variable* left, Expr* right)
+AssignBitXor::AssignBitXor(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "^=", TAssign)
 {}
 

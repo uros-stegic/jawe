@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignShiftU::AssignShiftU(Variable* left, Expr* right)
+AssignShiftU::AssignShiftU(Expr* left, Expr* right)
 	: BinaryOperator(left, right, ">>>=", TAssign)
 {}
 

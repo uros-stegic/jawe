@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignMinus::AssignMinus(Variable* left, Expr* right)
+AssignMinus::AssignMinus(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "-=", TAssign)
 {}
 

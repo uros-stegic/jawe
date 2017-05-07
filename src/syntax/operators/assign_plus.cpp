@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignPlus::AssignPlus(Variable* left, Expr* right)
+AssignPlus::AssignPlus(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "+=", TAssign)
 {}
 

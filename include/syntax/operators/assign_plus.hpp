@@ -2,12 +2,11 @@
 #define __ASSIGN_PLUS_HPP__
 
 #include <operators/binary_operator.hpp>
-#include <variables/variable.hpp>
 
 namespace jawe {
 class AssignPlus : public BinaryOperator {
 public:
-	AssignPlus(Variable*, Expr*);
+	AssignPlus(Expr*, Expr*);
 };
 }
 

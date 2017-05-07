@@ -101,7 +101,7 @@ void yyerror(const std::string& msg) {
 %type<block> CodeBlock
 %type<command> Cond While For DoWhile SwitchCase Case Default
 %type<command> NamedFun Variable ArgList
-%type<expr> Expr Assign Ref Literal Primitive IndexedObj ArrLiteral ObjLiteral FnDecl IDList
+%type<expr> Expr Assign Ref LValue Literal Primitive IndexedObj ArrLiteral ObjLiteral FnDecl IDList
 %type<string> Key
 %type<expr_vec> LiteralList
 %type<key_vals> KVLiterals
@@ -226,7 +226,9 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);											}
 			| Assign									{ $$ = $1;																}
   			;
 Ref			: Expr '(' ArgList ')' %prec fn_call_token	{}
-			| Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3);									}
+	  		| LValue									{ $$ = $1;																}
+			;
+LValue		: Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3);									}
 			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3);										}
 			| id_token									{ $$ = new jawe::Variable(*$1); delete $1;								}
 			;
@@ -234,19 +236,19 @@ ArgList		: ArgList comma_token Expr					{}
 		 	| Expr										{}
 			|											{}
 			;
-Assign		: id_token assign_token	Expr				{ $$ = new jawe::Assign(new jawe::Variable(*$1), $3);		delete $1;	}
-			| id_token ass_plus_token Expr				{ $$ = new jawe::AssignPlus(new jawe::Variable(*$1), $3);	delete $1;	}
-			| id_token ass_minus_token Expr				{ $$ = new jawe::AssignMinus(new jawe::Variable(*$1), $3);	delete $1; 	} 
-			| id_token ass_pow_token Expr				{ $$ = new jawe::AssignPow(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_mult_token Expr				{ $$ = new jawe::AssignMul(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_div_token Expr				{ $$ = new jawe::AssignDiv(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_mod_token Expr				{ $$ = new jawe::AssignMod(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_sh_l_token Expr				{ $$ = new jawe::AssignShiftL(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_sh_r_token Expr				{ $$ = new jawe::AssignShiftR(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_sh_u_token Expr				{ $$ = new jawe::AssignShiftU(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_con_b_token Expr				{ $$ = new jawe::AssignBitCon(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_xor_b_token Expr				{ $$ = new jawe::AssignBitXor(new jawe::Variable(*$1), $3);	delete $1; 	}
-			| id_token ass_dis_b_token Expr				{ $$ = new jawe::AssignBitDis(new jawe::Variable(*$1), $3);	delete $1; 	}
+Assign		: LValue assign_token Expr					{ $$ = new jawe::Assign($1, $3);										}
+			| LValue ass_plus_token Expr				{ $$ = new jawe::AssignPlus($1, $3);									}
+			| LValue ass_minus_token Expr				{ $$ = new jawe::AssignMinus($1, $3);			 						} 
+			| LValue ass_pow_token Expr					{ $$ = new jawe::AssignPow($1, $3);				 						}
+			| LValue ass_mult_token Expr				{ $$ = new jawe::AssignMul($1, $3);				 						}
+			| LValue ass_div_token Expr					{ $$ = new jawe::AssignDiv($1, $3);				 						}
+			| LValue ass_mod_token Expr					{ $$ = new jawe::AssignMod($1, $3);				 						}
+			| LValue ass_sh_l_token Expr				{ $$ = new jawe::AssignShiftL($1, $3);			 						}
+			| LValue ass_sh_r_token Expr				{ $$ = new jawe::AssignShiftR($1, $3);			 						}
+			| LValue ass_sh_u_token Expr				{ $$ = new jawe::AssignShiftU($1, $3);			 						}
+			| LValue ass_con_b_token Expr				{ $$ = new jawe::AssignBitCon($1, $3);			 						}
+			| LValue ass_xor_b_token Expr				{ $$ = new jawe::AssignBitXor($1, $3);			 						}
+			| LValue ass_dis_b_token Expr				{ $$ = new jawe::AssignBitDis($1, $3);			 						}
 			;
 /*******************************************************************************************************************************/
 

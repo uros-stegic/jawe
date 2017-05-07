@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignBitCon::AssignBitCon(Variable* left, Expr* right)
+AssignBitCon::AssignBitCon(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "&=", TAssign)
 {}
 

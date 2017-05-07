@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignDiv::AssignDiv(Variable* left, Expr* right)
+AssignDiv::AssignDiv(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "/=", TAssign)
 {}
 

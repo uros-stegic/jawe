@@ -2,12 +2,11 @@
 #define __ASSIGN_MOD_HPP__
 
 #include <operators/binary_operator.hpp>
-#include <variables/variable.hpp>
 
 namespace jawe {
 class AssignMod : public BinaryOperator {
 public:
-	AssignMod(Variable*, Expr*);
+	AssignMod(Expr*, Expr*);
 };
 }
 

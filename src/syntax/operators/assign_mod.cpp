@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignMod::AssignMod(Variable* left, Expr* right)
+AssignMod::AssignMod(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "%=", TAssign)
 {}
 

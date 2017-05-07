@@ -2,7 +2,7 @@
 
 using namespace jawe;
 
-AssignBitDis::AssignBitDis(Variable* left, Expr* right)
+AssignBitDis::AssignBitDis(Expr* left, Expr* right)
 	: BinaryOperator(left, right, "|=", TAssign)
 {}
 

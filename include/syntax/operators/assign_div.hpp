@@ -2,12 +2,11 @@
 #define __ASSIGN_DIV_HPP__
 
 #include <operators/binary_operator.hpp>
-#include <variables/variable.hpp>
 
 namespace jawe {
 class AssignDiv : public BinaryOperator {
 public:
-	AssignDiv(Variable*, Expr*);
+	AssignDiv(Expr*, Expr*);
 };
 }
 
