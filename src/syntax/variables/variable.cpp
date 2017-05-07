@@ -1,4 +1,4 @@
-#include <variable.hpp>
+#include <variables/variable.hpp>
 
 using namespace jawe;
 

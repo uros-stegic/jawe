@@ -65,6 +65,21 @@
 #include <operators/new.hpp>
 #include <operators/delete.hpp>
 
+/* Assignments */
+#include <operators/assign.hpp>
+#include <operators/assign_plus.hpp>
+#include <operators/assign_minus.hpp>
+#include <operators/assign_pow.hpp>
+#include <operators/assign_mul.hpp>
+#include <operators/assign_div.hpp>
+#include <operators/assign_mod.hpp>
+#include <operators/assign_shift_l.hpp>
+#include <operators/assign_shift_r.hpp>
+#include <operators/assign_shift_u.hpp>
+#include <operators/assign_bit_con.hpp>
+#include <operators/assign_bit_xor.hpp>
+#include <operators/assign_bit_dis.hpp>
+
 /* Type checking */
 #include <operators/typeof.hpp>
 #include <operators/void.hpp>
@@ -85,7 +100,7 @@
 #include <literals/object.hpp>
 
 /* Variables */
-#include <variable.hpp>
+#include <variables/variable.hpp>
 
 #endif // __SYNTAX_HPP__
 

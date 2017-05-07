@@ -5,6 +5,7 @@
 
 namespace jawe {
 enum Priority {
+	TAssign,
 	TTernaryConditional,
 	TLogicOr,
 	TLogicAnd,
