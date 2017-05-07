@@ -97,7 +97,6 @@ void yyerror(const std::string& msg) {
 %nonassoc new_token
 %left bracket_token dot_access_token
 %left prec_parens_token
-%nonassoc id_token num_token string_token undefined_token null_token nan_token true_token false_token
 
 %type<command> Command Undelimited Delimited 
 %type<block> CodeBlock
@@ -152,9 +151,9 @@ Cond		: if_token '(' Expr ')' Command
 While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); 										}
 	   		;
 For			: for_token '('
-	          Command delim_token
+	          Delimited delim_token
 			  Expr delim_token
-			  Command ')'
+			  Delimited ')'
 			  Command									{ $$ = new jawe::For($3, $5, $7, $9); 									}
 	  		;
 DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); 										}

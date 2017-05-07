@@ -10,7 +10,7 @@ all:
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|  Executing program  |_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
 	@cd build; \
-	time ./jawe --input ../tests/semantics/variables.js --dump-ast
+	time ./jawe --input ../tests/semantics/control_flow.js --dump-ast
 	@echo " "
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "

@@ -6,8 +6,14 @@ extern jawe::Ast* program;
 int main(int argc, char **argv)
 {
 	jawe::Control proc(argc, argv);
+
+	program = nullptr;
+
 	proc.run();
 
+	if( program == nullptr ) {
+		return 0;
+	}
 	delete program;
 	std::cerr << std::endl << "~~~~~~~~~~~~~~~~~~~~" << std::endl;
 	if( !program->check() ) {
