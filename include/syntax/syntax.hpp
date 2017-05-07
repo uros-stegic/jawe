@@ -101,6 +101,9 @@
 
 /* Variables */
 #include <variables/variable.hpp>
+#include <variables/const_declaration.hpp>
+#include <variables/var_declaration.hpp>
+#include <variables/let_declaration.hpp>
 
 #endif // __SYNTAX_HPP__
 

@@ -135,12 +135,12 @@ Delimited	: Expr										{ $$ = $1; 																}
 NamedFun	: function_token id_token '(' IDList ')'
 		 		'{' CodeBlock '}'						{}
 			;
-Variable	: const_token id_token						{}
-			| const_token Assign						{}
-			| var_token id_token						{}
-			| var_token Assign							{}
-			| let_token id_token						{}
-			| let_token Assign 							{}
+Variable	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new jawe::Variable(*$2)); delete $2;	}
+			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2);									}
+			| var_token id_token						{ $$ = new jawe::VarDeclaration(new jawe::Variable(*$2)); delete $2;	}
+			| var_token Assign							{ $$ = new jawe::VarDeclaration($2);									}
+			| let_token id_token						{ $$ = new jawe::LetDeclaration(new jawe::Variable(*$2)); delete $2;	}
+			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2);									}
 			;
 Cond		: if_token '(' Expr ')' Command
 	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); 										}
@@ -287,7 +287,8 @@ KVLiteral	: Key ':' Expr								{ $$ = new std::pair<std::string, jawe::Expr*>(*
 Key			: string_token								{ $$ = $1; 																}
 	  		| id_token									{ $$ = $1; 																}
 			;
-FnDecl		: function_token '(' IDList ')' '{' CodeBlock '}'	{}
+FnDecl		: function_token '(' IDList ')'
+				'{' CodeBlock '}'	{}
 			;
 IDList		: IDList comma_token id_token				{}
 			| id_token									{}
