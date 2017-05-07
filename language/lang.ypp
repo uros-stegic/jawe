@@ -25,6 +25,7 @@ void yyerror(const std::string& msg) {
 	double number;
 	std::string* string;
 	std::vector<jawe::Expr*>* expr_vec;
+	std::vector<jawe::Command*> *comm_vec;
 	std::map<std::string, jawe::Expr*> *key_vals;
 	std::pair<std::string, jawe::Expr*> *key_val;
 }
@@ -98,13 +99,14 @@ void yyerror(const std::string& msg) {
 
 %type<command> Command Undelimited Delimited 
 %type<block> CodeBlock
-%type<command> Cond While For DoWhile SwitchCase Cases Case Default
+%type<command> Cond While For DoWhile SwitchCase Case Default
 %type<command> NamedFun Variable ArgList ExprInit
 %type<expr> Expr Assign Ref Literal Primitive IndexedObj ArrLiteral ObjLiteral FnDecl IDList
 %type<string> Key
 %type<expr_vec> LiteralList
 %type<key_vals> KVLiterals
 %type<key_val> KVLiteral
+%type<comm_vec> Cases
 %%
 
 /**************** Command Structure ****************/
@@ -156,15 +158,15 @@ For			: for_token '(' Variable delim_token Expr delim_token Expr ')' Command	{ $
 	  		;
 DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); }
 		 	;
-SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{}
+SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{ $$ = new jawe::Switch($3, *$6); delete $6; }
 		   	;
-Cases		: Cases Case								{}
-	   		| Case										{}
-			| Default									{}
+Cases		: Cases Case								{ $$ = $1; $$->push_back($2); }
+	   		| Case										{ $$ = new std::vector<jawe::Command*>{$1}; }
+			| Default									{ $$ = new std::vector<jawe::Command*>{$1}; }
 			;
-Case		: case_token Primitive ':' Command 			{}
+Case		: case_token Primitive ':' Command 			{ $$ = new jawe::Case(static_cast<jawe::Primitive*>($2), $4); }
 	  		;
-Default		: default_token ':' Command					{}
+Default		: default_token ':' Command					{ $$ = new jawe::Default($3); }
 		 	;
 /***************************************************/
 

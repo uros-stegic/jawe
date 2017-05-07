@@ -14,6 +14,9 @@
 #include <control_flow/while.hpp>
 #include <control_flow/for.hpp>
 #include <control_flow/do_while.hpp>
+#include <control_flow/case.hpp>
+#include <control_flow/default.hpp>
+#include <control_flow/switch.hpp>
 
 /* Binary arithmetic operators */
 #include <operators/plus.hpp>
