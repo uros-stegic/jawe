@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <config.h>
-#include <control.hpp>
+#include <utils/control.hpp>
 #include <syntax.hpp>
 #include <lang.syn.hpp>
 #include <cstdio>

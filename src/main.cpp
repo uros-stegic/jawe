@@ -1,4 +1,4 @@
-#include <control.hpp>
+#include <utils/control.hpp>
 #include <ast.hpp>
 
 extern jawe::Ast* program;

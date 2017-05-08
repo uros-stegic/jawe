@@ -2,7 +2,7 @@
 #define __AST_HPP__
 
 #include <iostream>
-#include <mem_leak.hpp>
+#include <utils/mem_leak.hpp>
 
 namespace jawe {
 class Ast : public LeakChecker<Ast> {

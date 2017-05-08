@@ -3,7 +3,6 @@
 
 /* Commands */
 #include <ast.hpp>
-#include <command_block.hpp>
 #include <expr.hpp>
 
 /* Control flow */
@@ -17,6 +16,7 @@
 #include <control_flow/case.hpp>
 #include <control_flow/default.hpp>
 #include <control_flow/switch.hpp>
+#include <control_flow/command_block.hpp>
 
 /* Binary arithmetic operators */
 #include <operators/plus.hpp>
