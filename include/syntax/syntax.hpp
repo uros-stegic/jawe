@@ -98,12 +98,15 @@
 #include <literals/string.hpp>
 #include <literals/array.hpp>
 #include <literals/object.hpp>
+#include <literals/function.hpp>
 
 /* Variables */
 #include <variables/variable.hpp>
 #include <variables/const_declaration.hpp>
 #include <variables/var_declaration.hpp>
 #include <variables/let_declaration.hpp>
+#include <variables/function_declaration.hpp>
+
 
 #endif // __SYNTAX_HPP__
 

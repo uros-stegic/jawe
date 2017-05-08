@@ -5,7 +5,6 @@
 #include <expr.hpp>
 
 namespace jawe {
-enum ScopeModifier { SGlobal, SBlock };
 class Variable : public Expr {
 public:
 	Variable(std::string);
