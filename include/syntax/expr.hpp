@@ -13,7 +13,7 @@ enum Priority {
 	TBitXor,
 	TBitAnd,
 	TEquals, TNotEquals, TTypedEquals, TTypedNotEquals,
-	TLessThen, TLessOrEquals, TGreaterThen, TGreaterOrEquals,
+	TLessThen, TLessOrEquals, TGreaterThen, TGreaterOrEquals, TInstanceOf, TIn,
 	TBitShiftLeft, TBitShiftRight, TBitShiftUnsigned,
 	TPlus, TMinus,
 	TTimes, TDivide, TMod,

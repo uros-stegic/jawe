@@ -83,6 +83,8 @@
 /* Type checking */
 #include <operators/typeof.hpp>
 #include <operators/void.hpp>
+#include <operators/instance_of.hpp>
+#include <operators/in.hpp>
 
 /* Access operators */
 #include <operators/array_access.hpp>

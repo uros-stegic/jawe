@@ -1,9 +1,9 @@
 let x = [1, 2, 3, 4];
 let i = 0;
-if( i === 10 || i < x[i] ) {
+if( i instanceof x || i in x ) {
 	i = 0;
 }
-else i = 0;
+else i = 1;
 
 while( i < 4 ) {
 	x[i] += 1;
@@ -25,4 +25,5 @@ for(let j = 0; j < 10; j++) {
 
 for(j = 0; j <= 10 && j % 2 === 0; j++)
 	x[j] **= 3;
+
 
