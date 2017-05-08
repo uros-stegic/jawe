@@ -88,6 +88,9 @@
 #include <operators/array_access.hpp>
 #include <operators/dot_access.hpp>
 
+/* Function call */
+#include <operators/function_call.hpp>
+
 /* Litrerals */
 #include <literals/undefined.hpp>
 #include <literals/null.hpp>

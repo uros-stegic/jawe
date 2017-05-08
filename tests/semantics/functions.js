@@ -15,3 +15,6 @@ const f = function(x) {
 		return x+y;
 	};
 };
+
+const x = f(1)(2);
+const x = f(f(1));

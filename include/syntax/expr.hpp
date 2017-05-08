@@ -20,6 +20,7 @@ enum Priority {
 	TPower,
 	TBitNot, TLogicNot, TUPlus, TUMinus, TIncrement, TDecrement, TDelete, TVoid, TTypeOf,
 	TPostIncrement, TPostDecrement,
+	TFunctionCall,
 	TNew,
 	TDotAccess, TArrayAccess,
 	TLiteral

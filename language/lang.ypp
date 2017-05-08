@@ -102,10 +102,10 @@ void yyerror(const std::string& msg) {
 %type<command> Command Undelimited Delimited 
 %type<block> CodeBlock
 %type<command> Cond While For DoWhile SwitchCase Case Default
-%type<command> NamedFun Declaration ArgList
+%type<command> NamedFun Declaration
 %type<expr> Expr Assign LValue Literal Primitive IndexedObj ArrLiteral ObjLiteral Lambda
 %type<string> Key
-%type<expr_vec> LiteralList
+%type<expr_vec> LiteralList ArgList ArgListNone ArgListFull
 %type<key_vals> KVLiterals
 %type<key_val> KVLiteral
 %type<comm_vec> Cases
@@ -224,7 +224,7 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);											}
 			
 			| new_token Expr							{ $$ = new jawe::New($2);												}
 
-			| Expr '(' ArgList ')' %prec fn_call_token	{}
+			| Expr '(' ArgList ')' %prec fn_call_token	{ $$ = new jawe::FunctionCall($1, *$3);	delete $3;						}
 			| LValue %prec phony_lval					{ $$ = $1;																}
   			| Literal									{ $$ = $1; 																}
 
@@ -234,9 +234,13 @@ LValue		: Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1
 			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3);										}
 			| id_token									{ $$ = new jawe::Variable(*$1); delete $1;								}
 			;
-ArgList		: ArgList comma_token Expr					{}
-		 	| Expr										{}
-			|											{}
+ArgList		: ArgListNone								{ $$ = $1;																}
+		 	| ArgListFull								{ $$ = $1;																}
+			;
+ArgListFull	: ArgListFull comma_token Expr				{ $$ = $1; $$->push_back($3);											}
+		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1};								}
+			;
+ArgListNone	: 											{ $$ = new std::vector<jawe::Expr*>;									}
 			;
 Assign		: LValue assign_token Expr					{ $$ = new jawe::Assign($1, $3);										}
 			| LValue ass_plus_token Expr				{ $$ = new jawe::AssignPlus($1, $3);									}
