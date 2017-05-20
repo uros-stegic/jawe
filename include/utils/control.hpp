@@ -8,9 +8,11 @@
 namespace jawe {
 class Control {
 public:
-	Control(int, char **);
 	Control(const Control&) = delete;
 	void operator=(const Control&) = delete;
+
+	static Control& get(int = 0, char ** = nullptr);
+	std::string input_filename() const;
 
 	void run() const;
 
@@ -22,6 +24,7 @@ private:
 	std::string m_input;
 	std::string m_output;
 	
+	Control(int, char **);
 	void m_print_help() const;
 	void m_print_version() const;
 };

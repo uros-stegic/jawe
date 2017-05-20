@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <config.h>
 #include <utils/control.hpp>
@@ -32,8 +33,13 @@ Control::Control(int argc, char **argv)
 	bpo::notify(m_vars);
 }
 
+Control& Control::get(int argc, char** args)
+{
+	static Control instance(argc, args);
+	return instance;
+}
+
 extern int yydebug;
-extern FILE* yyin;
 extern Ast* program;
 void Control::run() const
 {
@@ -49,10 +55,13 @@ void Control::run() const
 		return;
 	}
 	else if( m_vars.count("input-file") ) {
-		yyin = std::fopen(m_input.c_str(), "r");
-		if( !yyin ) {
-			std::cerr << "Cannot open file: " << m_input << std::endl;
+		std::ifstream test_input(m_input);
+		if( !test_input ) {
+			std::cerr << "jawe: Cannot open input file " << m_input << std::endl;
 			std::exit(EXIT_FAILURE);
+		}
+		else {
+			test_input.close();
 		}
 		yyparse();
 		if( m_vars.count("dump-ast") ) {
@@ -61,7 +70,6 @@ void Control::run() const
 		else {
 			program->print(std::cout);
 		}
-		std::fclose(yyin);
 	}
 	else {
 		std::cerr << "jawe: no input file." << std::endl;
@@ -87,3 +95,7 @@ void Control::m_print_version() const
 	std::cout << "Written by Uros Stegic" << std::endl;
 }
 
+std::string Control::input_filename() const
+{
+	return m_input;
+}

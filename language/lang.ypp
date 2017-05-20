@@ -1,5 +1,6 @@
 %{
 #include <iostream>
+#include <cstdlib>
 #include <string>
 #include <memory>
 #include <utility>
@@ -8,12 +9,14 @@
 #include <syntax.hpp>
 
 #define YYDEBUG 1
+#define YYERROR_VERBOSE 1
 
 jawe::Ast *program;
 
 extern int yylex();
 void yyerror(const std::string& msg) {
-	std::cerr << "[Syntax Error]: " << msg << std::endl;
+	std::cerr << msg << std::endl;
+	std::exit(EXIT_FAILURE);
 }
 %}
 

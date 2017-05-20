@@ -5,11 +5,9 @@ extern jawe::Ast* program;
 
 int main(int argc, char **argv)
 {
-	jawe::Control proc(argc, argv);
-
 	program = nullptr;
 
-	proc.run();
+	jawe::Control::get(argc, argv).run();
 
 	if( program == nullptr ) {
 		return 0;

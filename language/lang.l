@@ -11,13 +11,17 @@
 #include <memory>
 #include <utility>
 #include <map>
+#include <utils/reader.hpp>
 
 #include <syntax.hpp>
 #include <lang.syn.hpp>
 
+#define YY_INPUT(buf,result,max_size) \
+	result = jawe::Reader::get_reader().read(buf);
+
 void llerror(const std::string& msg)
 {
-	std::cerr << "[Lexing Error]: " << msg << std::endl;
+	std::cerr << "[ERROR]: Unrecognized token <" << msg << ">" << std::endl;
 	std::exit(EXIT_FAILURE);
 }
 %}
