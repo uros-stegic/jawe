@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace jawe {
 
@@ -17,8 +18,10 @@ public:
 	Reader& operator=(Reader&&) = delete;
 
 	static Reader& get_reader();
+	std::string get_line(int) const;
 	int get_line() const;
 	int get_position() const;
+	std::string get_buffer() const;
 
 	/**
 	 * Reads next character from input and puts it into buffer[0]
@@ -31,6 +34,7 @@ private:
 	int m_current_char;
 	std::ifstream m_input;
 	std::string m_internal_buffer;
+	std::vector<std::string> m_archive;
 
 	Reader(std::string);
 

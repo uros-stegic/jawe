@@ -31,6 +31,10 @@ int Reader::read(char* buffer)
 	return 1;
 }
 
+std::string Reader::get_line(int line_no) const
+{
+	return m_archive[line_no];
+}
 int Reader::get_line() const
 {
 	return m_current_line;
@@ -39,6 +43,10 @@ int Reader::get_position() const
 {
 	return m_current_char;
 }
+std::string Reader::get_buffer() const
+{
+	return m_internal_buffer;
+}
 
 char Reader::pop_char()
 {
@@ -46,6 +54,7 @@ char Reader::pop_char()
 		if( std::getline(m_input, m_internal_buffer) ) {
 			m_current_char = 0;
 			m_current_line++;
+			m_archive.push_back(m_internal_buffer);
 			return pop_char();
 		}
 		else {

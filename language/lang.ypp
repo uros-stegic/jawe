@@ -1,23 +1,20 @@
 %{
-#include <iostream>
-#include <cstdlib>
 #include <string>
 #include <memory>
 #include <utility>
 #include <map>
-
 #include <syntax.hpp>
+#include <utils/reader.hpp>
+#include <utils/control.hpp>
 
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
 
 jawe::Ast *program;
+void *err_block;
 
+void yyerror(const std::string&);
 extern int yylex();
-void yyerror(const std::string& msg) {
-	std::cerr << msg << std::endl;
-	std::exit(EXIT_FAILURE);
-}
 %}
 
 %union {
@@ -121,7 +118,7 @@ Program		: CodeBlock									{ program = $1;															}
 CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2);												}
 		 	| Command									{ $$ = new jawe::CommandBlock($1);										}
 			;
-Command		: Delimited delim_token						{ $$ = $1; 																}
+Command		: Delimited delim_token						{ $$ = $1;																}
 		 	| Undelimited								{ $$ = $1; 																}
 			;
 Undelimited	: Cond										{ $$ = $1; 																}
@@ -146,7 +143,7 @@ Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new ja
 			| var_token id_token						{ $$ = new jawe::VarDeclaration(new jawe::Variable(*$2)); delete $2;	}
 			| var_token Assign							{ $$ = new jawe::VarDeclaration($2);									}
 			| let_token id_token						{ $$ = new jawe::LetDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2);									}
+			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2); err_block = &@2;					}
 			;
 Cond		: if_token '(' Expr ')' Command
 	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); 										}
@@ -312,4 +309,34 @@ IDListEmpty	:											{ $$ = new std::vector<std::string>;									}
 /*******************************************************************************************************************************/
 
 %%
+
+void yyerror(const std::string& msg) {
+	std::string filename = jawe::Control::get().input_filename();
+	int line = jawe::Reader::get_reader().get_line();
+	int position = jawe::Reader::get_reader().get_position();
+	std::string buff = jawe::Reader::get_reader().get_buffer();
+	YYLTYPE* block = (YYLTYPE*)err_block;
+	
+	if( block ) {
+		line = block->first_line;
+		position = block->first_column;
+	}
+
+	std::cerr	<< "[ERROR] "
+				<< filename
+				<< ":" << (line + 1)
+				<< ":" << (position + 1) 
+				<< ": " << msg
+				<< std::endl;
+
+	if( block ) {
+		buff = jawe::Reader::get_reader().get_line(line);
+		std::cerr	<< std::string(2, ' ');
+		std::cerr	<< buff << std::endl
+					<< std::string(2, ' ') << std::string(position, ' ')
+					<< "^" << std::endl;
+	}
+
+	std::exit(EXIT_FAILURE);
+}
 
