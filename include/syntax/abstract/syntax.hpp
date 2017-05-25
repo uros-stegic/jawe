@@ -17,6 +17,7 @@
 #include <control_flow/default.hpp>
 #include <control_flow/switch.hpp>
 #include <control_flow/command_block.hpp>
+#include <control_flow/empty.hpp>
 
 /* Binary arithmetic operators */
 #include <operators/plus.hpp>

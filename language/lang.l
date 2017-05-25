@@ -165,7 +165,7 @@ BRK_CACCESS	"]"
 {LET}				{ return let_token;			}
 
 {COMMA}				{ return comma_token;		}
-{DELIM}+			{ return delim_token;		}
+{DELIM}				{ return delim_token;		}
 {SEPARATOR}			{ return *yytext;			}
 
 {DECIMAL}			{ yylval.number = std::atof(yytext); return num_token;			}

@@ -134,6 +134,7 @@ Delimited	: Expr										{ $$ = $1; 																}
 			| return_token Expr							{ $$ = new jawe::Return($2); 											}
 			| cont_token								{ $$ = new jawe::Continue(); 											}
 			| break_token								{ $$ = new jawe::Break();												}
+			|											{ $$ = new jawe::Empty();												}
 			;
 NamedFun	: function_token id_token '(' IDList ')'
 		 		'{' CodeBlock '}'						{ $$ = new jawe::FunctionDeclaration(*$2, new jawe::Function(*$4, $7)); delete $2; delete $4; }
