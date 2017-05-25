@@ -32,7 +32,7 @@
             var promises = [];
 
             for(var i = 0; i < imgs.length; i++) {
-                promises.push(new Promise((resolve, reject) => {
+                promises.push(new Promise(function(resolve, reject) {
                     var img = new Image();
                     img.style.display = 'none';
                     img.style.position = 'absolute';

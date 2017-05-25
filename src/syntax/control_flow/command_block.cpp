@@ -3,6 +3,8 @@
 
 using namespace jawe;
 
+CommandBlock::CommandBlock()
+{}
 CommandBlock::CommandBlock(Command* command)
 	: m_commands(std::vector<Command*>{command})
 {}

@@ -100,7 +100,7 @@ extern int yylex();
 %left prec_parens_token
 
 %type<command> Command Undelimited Delimited 
-%type<block> CodeBlock
+%type<block> CodeBlock LambdaBody
 %type<command> Cond While For DoWhile SwitchCase Case Default
 %type<command> NamedFun Declaration
 %type<expr> Expr Assign LValue Literal Primitive IndexedObj ArrLiteral ObjLiteral Lambda
@@ -297,7 +297,9 @@ Key			: string_token								{ $$ = $1; 																}
 	  		| id_token									{ $$ = $1; 																}
 			;
 Lambda		: function_token '(' IDList ')'
-				'{' CodeBlock '}'						{ $$ = new jawe::Function(*$3, $6); delete $3;							}
+				'{' LambdaBody '}'						{ $$ = new jawe::Function(*$3, $6); delete $3;							}
+LambdaBody	: CodeBlock									{ $$ = $1;																}
+		   	|											{ $$ = new jawe::CommandBlock();										}
 			;
 IDList		: IDListFull								{ $$ = $1; 																}
 			| IDListEmpty								{ $$ = $1; 																}

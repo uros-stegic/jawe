@@ -7,6 +7,7 @@
 namespace jawe {
 class CommandBlock : public Command {
 public:
+	CommandBlock();
 	CommandBlock(Command*);
 	CommandBlock(const std::vector<Command*>&);
 	~CommandBlock();
