@@ -6,6 +6,7 @@
 #include <syntax.hpp>
 #include <utils/reader.hpp>
 #include <utils/control.hpp>
+#include <boost/algorithm/string.hpp>
 
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
@@ -321,24 +322,25 @@ void yyerror(const std::string& msg) {
 	YYLTYPE* block = (YYLTYPE*)err_block;
 	
 	if( block ) {
-		line = block->first_line;
+		line = block->first_line + 1;
 		position = block->first_column;
 	}
 
 	std::cerr	<< "[ERROR] "
 				<< filename
-				<< ":" << (line + 1)
-				<< ":" << (position + 1) 
+				<< ":" << (line)
+				<< ":" << (position) 
 				<< ": " << msg
 				<< std::endl;
 
-	if( block ) {
-		buff = jawe::Reader::get_reader().get_line(line);
-		std::cerr	<< std::string(2, ' ');
-		std::cerr	<< buff << std::endl
-					<< std::string(2, ' ') << std::string(position, ' ')
-					<< "^" << std::endl;
-	}
+	buff = jawe::Reader::get_reader().get_line(line-1);
+	int old_len = buff.size();
+	boost::trim(buff);
+	int new_len = buff.size();
+	std::cerr	<< std::string(4, ' ');
+	std::cerr	<< buff << std::endl
+				<< std::string(4 + position-3 - (old_len - new_len), ' ')
+				<< "--^--" << std::endl;
 
 	std::exit(EXIT_FAILURE);
 }
