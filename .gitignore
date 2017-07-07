@@ -32,3 +32,5 @@ build
 # JetBrains
 .idea
 cmake-build-debug
+_config.yml
+
