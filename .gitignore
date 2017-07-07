@@ -29,3 +29,6 @@
 *.app
 build
 
+# JetBrains
+.idea
+cmake-build-debug
