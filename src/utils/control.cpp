@@ -3,9 +3,7 @@
 #include <string>
 #include <config.h>
 #include <utils/control.hpp>
-#include <syntax.hpp>
-#include <lang.syn.hpp>
-#include <cstdio>
+#include <operations/operations.hpp>
 #include <cstdlib>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -14,6 +12,9 @@
 #include <boost/token_functions.hpp>
 
 using namespace jawe;
+
+extern int yydebug;
+
 namespace bpo = boost::program_options;
 
 Control::Control(int argc, char **argv)
@@ -22,15 +23,20 @@ Control::Control(int argc, char **argv)
 	, m_desc("Usage: jawe [OPTION]... --input-file program.js")
 {
 	m_desc.add_options()
-		("help,h", "prints this help message")
-		("version,v", "prints version info")
-		("verbose", "prints verbose parsing information")
-		("dump-ast", "prints parsed abstract syntax tree")
-		("input-file", bpo::value<std::string>(&m_input), "input filename")
-		("output-file", bpo::value<std::string>(&m_output)->default_value("a.out"), "output filename")
+		("help,h",		"prints this help message")
+		("version,v",	"prints version info")
+		("verbose",		"prints verbose parsing information")
+		("dump-ast",	"prints parsed abstract syntax tree")
+		("print",		"prints input program back to the output")
+		("input-file",	bpo::value<std::string>(&m_input), "input filename")
+		("output-file",	bpo::value<std::string>(&m_output)->default_value("a.out"), "output filename")
 	;
 	bpo::store(bpo::parse_command_line(argc, argv, m_desc), m_vars);
 	bpo::notify(m_vars);
+
+	yydebug = m_vars.count("verbose");
+	m_dump_ast = m_vars.count("dump-ast");
+	m_dump_program = m_vars.count("print");
 }
 
 Control& Control::get(int argc, char** args)
@@ -39,37 +45,16 @@ Control& Control::get(int argc, char** args)
 	return instance;
 }
 
-extern int yydebug;
-extern Ast* program;
 void Control::run() const
 {
-	if( m_vars.count("verbose") ) {
-		yydebug = 1;
-	}
 	if( m_vars.count("help") ) {
 		m_print_help();
-		return;
 	}
 	else if( m_vars.count("version") ) {
 		m_print_version();
-		return;
 	}
 	else if( m_vars.count("input-file") ) {
-		std::ifstream test_input(m_input);
-		if( !test_input ) {
-			std::cerr << "jawe: Cannot open input file " << m_input << std::endl;
-			std::exit(EXIT_FAILURE);
-		}
-		else {
-			test_input.close();
-		}
-		yyparse();
-		if( m_vars.count("dump-ast") ) {
-			program->dump_ast(std::cout);
-		}
-		else {
-			program->print(std::cout);
-		}
+		Operations::begin_compilation();
 	}
 	else {
 		std::cerr << "jawe: no input file." << std::endl;
@@ -99,3 +84,12 @@ std::string Control::input_filename() const
 {
 	return m_input;
 }
+bool Control::dump_ast() const
+{
+	return m_dump_ast;
+}
+bool Control::dump_program() const
+{
+	return m_dump_program;
+}
+

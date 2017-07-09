@@ -13,6 +13,8 @@ public:
 
 	static Control& get(int = 0, char ** = nullptr);
 	std::string input_filename() const;
+	bool dump_ast() const;
+	bool dump_program() const;
 
 	void run() const;
 
@@ -23,6 +25,8 @@ private:
 	boost::program_options::variables_map m_vars;
 	std::string m_input;
 	std::string m_output;
+	bool m_dump_ast;
+	bool m_dump_program;
 	
 	Control(int, char **);
 	void m_print_help() const;
