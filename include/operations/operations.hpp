@@ -2,6 +2,9 @@
 #define __OPERATIONS_HPP__
 
 #include <string>
+#include <operations/file_checker.hpp>
+#include <operations/parser.hpp>
+#include <operations/phaser.hpp>
 
 namespace jawe {
 class Operations {
@@ -10,10 +13,11 @@ public:
 	Operations(const Operations&) = delete;
 	void operator=(const Operations&) = delete;
 
-	static void begin_compilation();
-
-private:
-	static void assert_file();
+	template<class... Phases>
+		static void run_compilation() {
+			Phaser<Phases...> phaser;
+			phaser.run();
+		}
 };
 }
 

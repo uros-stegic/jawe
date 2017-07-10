@@ -54,7 +54,10 @@ void Control::run() const
 		m_print_version();
 	}
 	else if( m_vars.count("input-file") ) {
-		Operations::begin_compilation();
+		Operations::run_compilation<
+			FileChecker,
+			Parser
+		>();
 	}
 	else {
 		std::cerr << "jawe: no input file." << std::endl;
