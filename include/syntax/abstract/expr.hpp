@@ -31,7 +31,7 @@ public:
 	Expr(const Priority&);
 	Priority priority() const;
 
-	Expr* copy() override = 0;
+	virtual Expr* copy() override = 0;
 
 private:
 	Priority m_priority;

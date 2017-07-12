@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean run
 
 all:
 	@mkdir -p build
@@ -10,7 +10,7 @@ all:
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|  Executing program  |_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
 	@cd build; \
-	time ./jawe --input ../tests/semantics/variables.js --dump-ast
+	time ./jawe --input ../tests/optimizations/hoist.js --dump-ast
 	@echo " "
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
@@ -18,3 +18,13 @@ all:
 clean:
 	./build.sh --remove
 
+run:
+	@echo " "
+	@echo " "
+	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|  Executing program  |_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
+	@echo " "
+	@cd build; \
+	time ./jawe --input ../tests/optimizations/hoist2.js --dump-ast
+	@echo " "
+	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
+	@echo " "

@@ -11,7 +11,7 @@
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
 
-jawe::Command *program;
+jawe::Command* program;
 void *err_block;
 
 void yyerror(const std::string&);
@@ -115,8 +115,8 @@ extern int yylex();
 /****************************************************** Command Structure ******************************************************/
 Program		: CodeBlock									{ program = $1;															}
 		 	;
-CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2);												}
-		 	| Command									{ $$ = new jawe::CommandBlock($1);										}
+CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2); $2->set_parent($1);							}
+		 	| Command									{ $$ = new jawe::CommandBlock($1); $1->set_parent($$);					}
 			;
 Command		: Delimited delim_token						{ $$ = $1;																}
 		 	| Undelimited								{ $$ = $1; 																}
@@ -137,7 +137,7 @@ Delimited	: Expr										{ $$ = $1; 																}
 			|											{ $$ = new jawe::Empty();												}
 			;
 NamedFun	: function_token id_token '(' IDList ')'
-		 		'{' CodeBlock '}'						{ $$ = new jawe::FunctionDeclaration(*$2, new jawe::Function(*$4, $7)); delete $2; delete $4; }
+		 		'{' CodeBlock '}'						{ $$ = new jawe::FunctionDeclaration(*$2, new jawe::Function(*$4, $7)); delete $2; delete $4; $7->set_parent($$); }
 			;
 Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new jawe::Variable(*$2)); delete $2;	}
 			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2);									}
@@ -147,19 +147,23 @@ Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new ja
 			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2); err_block = &@2;					}
 			;
 Cond		: if_token '(' Expr ')' Command
-	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); 										}
+	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); $5->set_parent($$);					}
 	  		| if_token '(' Expr ')' Command
-				else_token Command						{ $$ = new jawe::IfElse($3, $5, $7); 									}
+				else_token Command						{ $$ = new jawe::IfElse($3, $5, $7); $5->set_parent($$); $7->set_parent($$); }
 			;
-While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); 										}
+While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); $5->set_parent($$);						}
 	   		;
 For			: for_token '('
 	          Delimited delim_token
 			  Expr delim_token
 			  Delimited ')'
-			  Command									{ $$ = new jawe::For($3, $5, $7, $9); 									}
+			  Command									{ $$ = new jawe::For($3, $5, $7, $9);
+			  												$3->set_parent($$);
+			  												$7->set_parent($$);
+			  												$9->set_parent($$);
+			  											}
 	  		;
-DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); 										}
+DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); $2->set_parent($$);					}
 		 	;
 SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{ $$ = new jawe::Switch($3, *$6); delete $6; 							}
 		   	;
@@ -168,9 +172,9 @@ Cases		: Cases Case								{ $$ = $1; $$->push_back($2); 											}
 			| Case 										{ $$ = new std::vector<jawe::Command*>{$1}; 							}
 			| Default									{ $$ = new std::vector<jawe::Command*>{$1}; 							}
 			;
-Case		: case_token Primitive ':' Command 			{ $$ = new jawe::Case(static_cast<jawe::Primitive*>($2), $4);			}
+Case		: case_token Primitive ':' Command 			{ $$ = new jawe::Case(static_cast<jawe::Primitive*>($2), $4); $4->set_parent($$); }
 	  		;
-Default		: default_token ':' Command					{ $$ = new jawe::Default($3);											}
+Default		: default_token ':' Command					{ $$ = new jawe::Default($3); $3->set_parent($$);						}
 		 	;
 /*******************************************************************************************************************************/
 
