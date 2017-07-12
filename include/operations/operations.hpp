@@ -4,6 +4,7 @@
 #include <string>
 #include <operations/file_checker.hpp>
 #include <operations/parser.hpp>
+#include <operations/printer.hpp>
 #include <operations/phaser.hpp>
 #include <operations/optimizer.hpp>
 

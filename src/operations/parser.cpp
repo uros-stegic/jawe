@@ -11,11 +11,4 @@ extern Command* program;
 void Parser::run() const
 {
 	yyparse();
-
-	if( Control::get().dump_ast() ) {
-		program->dump_ast(std::cout);
-	}
-	if( Control::get().dump_program() ) {
-		program->print(std::cout);
-	}
 }
