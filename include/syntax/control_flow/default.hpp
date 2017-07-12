@@ -11,6 +11,9 @@ public:
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
+	Command* get_body() const;
+	Default* copy() override;
+	
 private:
 	Command *m_command;
 };

@@ -3,7 +3,8 @@
 using namespace jawe;
 
 DoWhile::DoWhile(Command *body, Expr *cond)
-	: m_body(body)
+	: Command(TDoWhile)
+	, m_body(body)
 	, m_cond(cond)
 {}
 
@@ -31,4 +32,18 @@ void DoWhile::dump_ast(std::ostream& out, int tabs) const
 	m_cond->dump_ast(out ,tabs+1);
 }
 
+Expr* DoWhile::get_expr() const
+{
+	return m_cond;
+}
+
+Command* DoWhile::get_body() const
+{
+	return m_body;
+}
+
+DoWhile* DoWhile::copy()
+{
+	return new DoWhile(m_body->copy(), m_cond->copy());
+}
 

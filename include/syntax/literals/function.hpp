@@ -19,6 +19,8 @@ public:
 
 	void print_args(std::ostream&) const;
 
+	Function* copy() override;
+
 private:
 	std::vector<std::string> m_args;
 	Command* m_body;

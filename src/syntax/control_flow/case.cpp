@@ -3,7 +3,8 @@
 using namespace jawe;
 
 Case::Case(Primitive *p, Command *command)
-	: m_case(p)
+	: Command(TCase)
+	, m_case(p)
 	, m_command(command)
 {}
 
@@ -27,5 +28,15 @@ void Case::dump_ast(std::ostream& out, int tabs) const
 	out << std::string(4*tabs, ' ') << "Case" << std::endl;
 	m_case->dump_ast(out, tabs+1);
 	m_command->dump_ast(out, tabs+1);
+}
+
+Command* Case::get_body() const
+{
+	return m_command;
+}
+
+Case* Case::copy()
+{
+	return new Case(m_case->copy(), m_command->copy());
 }
 

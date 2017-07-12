@@ -15,6 +15,8 @@ public:
 	void dump_ast(std::ostream& out, int = 0) const override;
 	Expr* operand() const;
 
+	UnaryOperator* copy() override;
+
 private:
 	Expr* m_operand;
 };

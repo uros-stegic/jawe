@@ -20,3 +20,8 @@ void String::dump_ast(std::ostream& out, int tabs) const
 		<< "String [\"" << m_string << "\"]" << std::endl;
 }
 
+String* String::copy()
+{
+	return new String(m_string);
+}
+

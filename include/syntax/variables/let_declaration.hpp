@@ -10,6 +10,8 @@ public:
 
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
+
+	LetDeclaration* copy() override;
 };
 }
 

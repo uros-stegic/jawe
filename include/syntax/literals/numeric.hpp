@@ -12,6 +12,7 @@ public:
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 	double value() const;
+	Numeric* copy() override;
 
 private:
 	double m_value;

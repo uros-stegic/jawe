@@ -3,6 +3,7 @@
 using namespace jawe;
 
 Continue::Continue()
+	: Command(TContinue)
 {}
 
 Continue::~Continue()
@@ -17,5 +18,10 @@ void Continue::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
 	out << "continue" << std::endl;
+}
+
+Continue* Continue::copy()
+{
+	return new Continue();
 }
 

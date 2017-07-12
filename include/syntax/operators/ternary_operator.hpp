@@ -16,6 +16,8 @@ public:
 	Expr* second_operand() const;
 	Expr* third_operand() const;
 
+	TernaryOperator* copy() override;
+
 private:
 	Expr *m_first, *m_second, *m_third;
 	std::string m_symbol2;

@@ -18,3 +18,8 @@ void Undefined::dump_ast(std::ostream& out, int tabs) const
 	out << std::string(4*tabs, ' ') << "undefined" << std::endl;
 }
 
+Undefined* Undefined::copy()
+{
+	return new Undefined();
+}
+

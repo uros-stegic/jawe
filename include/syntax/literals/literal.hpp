@@ -8,6 +8,8 @@ class Literal : public Expr {
 public:
 	Literal();
 	virtual ~Literal();
+
+	virtual Literal* copy() = 0;
 };
 }
 

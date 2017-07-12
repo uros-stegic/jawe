@@ -8,10 +8,12 @@ namespace jawe {
 enum Qualifier { QVar, QLet, QConst };
 class Declaration : public Command {
 public:
-	Declaration(Expr*, Qualifier);
+	Declaration(Expr*, Qualifier, CommandType);
 	~Declaration();
 	Qualifier qualifier() const;
 	Expr* expr() const;
+
+	virtual Declaration* copy() = 0;
 
 private:
 	Expr* m_expr;

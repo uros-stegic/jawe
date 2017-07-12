@@ -11,6 +11,8 @@ public:
 
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
+
+	Nan* copy() override;
 };
 }
 #endif // __NAN_HPP__

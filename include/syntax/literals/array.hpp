@@ -15,6 +15,8 @@ public:
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
+	Array* copy() override;
+
 private:
 	std::vector<Expr*> m_elements;
 };

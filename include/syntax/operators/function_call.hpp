@@ -11,7 +11,9 @@ public:
 	~FunctionCall();
 
 	void print(std::ostream&) const override;
-	void dump_ast(std::ostream&, int = 0) const;
+	void dump_ast(std::ostream&, int = 0) const override;
+
+	FunctionCall* copy() override;
 
 private:
 	Expr* m_expr;

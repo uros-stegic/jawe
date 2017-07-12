@@ -67,3 +67,15 @@ Expr* TernaryOperator::third_operand() const
 	return m_third;
 }
 
+TernaryOperator* TernaryOperator::copy()
+{
+	return new TernaryOperator(
+		m_first->copy(),
+		m_second->copy(),
+		m_third->copy(),
+		symbol(),
+		m_symbol2,
+		priority()
+	);
+}
+

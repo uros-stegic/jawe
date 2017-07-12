@@ -35,3 +35,8 @@ Expr* UnaryOperator::operand() const
 	return m_operand;
 }
 
+UnaryOperator* UnaryOperator::copy()
+{
+	return new UnaryOperator(m_operand->copy(), symbol(), priority());
+}
+

@@ -8,6 +8,8 @@ class AbstractObject : public Literal {
 public:
 	using Literal::Literal;
 	virtual ~AbstractObject();
+
+	virtual AbstractObject* copy() = 0;
 };
 }
 

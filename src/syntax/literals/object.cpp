@@ -58,3 +58,12 @@ void Object::dump_pair_ast(std::ostream& out, const std::pair<std::string, Expr*
 	p.second->dump_ast(out, tabs+1);
 }
 
+Object* Object::copy()
+{
+	std::map<std::string, Expr*> cp;
+	for(auto& p: m_pairs) {
+		cp[p.first] = p.second->copy();
+	}
+	return new Object(cp);
+}
+

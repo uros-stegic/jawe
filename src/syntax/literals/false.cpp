@@ -23,3 +23,8 @@ bool False::value() const
 	return false;
 }
 
+False* False::copy()
+{
+	return new False;
+}
+

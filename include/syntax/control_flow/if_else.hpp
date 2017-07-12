@@ -12,6 +12,12 @@ public:
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
+	Expr* get_expr() const;
+	Command* get_if() const;
+	Command* get_else() const;
+
+	IfElse* copy() override;
+
 private:
 	Expr* m_expr;
 	Command *m_if, *m_else;

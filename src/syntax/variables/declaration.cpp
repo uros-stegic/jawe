@@ -2,8 +2,9 @@
 
 using namespace jawe;
 
-Declaration::Declaration(Expr* expr, Qualifier qualifier)
-	: m_expr(expr)
+Declaration::Declaration(Expr* expr, Qualifier qualifier, CommandType type)
+	: Command(type)
+	, m_expr(expr)
 	, m_qualifier(qualifier)
 {}
 

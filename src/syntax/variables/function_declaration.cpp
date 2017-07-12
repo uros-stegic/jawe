@@ -3,7 +3,8 @@
 using namespace jawe;
 
 FunctionDeclaration::FunctionDeclaration(std::string name, Function* function)
-	: m_name(name)
+	: Command(TFunctionDeclaration)
+	, m_name(name)
 	, m_function(function)
 {}
 
@@ -28,5 +29,10 @@ void FunctionDeclaration::dump_ast(std::ostream& out, int tabs) const
 		<< std::endl;
 
 	m_function->dump_ast(out, tabs+1);
+}
+
+FunctionDeclaration* FunctionDeclaration::copy()
+{
+	return new FunctionDeclaration(m_name, m_function->copy());
 }
 

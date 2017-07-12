@@ -3,6 +3,7 @@
 using namespace jawe;
 
 Empty::Empty()
+	: Command(TEmpty)
 {}
 
 Empty::~Empty()
@@ -17,3 +18,9 @@ void Empty::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ') << "Empty" << std::endl;
 }
+
+Empty* Empty::copy()
+{
+	return new Empty();
+}
+

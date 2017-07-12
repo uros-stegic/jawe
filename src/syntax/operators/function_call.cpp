@@ -64,3 +64,17 @@ void FunctionCall::dump_args(std::ostream& out, int tabs) const
 	);
 }
 
+FunctionCall* FunctionCall::copy()
+{
+	std::vector<Expr*> cp;
+	cp.reserve(m_args.size());
+	std::for_each(
+		std::begin(m_args),
+		std::end(m_args),
+		[&cp](Expr* expr) {
+			cp.push_back(expr->copy());
+		}
+	);
+	return new FunctionCall(m_expr->copy(), cp);
+}
+

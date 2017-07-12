@@ -25,3 +25,8 @@ double Numeric::value() const
 	return m_value;
 }
 
+Numeric* Numeric::copy()
+{
+	return new Numeric(m_value);
+}
+

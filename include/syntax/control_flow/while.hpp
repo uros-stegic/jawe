@@ -12,6 +12,11 @@ public:
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
+	Expr* get_expr() const;
+	Command* get_body() const;
+
+	While* copy() override;
+
 private:
 	Expr* m_cond;
 	Command *m_body;

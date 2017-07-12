@@ -21,3 +21,8 @@ void Variable::dump_ast(std::ostream& out, int tabs) const
 		<< "Variable [" << m_name << "]" << std::endl;
 }
 
+Variable* Variable::copy()
+{
+	return new Variable(m_name);
+}
+

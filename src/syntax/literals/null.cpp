@@ -18,3 +18,8 @@ void Null::dump_ast(std::ostream& out, int tabs) const
 	out << std::string(4*tabs, ' ') << "null" << std::endl;
 }
 
+Null* Null::copy()
+{
+	return new Null();
+}
+

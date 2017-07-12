@@ -17,6 +17,8 @@ public:
 	Expr* left() const;
 	Expr* right() const;
 
+	BinaryOperator* copy() override;
+
 private:
 	Expr *m_left, *m_right;
 };

@@ -11,6 +11,9 @@ public:
 	~Case();
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
+	
+	Command* get_body() const;
+	Case* copy() override;
 
 private:
 	Primitive *m_case;

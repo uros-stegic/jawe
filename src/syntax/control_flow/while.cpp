@@ -3,7 +3,8 @@
 using namespace jawe;
 
 While::While(Expr *cond, Command *body)
-	: m_cond(cond)
+	: Command(TWhile)
+	, m_cond(cond)
 	, m_body(body)
 {}
 
@@ -28,5 +29,20 @@ void While::dump_ast(std::ostream& out, int tabs) const
 	out << "while" << std::endl;
 	m_cond->dump_ast(out, tabs+1);
 	m_body->dump_ast(out, tabs+1);
+}
+
+Expr* While::get_expr() const
+{
+	return m_cond;
+}
+
+Command* While::get_body() const
+{
+	return m_body;
+}
+
+While* While::copy()
+{
+	return new While(m_cond->copy(), m_body->copy());
 }
 

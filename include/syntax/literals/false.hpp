@@ -13,6 +13,8 @@ public:
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	bool value() const;
+
+	False* copy() override;
 };
 }
 #endif // __FALSE_HPP__

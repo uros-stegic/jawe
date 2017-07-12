@@ -1,9 +1,11 @@
 #include <control_flow/switch.hpp>
+#include <algorithm>
 
 using namespace jawe;
 
 Switch::Switch(Expr* expr, const std::vector<Command*>& cases)
-	: m_expr(expr)
+	: Command(TSwitch)
+	, m_expr(expr)
 	, m_cases(cases)
 {}
 
@@ -33,3 +35,23 @@ void Switch::dump_ast(std::ostream& out, int tabs) const {
 		c->dump_ast(out, tabs+1);
 	}
 }
+
+std::vector<Command*>& Switch::get_cases()
+{
+	return m_cases;
+}
+
+Switch* Switch::copy()
+{
+	std::vector<Command*> cp;
+	cp.reserve(m_cases.size());
+	std::for_each(
+		std::begin(m_cases),
+		std::end(m_cases),
+		[&cp](Command* command) {
+			cp.push_back(command->copy());
+		}
+	);
+	return new Switch(m_expr->copy(), cp);
+}
+

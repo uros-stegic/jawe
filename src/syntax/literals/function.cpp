@@ -50,3 +50,8 @@ void Function::print_args(std::ostream& out) const
 	);
 }
 
+Function* Function::copy()
+{
+	return new Function(m_args, m_body->copy());
+}
+

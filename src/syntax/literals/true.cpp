@@ -23,3 +23,8 @@ bool True::value() const
 	return true;
 }
 
+True* True::copy()
+{
+	return new True();
+}
+

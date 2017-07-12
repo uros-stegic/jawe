@@ -32,6 +32,16 @@ void BinaryOperator::print(std::ostream& out) const {
 	if( m_right->priority() < priority() ) {
 		out << ")";
 	}
+
+	if( get_parent() != nullptr && get_parent()->get_type() == TCommandBlock ) {
+		out << ";";
+	}
+	else if( get_parent() != nullptr ) {
+		out << " <" << get_parent()->get_type() << ">";
+	}
+	else {
+		out << " <nullptr>";
+	}
 }
 
 void BinaryOperator::dump_ast(std::ostream& out, int tabs) const
@@ -49,5 +59,10 @@ Expr* BinaryOperator::left() const
 Expr* BinaryOperator::right() const
 {
 	return m_right;
+}
+
+BinaryOperator* BinaryOperator::copy()
+{
+	return new BinaryOperator(m_left->copy(), m_right->copy(), symbol(), priority());
 }
 

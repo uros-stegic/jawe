@@ -46,3 +46,17 @@ void Array::dump_ast(std::ostream& out, int tabs) const
 	}
 }
 
+Array* Array::copy()
+{
+	std::vector<Expr*> cp;
+	cp.reserve(m_elements.size());
+	std::for_each(
+		std::begin(m_elements),
+		std::end(m_elements),
+		[&cp](Expr* expr) {
+			cp.push_back(expr->copy());
+		}
+	);
+	return new Array(cp);
+}
+
