@@ -13,6 +13,7 @@ public:
 	~CommandBlock();
 	void print(std::ostream&) const override;
 	void insert(Command*);
+	void prepend(Command*);
 	void insert_before(Command*, Command*);
 	void replace(Command*, Command*);
 	void dump_ast(std::ostream&, int = 0) const override;

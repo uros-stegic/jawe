@@ -115,7 +115,7 @@ void Hoister::decouple(Command* root) const
 			assignment->set_parent(parent);
 
 			parent->replace(node, assignment);
-			parent->insert_before(assignment, decl);
+			parent->prepend(decl);
 			break;
 		}
 		default: {}

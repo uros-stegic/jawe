@@ -1,3 +1,6 @@
+TEST_EXAMPLE	= ../tests/optimizations/hoist2.js
+JAWE_FLAGS		= --dump-ast
+
 .PHONY: all clean run
 
 all:
@@ -10,7 +13,7 @@ all:
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|  Executing program  |_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
 	@cd build; \
-	time ./jawe --input ../tests/optimizations/hoist.js --dump-ast
+	time ./jawe --input-file $(TEST_EXAMPLE) $(JAWE_FLAGS)
 	@echo " "
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
@@ -24,7 +27,7 @@ run:
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|  Executing program  |_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
 	@cd build; \
-	time ./jawe --input ../tests/optimizations/hoist2.js --dump-ast
+	time ./jawe --input-file $(TEST_EXAMPLE) $(JAWE_FLAGS)
 	@echo " "
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "

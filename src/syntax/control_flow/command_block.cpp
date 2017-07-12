@@ -38,6 +38,10 @@ void CommandBlock::insert(Command* other)
 	m_commands.push_back(other);
 }
 
+void CommandBlock::prepend(Command* new_command)
+{
+	m_commands.insert(m_commands.begin(), new_command);
+}
 void CommandBlock::insert_before(Command* before, Command* new_command)
 {
 	auto pos = std::find(m_commands.begin(), m_commands.end(), before);
