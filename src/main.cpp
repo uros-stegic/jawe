@@ -1,7 +1,7 @@
 #include <utils/control.hpp>
-#include <ast.hpp>
+#include <command.hpp>
 
-extern jawe::Ast* program;
+extern jawe::Command* program;
 
 int main(int argc, char **argv)
 {

@@ -8,7 +8,7 @@
 
 namespace jawe {
 
-extern Ast* program;
+extern Command* program;
 
 template<typename... Optimizations>
 class Optimizer : public basic_operation {

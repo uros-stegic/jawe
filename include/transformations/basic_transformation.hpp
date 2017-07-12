@@ -8,12 +8,6 @@ class BasicTransformation {
 public:
 	void transform() const;
 };
-
-template<class... Ts>
-struct compose: Ts... {
-	using Ts::operator()...;
-};
-template<class... Ts> compose(Ts...) -> compose<Ts...>;
 }
 
 #endif // __BASIC_TRANSFORMATION_HPP__

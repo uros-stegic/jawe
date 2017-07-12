@@ -2,15 +2,9 @@
 
 using namespace jawe;
 
-extern Ast* program;
+extern Command* program;
 
 void Hoister::transform() const
 {
-	auto visitor = compose{
-		[](auto* node) {
-			node = node;
-		}
-	};
-	visitor(program);
 }
 

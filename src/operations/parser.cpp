@@ -6,7 +6,7 @@
 
 using namespace jawe;
 
-extern Ast* program;
+extern Command* program;
 
 void Parser::run() const
 {

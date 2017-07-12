@@ -2,7 +2,7 @@
 #define __SYNTAX_HPP__
 
 /* Commands */
-#include <ast.hpp>
+#include <command.hpp>
 #include <expr.hpp>
 
 /* Control flow */

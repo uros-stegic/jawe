@@ -11,7 +11,7 @@
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
 
-jawe::Ast *program;
+jawe::Command *program;
 void *err_block;
 
 void yyerror(const std::string&);
@@ -19,7 +19,6 @@ extern int yylex();
 %}
 
 %union {
-	jawe::Ast* node;
 	jawe::CommandBlock* block;
 	jawe::Command* command;
 	jawe::Expr* expr;
