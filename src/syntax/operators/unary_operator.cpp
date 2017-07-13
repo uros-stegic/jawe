@@ -40,5 +40,6 @@ UnaryOperator* UnaryOperator::copy()
 	auto operand = m_operand->copy();
 	auto result = new UnaryOperator(operand, symbol(), priority());
 	operand->set_parent(result);
+	return result;
 }
 
