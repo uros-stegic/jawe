@@ -76,7 +76,7 @@ void Control::m_print_help() const
 }
 void Control::m_print_version() const
 {
-	std::cout	<< "jawe "
+	std::cout	<< "jawe v"
 				<< jawe_VERSION_MAJOR
 				<< "."
 				<< jawe_VERSION_MINOR
