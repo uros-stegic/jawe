@@ -2,7 +2,8 @@
 
 using namespace jawe;
 
-Primitive::~Primitive()
+Primitive::Primitive()
+	: Literal(TPrimitive)
 {}
 
 void Primitive::dump_ast(std::ostream& out, int tabs) const

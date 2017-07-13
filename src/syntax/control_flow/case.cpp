@@ -25,7 +25,7 @@ void Case::print(std::ostream& out) const
 
 void Case::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Case" << std::endl;
+	out << std::string(4*tabs, ' ') << "Case [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_case->dump_ast(out, tabs+1);
 	m_command->dump_ast(out, tabs+1);
 }
@@ -37,6 +37,11 @@ Command* Case::get_body() const
 
 Case* Case::copy()
 {
-	return new Case(m_case->copy(), m_command->copy());
+	auto c_cpy = m_case->copy();
+	auto m_cpy = m_command->copy();
+	auto result = new Case(c_cpy, m_cpy);
+	c_cpy->set_parent(result);
+	m_cpy->set_parent(result);
+	return result;
 }
 

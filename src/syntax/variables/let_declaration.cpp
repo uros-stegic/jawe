@@ -10,17 +10,20 @@ void LetDeclaration::print(std::ostream& out) const
 {
 	out << "let ";
 	expr()->print(out);
-	out << ";" << std::endl;
+	out << ";";
 }
 
 void LetDeclaration::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Declaration [let]" << std::endl;
+	out << std::string(4*tabs, ' ') << "Declaration [let] [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	expr()->dump_ast(out, tabs+1);
 }
 
 LetDeclaration* LetDeclaration::copy()
 {
-	return new LetDeclaration(expr()->copy());
+	auto ex = expr()->copy();
+	auto result = new LetDeclaration(ex);
+	ex->set_parent(result);
+	return result;
 }
 

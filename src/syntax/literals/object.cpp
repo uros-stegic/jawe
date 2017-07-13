@@ -1,10 +1,15 @@
 #include <literals/object.hpp>
 #include <algorithm>
+#include <utility>
 
 using namespace jawe;
 
+Object::Object()
+	: AbstractObject(TObject)
+{}
 Object::Object(const std::map<std::string, Expr*>& pairs)
-	: m_pairs(pairs)
+	: AbstractObject(TObject)
+	, m_pairs(pairs)
 {}
 
 Object::~Object()
@@ -12,6 +17,16 @@ Object::~Object()
 	for(auto &i : m_pairs) {
 		delete i.second;
 	}
+}
+
+void Object::set(std::string name, Expr* expr)
+{
+	auto e = m_pairs.find(name);
+	if( e != std::end(m_pairs) ) {
+		delete e->second;
+	}
+	m_pairs[name] = expr;
+	expr->set_parent(this);
 }
 
 void Object::print(std::ostream& out) const
@@ -39,7 +54,7 @@ void Object::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
 		<< "Object"
-		<< "(" << m_pairs.size() << ")"
+		<< "(" << m_pairs.size() << ") [" << this << ": from <" << get_parent() << ">]"
 		<< std::endl;
 	for(auto &p: m_pairs) {
 		dump_pair_ast(out, p, tabs+1);
@@ -60,10 +75,10 @@ void Object::dump_pair_ast(std::ostream& out, const std::pair<std::string, Expr*
 
 Object* Object::copy()
 {
-	std::map<std::string, Expr*> cp;
+	auto result = new Object();
 	for(auto& p: m_pairs) {
-		cp[p.first] = p.second->copy();
+		result->set(p.first, p.second->copy());
 	}
-	return new Object(cp);
+	return result;
 }
 

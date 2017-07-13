@@ -6,7 +6,7 @@
 namespace jawe {
 class Literal : public Expr {
 public:
-	Literal();
+	Literal(Priority p);
 	virtual ~Literal();
 
 	virtual Literal* copy() = 0;

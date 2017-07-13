@@ -11,17 +11,20 @@ void ConstDeclaration::print(std::ostream& out) const
 {
 	out << "const ";
 	expr()->print(out);
-	out << ";" << std::endl;
+	out << ";";
 }
 
 void ConstDeclaration::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Declaration [const]" << std::endl;
+	out << std::string(4*tabs, ' ') << "Declaration [const] [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	expr()->dump_ast(out, tabs+1);
 }
 
 ConstDeclaration* ConstDeclaration::copy()
 {
-	return new ConstDeclaration(expr()->copy());
+	auto ex = expr()->copy();
+	auto result = new ConstDeclaration(ex);
+	ex->set_parent(result);
+	return result;
 }
 

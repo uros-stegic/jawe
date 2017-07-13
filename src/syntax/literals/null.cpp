@@ -15,7 +15,7 @@ void Null::print(std::ostream& out) const
 
 void Null::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "null" << std::endl;
+	out << std::string(4*tabs, ' ') << "null [" << this << ": from <" << get_parent() << ">]" << std::endl;
 }
 
 Null* Null::copy()

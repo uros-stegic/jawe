@@ -17,7 +17,7 @@ void Break::print(std::ostream& out) const
 void Break::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "break" << std::endl;
+	out << "break [" << this << ": from <" << get_parent() << ">]" << std::endl;
 }
 
 Break* Break::copy()

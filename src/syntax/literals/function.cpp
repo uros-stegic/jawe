@@ -4,7 +4,8 @@
 using namespace jawe;
 
 Function::Function(std::vector<std::string> args, Command* body)
-	: m_args(args)
+	: AbstractObject(TFunction)
+	, m_args(args)
 	, m_body(body)
 {}
 
@@ -24,14 +25,14 @@ void Function::print(std::ostream& out) const
 	print_args(out);
 	out << ") {" << std::endl;
 	m_body->print(out);
-	out << "}" << std::endl;
+	out << "}";
 }
 
 void Function::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ') << "Function [";
 	print_args(out);
-	out << "]" << std::endl;
+	out << "] [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_body->dump_ast(out, tabs+1);
 }
 
@@ -52,6 +53,14 @@ void Function::print_args(std::ostream& out) const
 
 Function* Function::copy()
 {
-	return new Function(m_args, m_body->copy());
+	auto body = m_body->copy();
+	auto result = new Function(m_args, body);
+	body->set_parent(result);
+	return result;
+}
+
+Command* Function::get_body()
+{
+	return m_body;
 }
 

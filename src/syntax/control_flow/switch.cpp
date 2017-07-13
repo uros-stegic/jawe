@@ -29,7 +29,7 @@ void Switch::print(std::ostream& out) const {
 }
 
 void Switch::dump_ast(std::ostream& out, int tabs) const {
-	out << std::string(4*tabs, ' ') << "switch" << std::endl;
+	out << std::string(4*tabs, ' ') << "switch [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_expr->dump_ast(out, tabs+1);
 	for(auto &c : m_cases) {
 		c->dump_ast(out, tabs+1);
@@ -52,6 +52,17 @@ Switch* Switch::copy()
 			cp.push_back(command->copy());
 		}
 	);
-	return new Switch(m_expr->copy(), cp);
+	auto expr = m_expr->copy();
+	auto result = new Switch(expr, cp);
+	expr->set_parent(result);
+	
+	std::for_each(
+		std::begin(result->m_cases),
+		std::end(result->m_cases),
+		[&result](Command* command) {
+			command->set_parent(result);
+		}
+	);
+	return result;
 }
 

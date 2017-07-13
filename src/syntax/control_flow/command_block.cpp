@@ -51,6 +51,10 @@ void CommandBlock::insert_before(Command* before, Command* new_command)
 void CommandBlock::replace(Command* from, Command* to)
 {
 	auto pos = std::find(m_commands.begin(), m_commands.end(), from);
+	if( pos == m_commands.end() ) {
+		std::cerr << "WARNING: cannot find " << from->get_type() << std::endl;
+		return;
+	}
 	delete *pos;
 	std::swap(*pos, to);
 }
@@ -58,7 +62,7 @@ void CommandBlock::replace(Command* from, Command* to)
 void CommandBlock::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "command-block" << std::endl;
+	out << "command-block [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	std::for_each(
 		std::begin(m_commands),
 		std::end(m_commands),
@@ -75,15 +79,16 @@ std::vector<Command*>& CommandBlock::get_commands()
 
 CommandBlock* CommandBlock::copy()
 {
-	std::vector<Command*> cp;
-	cp.reserve(m_commands.size());
+	auto result = new CommandBlock();
 	std::for_each(
 		std::begin(m_commands),
 		std::end(m_commands),
-		[&cp](Command* command) {
-			cp.push_back(command->copy());
+		[&result](Command* command) {
+			auto cmd = command->copy();
+			cmd->set_parent(result);
+			result->insert(cmd);
 		}
 	);
-	return new CommandBlock(cp);
+	return result;
 }
 

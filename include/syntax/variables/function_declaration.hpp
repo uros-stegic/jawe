@@ -15,6 +15,7 @@ public:
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	FunctionDeclaration* copy() override;
+	Command* get_body();
 
 private:
 	std::string m_name;

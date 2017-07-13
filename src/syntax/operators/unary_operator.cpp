@@ -26,7 +26,7 @@ void UnaryOperator::print(std::ostream& out) const
 
 void UnaryOperator::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "operator [" << symbol() << "]" << std::endl;
+	out << std::string(4*tabs, ' ') << "operator [" << symbol() << "] [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_operand->dump_ast(out, tabs+1);
 }
 
@@ -37,6 +37,8 @@ Expr* UnaryOperator::operand() const
 
 UnaryOperator* UnaryOperator::copy()
 {
-	return new UnaryOperator(m_operand->copy(), symbol(), priority());
+	auto operand = m_operand->copy();
+	auto result = new UnaryOperator(operand, symbol(), priority());
+	operand->set_parent(result);
 }
 

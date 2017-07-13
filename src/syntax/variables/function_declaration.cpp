@@ -25,7 +25,7 @@ void FunctionDeclaration::print(std::ostream& out) const
 void FunctionDeclaration::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
-		<< "FunctionDeclaration [" << m_name << "]"
+		<< "FunctionDeclaration [" << m_name << "] [" << this << ": from <" << get_parent() << ">]"
 		<< std::endl;
 
 	m_function->dump_ast(out, tabs+1);
@@ -33,6 +33,14 @@ void FunctionDeclaration::dump_ast(std::ostream& out, int tabs) const
 
 FunctionDeclaration* FunctionDeclaration::copy()
 {
-	return new FunctionDeclaration(m_name, m_function->copy());
+	auto fn = m_function->copy();
+	auto result = new FunctionDeclaration(m_name, fn);
+	fn->set_parent(result);
+	return result;
+}
+
+Command* FunctionDeclaration::get_body()
+{
+	return m_function->get_body();
 }
 

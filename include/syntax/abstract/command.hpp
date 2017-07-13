@@ -40,8 +40,12 @@ public:
 private:
 	CommandType m_type;
 	Command* m_parent;
+
+	void dump(std::ostream&, int = 0) const;
 };
 }
+
+std::ostream& operator<<(std::ostream&, const jawe::CommandType);
 
 #endif // __COMMAND_HPP__
 

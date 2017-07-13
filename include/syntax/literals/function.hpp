@@ -20,6 +20,7 @@ public:
 	void print_args(std::ostream&) const;
 
 	Function* copy() override;
+	Command* get_body();
 
 private:
 	std::vector<std::string> m_args;

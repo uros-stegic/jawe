@@ -45,7 +45,7 @@ void TernaryOperator::dump_ast(std::ostream& out, int tabs) const
 		<< symbol()
 		<< " "
 		<< m_symbol2
-		<< "]"
+		<< "] [" << this << ": from <" << get_parent() << ">]"
 		<< std::endl;
 	m_first->dump_ast(out, tabs+1);
 	m_second->dump_ast(out, tabs+1);
@@ -69,13 +69,20 @@ Expr* TernaryOperator::third_operand() const
 
 TernaryOperator* TernaryOperator::copy()
 {
-	return new TernaryOperator(
-		m_first->copy(),
-		m_second->copy(),
-		m_third->copy(),
+	auto first = m_first->copy();
+	auto second = m_second->copy();
+	auto third = m_third->copy();
+	auto result = new TernaryOperator(
+		first,
+		second,
+		third,
 		symbol(),
 		m_symbol2,
 		priority()
 	);
+	first ->set_parent(result); 
+	second->set_parent(result);
+	third ->set_parent(result);
+	return result;
 }
 

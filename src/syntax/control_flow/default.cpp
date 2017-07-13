@@ -21,7 +21,7 @@ void Default::print(std::ostream& out) const
 
 void Default::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Default" << std::endl;
+	out << std::string(4*tabs, ' ') << "Default [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_command->dump_ast(out, tabs+1);
 }
 
@@ -32,6 +32,9 @@ Command* Default::get_body() const
 
 Default* Default::copy()
 {
-	return new Default(m_command->copy());
+	auto cpy = m_command->copy();
+	auto result = new Default(cpy);
+	cpy->set_parent(result);
+	return result;
 }
 

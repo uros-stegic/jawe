@@ -23,7 +23,7 @@ enum Priority {
 	TFunctionCall,
 	TNew,
 	TDotAccess, TArrayAccess,
-	TLiteral
+	TObject, TPrimitive, TVariable, TFunction, TArray
 };
 
 class Expr : public Command {
@@ -37,6 +37,8 @@ private:
 	Priority m_priority;
 };
 }
+
+std::ostream& operator<<(std::ostream&, const jawe::Priority);
 
 #endif // __EXPR_HPP__
 

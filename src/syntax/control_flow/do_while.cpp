@@ -27,7 +27,7 @@ void DoWhile::print(std::ostream& out) const
 void DoWhile::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "do-while" << std::endl;
+	out << "do-while [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_body->dump_ast(out, tabs+1);
 	m_cond->dump_ast(out ,tabs+1);
 }
@@ -44,6 +44,11 @@ Command* DoWhile::get_body() const
 
 DoWhile* DoWhile::copy()
 {
-	return new DoWhile(m_body->copy(), m_cond->copy());
+	auto body = m_body->copy();
+	auto cond = m_cond->copy();
+	auto result = new DoWhile(body, cond);
+	body->set_parent(result);
+	cond->set_parent(result);
+	return result;
 }
 

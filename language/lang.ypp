@@ -131,7 +131,7 @@ Undelimited	: Cond										{ $$ = $1; 																}
 Delimited	: Expr										{ $$ = $1; 																}
 		 	| Declaration								{ $$ = $1; 																}
 			| DoWhile									{ $$ = $1; 																}
-			| return_token Expr							{ $$ = new jawe::Return($2); 											}
+			| return_token Expr							{ $$ = new jawe::Return($2); $2->set_parent($$);						}
 			| cont_token								{ $$ = new jawe::Continue(); 											}
 			| break_token								{ $$ = new jawe::Break();												}
 			|											{ $$ = new jawe::Empty();												}
@@ -140,18 +140,18 @@ NamedFun	: function_token id_token '(' IDList ')'
 		 		'{' CodeBlock '}'						{ $$ = new jawe::FunctionDeclaration(*$2, new jawe::Function(*$4, $7)); delete $2; delete $4; $7->set_parent($$); }
 			;
 Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2);									}
+			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2); $2->set_parent($$);				}
 			| var_token id_token						{ $$ = new jawe::VarDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| var_token Assign							{ $$ = new jawe::VarDeclaration($2);									}
+			| var_token Assign							{ $$ = new jawe::VarDeclaration($2); $2->set_parent($$);				}
 			| let_token id_token						{ $$ = new jawe::LetDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2); err_block = &@2;					}
+			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2); err_block = &@2; $2->set_parent($$);	}
 			;
 Cond		: if_token '(' Expr ')' Command
-	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); $5->set_parent($$);					}
+	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); $3->set_parent($$); $5->set_parent($$);	}
 	  		| if_token '(' Expr ')' Command
-				else_token Command						{ $$ = new jawe::IfElse($3, $5, $7); $5->set_parent($$); $7->set_parent($$); }
+				else_token Command						{ $$ = new jawe::IfElse($3, $5, $7); $3->set_parent($$); $5->set_parent($$); $7->set_parent($$); }
 			;
-While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); $5->set_parent($$);						}
+While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); $3->set_parent($$); $5->set_parent($$);	}
 	   		;
 For			: for_token '('
 	          Delimited delim_token
@@ -159,13 +159,21 @@ For			: for_token '('
 			  Delimited ')'
 			  Command									{ $$ = new jawe::For($3, $5, $7, $9);
 			  												$3->set_parent($$);
+			  												$5->set_parent($$);
 			  												$7->set_parent($$);
 			  												$9->set_parent($$);
 			  											}
 	  		;
-DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); $2->set_parent($$);					}
+DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); $2->set_parent($$); $5->set_parent($$);	}
 		 	;
-SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{ $$ = new jawe::Switch($3, *$6); delete $6; 							}
+SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{
+		   													$$ = new jawe::Switch($3, *$6);
+															$3->set_parent($$);
+															for(auto &&cs: *$6) {
+																cs->set_parent($$);
+															}
+															delete $6;
+		   												}
 		   	;
 Cases		: Cases Case								{ $$ = $1; $$->push_back($2); 											}
 			| Cases Default								{ $$ = $1; $$->push_back($2); 											}
@@ -183,60 +191,65 @@ Default		: default_token ':' Command					{ $$ = new jawe::Default($3); $3->set_p
 
 
 /********************************************************* Expressions *********************************************************/
-Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3);											}
-	 		| Expr minus_token Expr						{ $$ = new jawe::Minus($1, $3);											}
-	 		| Expr times_token Expr						{ $$ = new jawe::Times($1, $3);											}
-	 		| Expr divide_token Expr					{ $$ = new jawe::Divide($1, $3);										}
-	 		| Expr mod_token Expr						{ $$ = new jawe::Mod($1, $3);											}
-			| Expr power_token Expr						{ $$ = new jawe::Mod($1, $3);											}
-			| plus_token Expr %prec uplus_token			{ $$ = new jawe::UPlus($2);												}
-			| minus_token Expr %prec uminus_token		{ $$ = new jawe::UMinus($2);											}
+Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+	 		| Expr minus_token Expr						{ $$ = new jawe::Minus($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+	 		| Expr times_token Expr						{ $$ = new jawe::Times($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+	 		| Expr divide_token Expr					{ $$ = new jawe::Divide($1, $3); $1->set_parent($$); $3->set_parent($$);}
+	 		| Expr mod_token Expr						{ $$ = new jawe::Mod($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr power_token Expr						{ $$ = new jawe::Mod($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| plus_token Expr %prec uplus_token			{ $$ = new jawe::UPlus($2); $2->set_parent($$);							}
+			| minus_token Expr %prec uminus_token		{ $$ = new jawe::UMinus($2); $2->set_parent($$);						}
 
-			| inc_token Expr							{ $$ = new jawe::Increment($2);											}
-			| dec_token Expr							{ $$ = new jawe::Decrement($2);											}
-			| Expr inc_token %prec post_inc				{ $$ = new jawe::PostIncrement($1);										}
-			| Expr dec_token %prec post_dec				{ $$ = new jawe::PostDecrement($1);										}
-			| delete_token Expr							{ $$ = new jawe::Delete($2); 											}
-			| typeof_token Expr							{ $$ = new jawe::TypeOf($2);											}
-			| void_token Expr							{ $$ = new jawe::Void($2);												}
+			| inc_token Expr							{ $$ = new jawe::Increment($2); $2->set_parent($$);						}
+			| dec_token Expr							{ $$ = new jawe::Decrement($2); $2->set_parent($$);						}
+			| Expr inc_token %prec post_inc				{ $$ = new jawe::PostIncrement($1);	$1->set_parent($$);					}
+			| Expr dec_token %prec post_dec				{ $$ = new jawe::PostDecrement($1);	$1->set_parent($$);					}
+			| delete_token Expr							{ $$ = new jawe::Delete($2); $2->set_parent($$); 						}
+			| typeof_token Expr							{ $$ = new jawe::TypeOf($2); $2->set_parent($$);						}
+			| void_token Expr							{ $$ = new jawe::Void($2); $2->set_parent($$);							}
 			
-			| Expr eq_token Expr						{ $$ = new jawe::Equals($1, $3);										}
-			| Expr not_eq_token Expr					{ $$ = new jawe::NotEquals($1, $3);										}
-			| Expr t_eq_token Expr						{ $$ = new jawe::TypedEquals($1, $3);									}
-			| Expr t_not_eq_token Expr					{ $$ = new jawe::TypedNotEquals($1, $3);								}
-			| Expr less_token Expr						{ $$ = new jawe::LessThen($1, $3);										}
-			| Expr less_eq_token Expr					{ $$ = new jawe::LessOrEquals($1, $3);									}
-			| Expr great_token Expr						{ $$ = new jawe::GreaterThen($1, $3);									}
-			| Expr great_eq_token Expr					{ $$ = new jawe::GreaterOrEquals($1, $3);								}
-			| Expr in_token Expr						{ $$ = new jawe::In($1, $3);											}
-			| Expr instanceof_token Expr				{ $$ = new jawe::InstanceOf($1, $3);									}
+			| Expr eq_token Expr						{ $$ = new jawe::Equals($1, $3); $1->set_parent($$); $3->set_parent($$);}
+			| Expr not_eq_token Expr					{ $$ = new jawe::NotEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr t_eq_token Expr						{ $$ = new jawe::TypedEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr t_not_eq_token Expr					{ $$ = new jawe::TypedNotEquals($1, $3); $1->set_parent($$); $3->set_parent($$);}
+			| Expr less_token Expr						{ $$ = new jawe::LessThen($1, $3); $1->set_parent($$); $3->set_parent($$);		}
+			| Expr less_eq_token Expr					{ $$ = new jawe::LessOrEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr great_token Expr						{ $$ = new jawe::GreaterThen($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr great_eq_token Expr					{ $$ = new jawe::GreaterOrEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr in_token Expr						{ $$ = new jawe::In($1, $3); $1->set_parent($$); $3->set_parent($$);			}
+			| Expr instanceof_token Expr				{ $$ = new jawe::InstanceOf($1, $3); $1->set_parent($$); $3->set_parent($$);	}
 
-			| log_not_token Expr						{ $$ = new jawe::LogicNot($2);											}
-			| Expr log_and_token Expr					{ $$ = new jawe::LogicAnd($1, $3);										}
-			| Expr log_or_token Expr					{ $$ = new jawe::LogicOr($1, $3);										}
+			| log_not_token Expr						{ $$ = new jawe::LogicNot($2); $2->set_parent($$);								}
+			| Expr log_and_token Expr					{ $$ = new jawe::LogicAnd($1, $3); $1->set_parent($$); $3->set_parent($$);		}
+			| Expr log_or_token Expr					{ $$ = new jawe::LogicOr($1, $3); $1->set_parent($$); $3->set_parent($$);		}
 
-			| bit_not_token Expr						{ $$ = new jawe::BitNot($2);											}
-			| Expr bit_and_token Expr					{ $$ = new jawe::BitAnd($1, $3);										}
-			| Expr bit_or_token Expr					{ $$ = new jawe::BitOr($1, $3);											}
-			| Expr bit_xor_token Expr					{ $$ = new jawe::BitXor($1, $3);										}
-			| Expr bit_shift_l_token Expr				{ $$ = new jawe::BitShiftLeft($1, $3);									}
-			| Expr bit_shift_r_token Expr				{ $$ = new jawe::BitShiftRight($1, $3);									}
-			| Expr bit_shift_u_token Expr				{ $$ = new jawe::BitShiftUnsigned($1, $3);								}
+			| bit_not_token Expr						{ $$ = new jawe::BitNot($2); $2->set_parent($$);								}
+			| Expr bit_and_token Expr					{ $$ = new jawe::BitAnd($1, $3); $1->set_parent($$); $3->set_parent($$);		}
+			| Expr bit_or_token Expr					{ $$ = new jawe::BitOr($1, $3); $1->set_parent($$); $3->set_parent($$);			}
+			| Expr bit_xor_token Expr					{ $$ = new jawe::BitXor($1, $3); $1->set_parent($$); $3->set_parent($$);		}
+			| Expr bit_shift_l_token Expr				{ $$ = new jawe::BitShiftLeft($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr bit_shift_r_token Expr				{ $$ = new jawe::BitShiftRight($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr bit_shift_u_token Expr				{ $$ = new jawe::BitShiftUnsigned($1, $3); $1->set_parent($$); $3->set_parent($$);	}
 
-			| Expr '?' Expr ':' Expr					{ $$ = new jawe::TernaryConditional($1, $3, $5);						}
+			| Expr '?' Expr ':' Expr					{
+															$$ = new jawe::TernaryConditional($1, $3, $5);
+															$1->set_parent($$);
+															$3->set_parent($$);
+															$5->set_parent($$);
+														}
 
    			| '(' Expr ')' %prec prec_parens_token		{ $$ = $2;																}
 			
-			| new_token Expr							{ $$ = new jawe::New($2);												}
+			| new_token Expr							{ $$ = new jawe::New($2); $2->set_parent($$);							}
 
-			| Expr '(' ArgList ')' %prec fn_call_token	{ $$ = new jawe::FunctionCall($1, *$3);	delete $3;						}
+			| Expr '(' ArgList ')' %prec fn_call_token	{ $$ = new jawe::FunctionCall($1, *$3);	delete $3; $1->set_parent($$);	}
 			| LValue %prec phony_lval					{ $$ = $1;																}
   			| Literal									{ $$ = $1; 																}
 
 			| Assign									{ $$ = $1;																}
   			;
-LValue		: Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3);									}
-			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3);										}
+LValue		: Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3); $1->set_parent($$); $3->set_parent($$); }
+			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3); $1->set_parent($$); $3->set_parent($$);   }
 			| id_token									{ $$ = new jawe::Variable(*$1); delete $1;								}
 			;
 ArgList		: ArgListNone								{ $$ = $1;																}
@@ -247,19 +260,19 @@ ArgListFull	: ArgListFull comma_token Expr				{ $$ = $1; $$->push_back($3);					
 			;
 ArgListNone	: 											{ $$ = new std::vector<jawe::Expr*>;									}
 			;
-Assign		: LValue assign_token Expr					{ $$ = new jawe::Assign($1, $3);										}
-			| LValue ass_plus_token Expr				{ $$ = new jawe::AssignPlus($1, $3);									}
-			| LValue ass_minus_token Expr				{ $$ = new jawe::AssignMinus($1, $3);			 						} 
-			| LValue ass_pow_token Expr					{ $$ = new jawe::AssignPow($1, $3);				 						}
-			| LValue ass_mult_token Expr				{ $$ = new jawe::AssignMul($1, $3);				 						}
-			| LValue ass_div_token Expr					{ $$ = new jawe::AssignDiv($1, $3);				 						}
-			| LValue ass_mod_token Expr					{ $$ = new jawe::AssignMod($1, $3);				 						}
-			| LValue ass_sh_l_token Expr				{ $$ = new jawe::AssignShiftL($1, $3);			 						}
-			| LValue ass_sh_r_token Expr				{ $$ = new jawe::AssignShiftR($1, $3);			 						}
-			| LValue ass_sh_u_token Expr				{ $$ = new jawe::AssignShiftU($1, $3);			 						}
-			| LValue ass_con_b_token Expr				{ $$ = new jawe::AssignBitCon($1, $3);			 						}
-			| LValue ass_xor_b_token Expr				{ $$ = new jawe::AssignBitXor($1, $3);			 						}
-			| LValue ass_dis_b_token Expr				{ $$ = new jawe::AssignBitDis($1, $3);			 						}
+Assign		: LValue assign_token Expr					{ $$ = new jawe::Assign($1, $3); $1->set_parent($$); $3->set_parent($$);      }
+			| LValue ass_plus_token Expr				{ $$ = new jawe::AssignPlus($1, $3);$1->set_parent($$); $3->set_parent($$);	  }
+			| LValue ass_minus_token Expr				{ $$ = new jawe::AssignMinus($1, $3);$1->set_parent($$); $3->set_parent($$);  } 
+			| LValue ass_pow_token Expr					{ $$ = new jawe::AssignPow($1, $3);$1->set_parent($$); $3->set_parent($$);    }
+			| LValue ass_mult_token Expr				{ $$ = new jawe::AssignMul($1, $3);$1->set_parent($$); $3->set_parent($$);	  }
+			| LValue ass_div_token Expr					{ $$ = new jawe::AssignDiv($1, $3);	$1->set_parent($$); $3->set_parent($$);   }
+			| LValue ass_mod_token Expr					{ $$ = new jawe::AssignMod($1, $3);	$1->set_parent($$); $3->set_parent($$);	  }
+			| LValue ass_sh_l_token Expr				{ $$ = new jawe::AssignShiftL($1, $3);$1->set_parent($$); $3->set_parent($$); }
+			| LValue ass_sh_r_token Expr				{ $$ = new jawe::AssignShiftR($1, $3);$1->set_parent($$); $3->set_parent($$); }
+			| LValue ass_sh_u_token Expr				{ $$ = new jawe::AssignShiftU($1, $3);$1->set_parent($$); $3->set_parent($$); }
+			| LValue ass_con_b_token Expr				{ $$ = new jawe::AssignBitCon($1, $3);$1->set_parent($$); $3->set_parent($$); }
+			| LValue ass_xor_b_token Expr				{ $$ = new jawe::AssignBitXor($1, $3);$1->set_parent($$); $3->set_parent($$); }
+			| LValue ass_dis_b_token Expr				{ $$ = new jawe::AssignBitDis($1, $3);$1->set_parent($$); $3->set_parent($$); }
 			;
 /*******************************************************************************************************************************/
 
@@ -283,7 +296,12 @@ Primitive	: undefined_token							{ $$ = new jawe::Undefined();											}
 IndexedObj	: ArrLiteral								{ $$ = $1; 																}
 			| ObjLiteral								{ $$ = $1; 																}
 			;
-ArrLiteral	: bracket_token LiteralList bracket_closed	{ $$ = new jawe::Array(*$2); delete $2;									}
+ArrLiteral	: bracket_token LiteralList bracket_closed	{
+		   													$$ = new jawe::Array(*$2);
+															for(auto&& lit: *$2) {
+																lit->set_parent($$);
+															}
+														}
 		  	;
 LiteralList	: LiteralList comma_token Expr				{ $$ = $1; $$->push_back($3);											}
 		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1};								}
@@ -301,7 +319,7 @@ Key			: string_token								{ $$ = $1; 																}
 	  		| id_token									{ $$ = $1; 																}
 			;
 Lambda		: function_token '(' IDList ')'
-				'{' LambdaBody '}'						{ $$ = new jawe::Function(*$3, $6); delete $3;							}
+				'{' LambdaBody '}'						{ $$ = new jawe::Function(*$3, $6); delete $3; $6->set_parent($$);		}
 LambdaBody	: CodeBlock									{ $$ = $1;																}
 		   	|											{ $$ = new jawe::CommandBlock();										}
 			;

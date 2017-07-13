@@ -1,4 +1,6 @@
 #include <command.hpp>
+#include <map>
+#include <string>
 
 using namespace jawe;
 
@@ -18,5 +20,32 @@ void Command::set_parent(Command* command)
 Command* Command::get_parent() const
 {
 	return m_parent;
+}
+
+std::ostream& operator<<(std::ostream& out, const jawe::CommandType type){
+    static std::map<CommandType, std::string> strings;
+    if (strings.size() == 0){
+#define INSERT_ELEMENT(p) strings[p] = #p
+		INSERT_ELEMENT(TEmpty);
+		INSERT_ELEMENT(TCommandBlock);
+		INSERT_ELEMENT(TIfElse);
+		INSERT_ELEMENT(TWhile);
+		INSERT_ELEMENT(TDoWhile);
+		INSERT_ELEMENT(TFor);
+		INSERT_ELEMENT(TSwitch);
+		INSERT_ELEMENT(TCase);
+		INSERT_ELEMENT(TDefault);
+		INSERT_ELEMENT(TBreak);
+		INSERT_ELEMENT(TContinue);
+		INSERT_ELEMENT(TReturn);
+		INSERT_ELEMENT(TVarDeclaration);
+		INSERT_ELEMENT(TLetDeclaration);
+		INSERT_ELEMENT(TConstDeclaration);
+		INSERT_ELEMENT(TFunctionDeclaration);
+		INSERT_ELEMENT(TExpr);
+#undef INSERT_ELEMENT
+    }   
+
+    return out << strings[type];
 }
 

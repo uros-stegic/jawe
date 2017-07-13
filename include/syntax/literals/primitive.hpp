@@ -6,8 +6,8 @@
 namespace jawe {
 class Primitive : public Literal {
 public:
-	using Literal::Literal;
-	virtual ~Primitive();
+	Primitive();
+	virtual ~Primitive() = default;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	virtual Primitive* copy() override = 0;

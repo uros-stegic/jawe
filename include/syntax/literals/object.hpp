@@ -9,12 +9,14 @@
 namespace jawe {
 class Object : public AbstractObject {
 public:
+	Object();
 	Object(const std::map<std::string, Expr*>&);
 	~Object();
 	void print(std::ostream&) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 	void dump_pair_ast(std::ostream&, const std::pair<std::string, Expr*>&, int = 0) const;
 	Object* copy() override;
+	void set(std::string, Expr*);
 
 private:
 	std::map<std::string, Expr*> m_pairs;

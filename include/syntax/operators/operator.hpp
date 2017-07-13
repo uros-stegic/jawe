@@ -8,7 +8,7 @@ class Operator : public Expr {
 public:
 	Operator(std::string, const Priority&);
 	std::string symbol() const;
-	virtual void dump_ast(std::ostream&, int = 0) const override;
+	virtual void dump_ast(std::ostream&, int = 0) const override = 0;
 
 private:
 	std::string m_symbol;

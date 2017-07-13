@@ -2,8 +2,8 @@
 
 using namespace jawe;
 
-Literal::Literal()
-	: Expr(TLiteral)
+Literal::Literal(Priority p)
+	: Expr(p)
 {}
 
 Literal::~Literal()

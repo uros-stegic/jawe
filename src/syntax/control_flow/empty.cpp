@@ -16,7 +16,7 @@ void Empty::print(std::ostream& out) const
 
 void Empty::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Empty" << std::endl;
+	out << std::string(4*tabs, ' ') << "Empty [" << this << ": from <" << get_parent() << ">]" << std::endl;
 }
 
 Empty* Empty::copy()

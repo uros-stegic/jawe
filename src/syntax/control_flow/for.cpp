@@ -34,7 +34,7 @@ void For::print(std::ostream& out) const
 void For::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "for" << std::endl;
+	out << "for [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_init->dump_ast(out, tabs+1);
 	m_cond->dump_ast(out, tabs+1);
 	m_post->dump_ast(out, tabs+1);
@@ -63,11 +63,18 @@ Command* For::get_post() const
 
 For* For::copy()
 {
-	return new For(
-		m_init->copy(),
-		m_cond->copy(),
-		m_post->copy(),
-		m_body->copy()
-	);
+	auto init = m_init->copy();
+	auto cond = m_cond->copy();
+	auto post = m_post->copy();
+	auto body = m_body->copy();
+
+	auto result = new For(init, cond, post, body);
+
+	init->set_parent(result); 
+    cond->set_parent(result);
+    post->set_parent(result);
+    body->set_parent(result);
+
+	return result;
 }
 

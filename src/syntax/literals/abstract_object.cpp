@@ -2,6 +2,7 @@
 
 using namespace jawe;
 
-AbstractObject::~AbstractObject()
+AbstractObject::AbstractObject(Priority p)
+	: Literal(p)
 {}
 

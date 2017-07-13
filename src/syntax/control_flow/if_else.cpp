@@ -24,17 +24,16 @@ void IfElse::print(std::ostream& out) const
 	m_if->print(out);
 	out << "}";
 	if( m_else != nullptr ) {
-		out << "else {" << std::endl;
+		out << std::endl << "else {" << std::endl;
 		m_else->print(out);
 		out << "}";
 	}
-	out << std::endl;
 }
 
 void IfElse::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "if-else" << std::endl;
+	out << "if-else [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_expr->dump_ast(out, tabs+1);
 	m_if->dump_ast(out, tabs+1);
 	if( m_else != nullptr ) {
@@ -57,9 +56,18 @@ Command* IfElse::get_else() const
 
 IfElse* IfElse::copy()
 {
-	return new IfElse(
-		m_expr->copy(),
-		m_if->copy(),
-		(m_else == nullptr) ? nullptr : m_else->copy());
+	auto expr = m_expr->copy();
+	auto body = m_if->copy();
+	auto alter = (m_else == nullptr) ? nullptr : m_else->copy();
+
+	auto result = new IfElse(expr, body, alter);
+
+	expr->set_parent(result); 
+	body->set_parent(result);	
+	if( alter ) {
+		alter->set_parent(result);
+	}
+
+	return result;
 }
 

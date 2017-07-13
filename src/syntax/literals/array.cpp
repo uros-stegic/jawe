@@ -4,10 +4,12 @@
 using namespace jawe;
 
 Array::Array()
+	: AbstractObject(TArray)
 {}
 
 Array::Array(const std::vector<Expr*>& elements)
-	: m_elements(elements)
+	: AbstractObject(TArray)
+	, m_elements(elements)
 {}
 
 Array::~Array()
@@ -39,24 +41,29 @@ void Array::dump_ast(std::ostream& out, int tabs) const
 	out << std::string(4*tabs, ' ')
 		<< "Array("
 		<< m_elements.size()
-		<< ")"
+		<< ") [" << this << ": from <" << get_parent() << ">]"
 		<< std::endl;
 	for(auto &elem: m_elements) {
 		elem->dump_ast(out, tabs+1);
 	}
 }
 
+void Array::insert(Expr* expr)
+{
+	m_elements.push_back(expr);
+	expr->set_parent(this);
+}
+
 Array* Array::copy()
 {
-	std::vector<Expr*> cp;
-	cp.reserve(m_elements.size());
+	auto result = new Array();
 	std::for_each(
 		std::begin(m_elements),
 		std::end(m_elements),
-		[&cp](Expr* expr) {
-			cp.push_back(expr->copy());
+		[&result](Expr* expr) {
+			result->insert(expr->copy());
 		}
 	);
-	return new Array(cp);
+	return result;
 }
 

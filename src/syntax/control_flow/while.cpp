@@ -26,7 +26,7 @@ void While::print(std::ostream& out) const
 void While::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "while" << std::endl;
+	out << "while [" << this << ": from <" << get_parent() << ">]" << std::endl;
 	m_cond->dump_ast(out, tabs+1);
 	m_body->dump_ast(out, tabs+1);
 }
@@ -43,6 +43,14 @@ Command* While::get_body() const
 
 While* While::copy()
 {
-	return new While(m_cond->copy(), m_body->copy());
+	auto cond = m_cond->copy();
+	auto body = m_body->copy();
+
+	auto result = new While(cond, body);
+
+	cond->set_parent(result);
+	body->set_parent(result);
+
+	return result;
 }
 

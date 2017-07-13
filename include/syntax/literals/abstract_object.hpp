@@ -6,8 +6,8 @@
 namespace jawe {
 class AbstractObject : public Literal {
 public:
-	using Literal::Literal;
-	virtual ~AbstractObject();
+	AbstractObject(Priority);
+	virtual ~AbstractObject() = default;
 
 	virtual AbstractObject* copy() = 0;
 };
