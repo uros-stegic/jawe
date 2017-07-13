@@ -33,7 +33,7 @@ void IfElse::print(std::ostream& out) const
 void IfElse::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "if-else [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "if-else " << memory_address() << std::endl;
 	m_expr->dump_ast(out, tabs+1);
 	m_if->dump_ast(out, tabs+1);
 	if( m_else != nullptr ) {

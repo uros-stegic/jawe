@@ -54,7 +54,7 @@ void Object::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
 		<< "Object"
-		<< "(" << m_pairs.size() << ") [" << this << ": from <" << get_parent() << ">]"
+		<< "(" << m_pairs.size() << ") " << memory_address()
 		<< std::endl;
 	for(auto &p: m_pairs) {
 		dump_pair_ast(out, p, tabs+1);

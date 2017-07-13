@@ -62,7 +62,7 @@ void CommandBlock::replace(Command* from, Command* to)
 void CommandBlock::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "command-block [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "command-block " << memory_address() << std::endl;
 	std::for_each(
 		std::begin(m_commands),
 		std::end(m_commands),

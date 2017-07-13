@@ -37,6 +37,8 @@ public:
 	void set_parent(Command*);
 	Command* get_parent() const;
 
+	std::string memory_address() const;
+
 private:
 	CommandType m_type;
 	Command* m_parent;

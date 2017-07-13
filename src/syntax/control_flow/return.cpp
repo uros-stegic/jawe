@@ -22,7 +22,7 @@ void Return::print(std::ostream& out) const
 void Return::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "return [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "return " << memory_address() << std::endl;
 	m_expr->dump_ast(out, tabs+1);
 }
 

@@ -29,7 +29,7 @@ void Switch::print(std::ostream& out) const {
 }
 
 void Switch::dump_ast(std::ostream& out, int tabs) const {
-	out << std::string(4*tabs, ' ') << "switch [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "switch " << memory_address() << std::endl;
 	m_expr->dump_ast(out, tabs+1);
 	for(auto &c : m_cases) {
 		c->dump_ast(out, tabs+1);

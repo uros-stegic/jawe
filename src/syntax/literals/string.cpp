@@ -17,7 +17,7 @@ void String::print(std::ostream& out) const
 void String::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
-		<< "String [\"" << m_string << "\"] [" << this << ": from <" << get_parent() << ">]" << std::endl;
+		<< "String [\"" << m_string << "\"] " << memory_address() << std::endl;
 }
 
 String* String::copy()

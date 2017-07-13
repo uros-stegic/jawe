@@ -17,7 +17,7 @@ void Numeric::print(std::ostream& out) const
 void Numeric::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
-		<< "Number [" << m_value << "] [" << this << ": from <" << get_parent() << ">]" << std::endl;
+		<< "Number [" << m_value << "] " << memory_address() << std::endl;
 }
 
 double Numeric::value() const

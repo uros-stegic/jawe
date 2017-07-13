@@ -15,7 +15,7 @@ void Nan::print(std::ostream& out) const
 
 void Nan::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "NaN [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "NaN " << memory_address() << std::endl;
 }
 
 Nan* Nan::copy()

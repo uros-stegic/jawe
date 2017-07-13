@@ -25,7 +25,7 @@ void FunctionDeclaration::print(std::ostream& out) const
 void FunctionDeclaration::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
-		<< "FunctionDeclaration [" << m_name << "] [" << this << ": from <" << get_parent() << ">]"
+		<< "FunctionDeclaration [" << m_name << "] " << memory_address()
 		<< std::endl;
 
 	m_function->dump_ast(out, tabs+1);

@@ -17,7 +17,7 @@ void Continue::print(std::ostream& out) const
 void Continue::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "continue [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "continue " << memory_address() << std::endl;
 }
 
 Continue* Continue::copy()

@@ -40,7 +40,7 @@ void BinaryOperator::print(std::ostream& out) const {
 
 void BinaryOperator::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "operator [" << symbol() << " [" << this << ": from <" << get_parent() << ">]]" << std::endl;
+	out << std::string(4*tabs, ' ') << "operator [" << symbol() << "] " << memory_address() << std::endl;
 	m_left->dump_ast(out, tabs+1);
 	m_right->dump_ast(out, tabs+1);
 }

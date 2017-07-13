@@ -18,7 +18,7 @@ void Variable::print(std::ostream& out) const
 void Variable::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ')
-		<< "Variable [" << m_name << "] [" << this << ": from <" << get_parent() << ">]" << std::endl;
+		<< "Variable [" << m_name << "] " << memory_address() << std::endl;
 }
 
 Variable* Variable::copy()

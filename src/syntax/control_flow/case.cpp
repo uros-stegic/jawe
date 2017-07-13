@@ -25,7 +25,7 @@ void Case::print(std::ostream& out) const
 
 void Case::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "Case [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "Case " << memory_address() << std::endl;
 	m_case->dump_ast(out, tabs+1);
 	m_command->dump_ast(out, tabs+1);
 }

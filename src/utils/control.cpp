@@ -28,6 +28,7 @@ Control::Control(int argc, char **argv)
 		("verbose",		"prints verbose parsing information")
 		("dump-ast",	"prints parsed abstract syntax tree")
 		("print",		"prints input program back to the output")
+		("memory",		"shows memory addresses of AST nodes")
 		("input-file",	bpo::value<std::string>(&m_input), "input filename")
 		("output-file",	bpo::value<std::string>(&m_output)->default_value("a.out"), "output filename")
 	;
@@ -37,6 +38,7 @@ Control::Control(int argc, char **argv)
 	yydebug = m_vars.count("verbose");
 	m_dump_ast = m_vars.count("dump-ast");
 	m_dump_program = m_vars.count("print");
+	m_show_memory = m_vars.count("memory");
 }
 
 Control& Control::get(int argc, char** args)
@@ -97,5 +99,9 @@ bool Control::dump_ast() const
 bool Control::dump_program() const
 {
 	return m_dump_program;
+}
+bool Control::show_memory() const
+{
+	return m_show_memory;
 }
 

@@ -45,7 +45,7 @@ void TernaryOperator::dump_ast(std::ostream& out, int tabs) const
 		<< symbol()
 		<< " "
 		<< m_symbol2
-		<< "] [" << this << ": from <" << get_parent() << ">]"
+		<< "] " << memory_address()
 		<< std::endl;
 	m_first->dump_ast(out, tabs+1);
 	m_second->dump_ast(out, tabs+1);

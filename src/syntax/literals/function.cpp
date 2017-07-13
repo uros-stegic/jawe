@@ -32,7 +32,7 @@ void Function::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ') << "Function [";
 	print_args(out);
-	out << "] [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "] " << memory_address() << std::endl;
 	m_body->dump_ast(out, tabs+1);
 }
 

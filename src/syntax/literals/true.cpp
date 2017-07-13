@@ -15,7 +15,7 @@ void True::print(std::ostream& out) const
 
 void True::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "true [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "true " << memory_address() << std::endl;
 }
 
 bool True::value() const

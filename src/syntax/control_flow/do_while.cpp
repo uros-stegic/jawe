@@ -27,7 +27,7 @@ void DoWhile::print(std::ostream& out) const
 void DoWhile::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "do-while [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "do-while " << memory_address() << std::endl;
 	m_body->dump_ast(out, tabs+1);
 	m_cond->dump_ast(out ,tabs+1);
 }

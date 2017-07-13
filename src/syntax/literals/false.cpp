@@ -15,7 +15,7 @@ void False::print(std::ostream& out) const
 
 void False::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "false [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "false " << memory_address() << std::endl;
 }
 
 bool False::value() const

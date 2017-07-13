@@ -15,6 +15,7 @@ public:
 	std::string input_filename() const;
 	bool dump_ast() const;
 	bool dump_program() const;
+	bool show_memory() const;
 
 	void run() const;
 
@@ -27,6 +28,7 @@ private:
 	std::string m_output;
 	bool m_dump_ast;
 	bool m_dump_program;
+	bool m_show_memory;
 	
 	Control(int, char **);
 	void m_print_help() const;

@@ -41,7 +41,7 @@ void Array::dump_ast(std::ostream& out, int tabs) const
 	out << std::string(4*tabs, ' ')
 		<< "Array("
 		<< m_elements.size()
-		<< ") [" << this << ": from <" << get_parent() << ">]"
+		<< ") " << memory_address()
 		<< std::endl;
 	for(auto &elem: m_elements) {
 		elem->dump_ast(out, tabs+1);

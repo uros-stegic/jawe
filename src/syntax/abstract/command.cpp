@@ -1,6 +1,8 @@
 #include <command.hpp>
 #include <map>
 #include <string>
+#include <utils/control.hpp>
+#include <sstream>
 
 using namespace jawe;
 
@@ -20,6 +22,15 @@ void Command::set_parent(Command* command)
 Command* Command::get_parent() const
 {
 	return m_parent;
+}
+
+std::string Command::memory_address() const
+{
+	std::stringstream ss;
+	if( Control::get().show_memory() ) {
+		ss << "[" << this << ": from <" << get_parent() << ">]";
+	}
+	return ss.str();
 }
 
 std::ostream& operator<<(std::ostream& out, const jawe::CommandType type){

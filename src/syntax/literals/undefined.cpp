@@ -15,7 +15,7 @@ void Undefined::print(std::ostream& out) const
 
 void Undefined::dump_ast(std::ostream& out, int tabs) const
 {
-	out << std::string(4*tabs, ' ') << "undefined [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << std::string(4*tabs, ' ') << "undefined " << memory_address() << std::endl;
 }
 
 Undefined* Undefined::copy()

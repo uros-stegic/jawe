@@ -26,7 +26,7 @@ void While::print(std::ostream& out) const
 void While::dump_ast(std::ostream& out, int tabs) const
 {
 	out << std::string(4*tabs, ' ');
-	out << "while [" << this << ": from <" << get_parent() << ">]" << std::endl;
+	out << "while " << memory_address() << std::endl;
 	m_cond->dump_ast(out, tabs+1);
 	m_body->dump_ast(out, tabs+1);
 }
