@@ -2,7 +2,7 @@
 #define __COMMAND_HPP__
 
 #include <iostream>
-#include <utils/mem_leak.hpp>
+#include <utils/leak_checker.hpp>
 
 namespace jawe {
 enum CommandType {
