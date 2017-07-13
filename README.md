@@ -47,13 +47,15 @@ Usage: jawe [OPTION]... --input-file program.js:
   -v [ --version ]           prints version info
   --verbose                  prints verbose parsing information
   --dump-ast                 prints parsed abstract syntax tree
+  --print                    prints input program back to the output
+  --memory					 shows memory address of each node and its parent node
   --input-file arg           input filename
   --output-file arg (=a.out) output filename
 ```
 
-Only `--input-file` followed by path to Javascript file is required. If no other option is provided, jawe will print out the parsed
-Javascript code to the standard output. However, if `--dump-ast` flag is set, jawe will print abstract syntax tree. It
-is also possible to print detailed output from bison parser by including `--verbose` flag.
+Only `--input-file` followed by path to Javascript file is required. If `--dump-ast` flag is present, jawe will print abstract syntax tree. It
+is also possible to print detailed output from bison parser by including `--verbose` flag. For debugging purposes, it's
+possible to print out memory address for each node in AST with flag --memory.
 
 Example:
 ```js
@@ -86,7 +88,7 @@ command-block
 
 ## Last words
 
-Like i said earlier, this project is still in it's early phase so any comments, suggestions and bug reports are more welcome.
+Like i said earlier, this project is still in it's early phase so any comments, suggestions and bug reports are more than welcome.
 If you have any questions feel free to contact me.
 
 Good luck coding! :)
@@ -94,8 +96,6 @@ Good luck coding! :)
 ## Authors
 
 * **Uros Stegic** - *urosstegic@gmx.com* - [uros-stegic](https://github.com/uros-stegic)
-
-See also the list of [contributors](https://github.com/MATF-RG16/RG16-109-cern/graphs/contributors) who participated in this project.
 
 ## License
 
