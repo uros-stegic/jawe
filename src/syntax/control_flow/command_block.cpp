@@ -101,3 +101,15 @@ CommandBlock* CommandBlock::copy()
 	return result;
 }
 
+void CommandBlock::remove(Command* command)
+{
+	m_commands.erase(
+		std::remove(
+			std::begin(m_commands),
+			std::end(m_commands),
+			command),
+		std::end(m_commands)
+	);
+	delete command;
+}
+

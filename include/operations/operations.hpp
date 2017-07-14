@@ -6,6 +6,7 @@
 #include <operations/parser.hpp>
 #include <operations/printer.hpp>
 #include <operations/fn_decompose.hpp>
+#include <operations/empty_remover.hpp>
 #include <operations/phaser.hpp>
 #include <operations/optimizer.hpp>
 

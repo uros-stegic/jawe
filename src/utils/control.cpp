@@ -60,6 +60,7 @@ void Control::run() const
 			FileChecker,
 			Parser,
 			FunctionDecomposer,
+			EmptyRemover,
 			Optimizer<Hoister>,
 			Printer
 		>();

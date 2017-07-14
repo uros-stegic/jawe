@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/syntax/functions.js
-JAWE_FLAGS		= --print
+TEST_EXAMPLE	= ../tests/semantics/empty.js
+JAWE_FLAGS		= --dump-ast --memory
 
 .PHONY: all clean run
 
