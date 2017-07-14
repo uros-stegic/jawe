@@ -44,10 +44,6 @@ void Hoister::decouple(DoWhile* node) const
 void Hoister::decouple(For* node) const
 {
 	auto body = node->get_body();
-	auto init = node->get_init();
-	auto post = node->get_post();
-	decouple(body);
-	decouple(init);
 	decouple(body);
 }
 void Hoister::decouple(Switch* node) const

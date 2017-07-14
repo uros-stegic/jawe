@@ -18,17 +18,17 @@ For::~For()
 	delete m_body;
 }
 
-void For::print(std::ostream& out) const
+void For::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "for(";
 	m_init->print(out);
-	out << "; ";
+	out << " ";
 	m_cond->print(out);
 	out << "; ";
 	m_post->print(out);
-	out << ")" << std::endl;
-	m_body->print(out);
-	out << std::endl;
+	out << ") ";
+	m_body->print(out, tabs+1);
 }
 
 void For::dump_ast(std::ostream& out, int tabs) const

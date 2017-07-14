@@ -8,7 +8,7 @@ class Continue : public Command {
 public:
 	Continue();
 	~Continue();
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 	
 	Continue* copy() override;

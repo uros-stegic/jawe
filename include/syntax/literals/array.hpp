@@ -12,7 +12,7 @@ public:
 	Array(const std::vector<Expr*>&);
 	~Array();
 
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 	void insert(Expr*);
 

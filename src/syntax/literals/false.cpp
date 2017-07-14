@@ -8,7 +8,7 @@ False::False()
 False::~False()
 {}
 
-void False::print(std::ostream& out) const
+void False::print(std::ostream& out, int tabs) const
 {
 	out << "false";
 }

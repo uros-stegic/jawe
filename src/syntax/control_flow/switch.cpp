@@ -17,13 +17,14 @@ Switch::~Switch()
 	}
 }
 
-void Switch::print(std::ostream& out) const {
+void Switch::print(std::ostream& out, int tabs) const
+{
+	out << std::string(4*tabs, ' ');
 	out << "switch( ";
 	m_expr->print(out);
-	out << ") {" << std::endl;
+	out << " ) {" << std::endl;
 	for(auto &c : m_cases) {
-		c->print(out);
-		out << std::endl;
+		c->print(out, tabs+1);
 	}
 	out << "}" << std::endl;
 }

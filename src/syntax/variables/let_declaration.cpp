@@ -6,10 +6,11 @@ LetDeclaration::LetDeclaration(Expr* expr)
 	: Declaration(expr, QLet, TLetDeclaration)
 {}
 
-void LetDeclaration::print(std::ostream& out) const
+void LetDeclaration::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "let ";
-	expr()->print(out);
+	expr()->print(out, tabs+1);
 	out << ";";
 }
 

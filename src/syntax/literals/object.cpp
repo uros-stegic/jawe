@@ -29,25 +29,29 @@ void Object::set(std::string name, Expr* expr)
 	expr->set_parent(this);
 }
 
-void Object::print(std::ostream& out) const
+void Object::print_pair(std::ostream& out, const std::pair<std::string, Expr*>& p) const
+{
+	out << p.first << ": ";
+	p.second->print(out);
+}
+void Object::print(std::ostream& out, int tabs) const
 {
 	out << "{";
 	if( m_pairs.size() == 0 ) {
 		out << "}";
 		return;
 	}
-	out << std::endl;
 	print_pair(out, *m_pairs.begin());
 
 	std::for_each(
 		++m_pairs.begin(),
 		m_pairs.end(),
 		[&](std::pair<std::string, Expr*> p) {
-			out << "," << std::endl;
+			out << ", ";
 			print_pair(out, p);
 		}
 	);
-	out << std::endl << "}";
+	out << "}";
 }
 
 void Object::dump_ast(std::ostream& out, int tabs) const
@@ -61,11 +65,6 @@ void Object::dump_ast(std::ostream& out, int tabs) const
 	}
 }
 
-void Object::print_pair(std::ostream& out, const std::pair<std::string, Expr*>& p) const
-{
-	out << p.first << ": ";
-	p.second->print(out);
-}
 void Object::dump_pair_ast(std::ostream& out, const std::pair<std::string, Expr*>& p, int tabs) const
 {
 	out << std::string(4*tabs, ' ') << "KeyValue" << std::endl;

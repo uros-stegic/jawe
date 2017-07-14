@@ -9,7 +9,7 @@ public:
 	Numeric(double);
 	~Numeric();
 
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 	double value() const;
 	Numeric* copy() override;

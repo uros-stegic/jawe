@@ -9,9 +9,9 @@ Empty::Empty()
 Empty::~Empty()
 {}
 
-void Empty::print(std::ostream& out) const
+void Empty::print(std::ostream& out, int tabs) const
 {
-	out << ";";
+	out << "/*<empty>*/;";
 }
 
 void Empty::dump_ast(std::ostream& out, int tabs) const

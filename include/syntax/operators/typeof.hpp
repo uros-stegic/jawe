@@ -8,7 +8,6 @@ namespace jawe {
 class TypeOf : public UnaryOperator {
 public:
 	TypeOf(Expr*);
-	void print(std::ostream&) const override;
 };
 }
 

@@ -14,12 +14,12 @@ While::~While()
 	delete m_body;
 }
 
-void While::print(std::ostream& out) const
+void While::print(std::ostream& out, int tabs) const
 {
 	out << "while( ";
 	m_cond->print(out);
-	out << " )" << std::endl;
-	m_body->print(out);
+	out << " ) ";
+	m_body->print(out, tabs+1);
 	out << std::endl;
 }
 

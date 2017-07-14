@@ -13,13 +13,14 @@ FunctionDeclaration::~FunctionDeclaration()
 	delete m_function;
 }
 
-void FunctionDeclaration::print(std::ostream& out) const
+void FunctionDeclaration::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "function " << m_name << "(";
 	m_function->print_args(out);
-	out << ") {" << std::endl;
-	m_function->body()->print(out);
-	out << "}" << std::endl;
+	out << ") ";
+	m_function->body()->print(out, tabs+1);
+	out << std::endl;
 }
 
 void FunctionDeclaration::dump_ast(std::ostream& out, int tabs) const

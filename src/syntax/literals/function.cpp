@@ -19,13 +19,12 @@ Command* Function::body() const
 	return m_body;
 }
 
-void Function::print(std::ostream& out) const
+void Function::print(std::ostream& out, int tabs) const
 {
 	out << "function (";
 	print_args(out);
-	out << ") {" << std::endl;
-	m_body->print(out);
-	out << "}";
+	out << ") ";
+	m_body->print(out, tabs+1);
 }
 
 void Function::dump_ast(std::ostream& out, int tabs) const

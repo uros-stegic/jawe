@@ -3,6 +3,11 @@
 
 using namespace jawe;
 
+FunctionCall::FunctionCall(Expr* expr)
+	: Expr(TFunctionCall)
+	, m_expr(expr)
+{}
+
 FunctionCall::FunctionCall(Expr* expr, const std::vector<Expr*>& args)
 	: Expr(TFunctionCall)
 	, m_expr(expr)
@@ -15,22 +20,6 @@ FunctionCall::~FunctionCall()
 	for(auto &arg: m_args) {
 		delete arg;
 	}
-}
-
-void FunctionCall::print(std::ostream& out) const
-{
-	m_expr->print(out);
-	out << "(";
-	print_args(out);
-	out << ")";
-}
-
-void FunctionCall::dump_ast(std::ostream& out, int tabs) const
-{
-	out << std::string(4*tabs, ' ') << "FunctionCall" << std::endl;
-	m_expr->dump_ast(out, tabs+1);
-	out << std::string(4*(tabs+1), ' ') << "Args" << std::endl;
-	dump_args(out, tabs+1);
 }
 
 void FunctionCall::print_args(std::ostream& out) const
@@ -48,6 +37,16 @@ void FunctionCall::print_args(std::ostream& out) const
 		}
 	);
 }
+void FunctionCall::print(std::ostream& out, int tabs) const
+{
+	if( get_parent()->get_type() == TCommandBlock ) {
+		out << std::string(4*tabs, ' ');
+	}
+	m_expr->print(out);
+	out << "(";
+	print_args(out);
+	out << ")";
+}
 
 void FunctionCall::dump_args(std::ostream& out, int tabs) const
 {
@@ -63,18 +62,36 @@ void FunctionCall::dump_args(std::ostream& out, int tabs) const
 		}
 	);
 }
+void FunctionCall::dump_ast(std::ostream& out, int tabs) const
+{
+	out	<< std::string(4*tabs, ' ')
+		<< "FunctionCall" << memory_address()
+		<< std::endl;
+	m_expr->dump_ast(out, tabs+1);
+	out << std::string(4*(tabs+1), ' ') << "Args" << std::endl;
+	dump_args(out, tabs+1);
+}
+
+void FunctionCall::insert(Expr* expr)
+{
+	expr->set_parent(this);
+	m_args.push_back(expr);
+}
 
 FunctionCall* FunctionCall::copy()
 {
-	std::vector<Expr*> cp;
-	cp.reserve(m_args.size());
+	auto expr = m_expr->copy();
+	auto result = new FunctionCall(expr);
+	expr->set_parent(result);
+
 	std::for_each(
 		std::begin(m_args),
 		std::end(m_args),
-		[&cp](Expr* expr) {
-			cp.push_back(expr->copy());
+		[&result](Expr* expr) {
+			result->insert(expr->copy());
 		}
 	);
-	return new FunctionCall(m_expr->copy(), cp);
+
+	return result;
 }
 

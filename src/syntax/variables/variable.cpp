@@ -10,7 +10,7 @@ Variable::Variable(std::string name)
 Variable::~Variable()
 {}
 
-void Variable::print(std::ostream& out) const
+void Variable::print(std::ostream& out, int tabs) const
 {
 	out << m_name;
 }

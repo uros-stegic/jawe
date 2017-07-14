@@ -7,10 +7,11 @@ ConstDeclaration::ConstDeclaration(Expr* expr)
 	: Declaration(expr, QConst, TConstDeclaration)
 {}
 
-void ConstDeclaration::print(std::ostream& out) const
+void ConstDeclaration::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "const ";
-	expr()->print(out);
+	expr()->print(out, tabs+1);
 	out << ";";
 }
 

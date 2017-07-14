@@ -9,7 +9,7 @@ Numeric::Numeric(double value)
 Numeric::~Numeric()
 {}
 
-void Numeric::print(std::ostream& out) const
+void Numeric::print(std::ostream& out, int tabs) const
 {
 	out << m_value;
 }

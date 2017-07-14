@@ -11,7 +11,7 @@ public:
 	CommandBlock(Command*);
 	CommandBlock(const std::vector<Command*>&);
 	~CommandBlock();
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void insert(Command*);
 	void prepend(Command*);
 	void insert_before(Command*, Command*);

@@ -14,7 +14,11 @@ BinaryOperator::~BinaryOperator()
 	delete m_right;
 }
 
-void BinaryOperator::print(std::ostream& out) const {
+void BinaryOperator::print(std::ostream& out, int tabs) const
+{
+	if( get_parent()->get_type() == TCommandBlock ) {
+		out << std::string(4*tabs, ' ');
+	}
 	if( m_left->priority() < priority() ) {
 		out << "(";
 	}

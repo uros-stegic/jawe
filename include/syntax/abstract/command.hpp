@@ -29,7 +29,7 @@ public:
 	Command(CommandType);
 	virtual ~Command() = default;
 
-	virtual void print(std::ostream&) const = 0;
+	virtual void print(std::ostream&, int = 0) const = 0;
 	virtual void dump_ast(std::ostream&, int = 0) const = 0;
 	virtual Command* copy() = 0;
 

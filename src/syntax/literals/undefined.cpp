@@ -8,7 +8,7 @@ Undefined::Undefined()
 Undefined::~Undefined()
 {}
 
-void Undefined::print(std::ostream& out) const
+void Undefined::print(std::ostream& out, int tabs) const
 {
 	out << "undefined";
 }

@@ -8,7 +8,7 @@ Null::Null()
 Null::~Null()
 {}
 
-void Null::print(std::ostream& out) const
+void Null::print(std::ostream& out, int tabs) const
 {
 	out << "null";
 }

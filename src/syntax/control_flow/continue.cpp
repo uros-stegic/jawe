@@ -9,9 +9,10 @@ Continue::Continue()
 Continue::~Continue()
 {}
 
-void Continue::print(std::ostream& out) const
+void Continue::print(std::ostream& out, int tabs) const
 {
-	out << "continue;" << std::endl;
+	out << std::string(4*tabs, ' ');
+	out << "continue;";
 }
 
 void Continue::dump_ast(std::ostream& out, int tabs) const

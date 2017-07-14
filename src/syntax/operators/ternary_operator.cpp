@@ -24,8 +24,11 @@ TernaryOperator::~TernaryOperator()
 	delete m_third;
 }
 
-void TernaryOperator::print(std::ostream& out) const
+void TernaryOperator::print(std::ostream& out, int tabs) const
 {
+	if( get_parent()->get_type() == TCommandBlock ) {
+		out << std::string(4*tabs, ' ');
+	}
 	out << "(";
 	m_first->print(out);
 	out << ")";

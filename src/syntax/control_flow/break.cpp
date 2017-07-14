@@ -9,9 +9,10 @@ Break::Break()
 Break::~Break()
 {}
 
-void Break::print(std::ostream& out) const
+void Break::print(std::ostream& out, int tabs) const
 {
-	out << "break;" << std::endl;
+	out << std::string(4*tabs, ' ');
+	out << "break;";
 }
 
 void Break::dump_ast(std::ostream& out, int tabs) const

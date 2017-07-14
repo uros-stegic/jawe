@@ -8,7 +8,7 @@ class VarDeclaration : public Declaration {
 public:
 	VarDeclaration(Expr*);
 
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	VarDeclaration* copy() override;

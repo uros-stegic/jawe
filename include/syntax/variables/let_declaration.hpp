@@ -8,7 +8,7 @@ class LetDeclaration : public Declaration {
 public:
 	LetDeclaration(Expr*);
 
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	LetDeclaration* copy() override;

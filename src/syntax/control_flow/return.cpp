@@ -12,11 +12,12 @@ Return::~Return()
 	delete m_expr;
 }
 
-void Return::print(std::ostream& out) const
+void Return::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "return ";
-	m_expr->print(out);
-	out << ";" << std::endl;
+	m_expr->print(out, tabs);
+	out << ";";
 }
 
 void Return::dump_ast(std::ostream& out, int tabs) const

@@ -14,12 +14,13 @@ Case::~Case()
 	delete m_command;
 }
 
-void Case::print(std::ostream& out) const
+void Case::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "case ";
 	m_case->print(out);
 	out << ": ";
-	m_command->print(out);
+	m_command->print(out, tabs+1);
 	out << std::endl;
 }
 

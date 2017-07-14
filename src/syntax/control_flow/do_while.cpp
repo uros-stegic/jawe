@@ -14,14 +14,15 @@ DoWhile::~DoWhile()
 	delete m_cond;
 }
 
-void DoWhile::print(std::ostream& out) const
+void DoWhile::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "do" << std::endl;
-	m_body->print(out);
+	m_body->print(out, tabs+1);
+	out << std::string(4*tabs, ' ');
 	out << "while( ";
 	m_cond->print(out);
 	out << " );" << std::endl;
-	out << std::endl;
 }
 
 void DoWhile::dump_ast(std::ostream& out, int tabs) const

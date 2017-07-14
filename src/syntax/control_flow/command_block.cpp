@@ -21,16 +21,22 @@ CommandBlock::~CommandBlock()
 	}
 }
 
-void CommandBlock::print(std::ostream& out) const
+void CommandBlock::print(std::ostream& out, int tabs) const
 {
+	if( get_parent() != nullptr ) {
+		out << "{" << std::endl;
+	}
 	std::for_each(
 		std::begin(m_commands),
 		std::end(m_commands),
 		[&](Command* command) {
-			command->print(out);
+			command->print(out, tabs);
 			out << std::endl;
 		}
 	);
+	if( get_parent() != nullptr ) {
+		out << std::string(4*(tabs-1), ' ') << "}";
+	}
 }
 
 void CommandBlock::insert(Command* other)
@@ -52,7 +58,10 @@ void CommandBlock::replace(Command* from, Command* to)
 {
 	auto pos = std::find(m_commands.begin(), m_commands.end(), from);
 	if( pos == m_commands.end() ) {
-		std::cerr << "WARNING: cannot find " << from->get_type() << std::endl;
+		std::cerr 	<< "WARNING: cannot find "
+					<< from->get_type()
+					<< " <" << from << ">"
+					<< std::endl;
 		return;
 	}
 	delete *pos;

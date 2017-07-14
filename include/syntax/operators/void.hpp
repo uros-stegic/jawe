@@ -8,7 +8,6 @@ namespace jawe {
 class Void : public UnaryOperator {
 public:
 	Void(Expr*);
-	void print(std::ostream&) const override;
 };
 }
 

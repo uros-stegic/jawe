@@ -1,5 +1,5 @@
 TEST_EXAMPLE	= ../tests/optimizations/hoist5.js
-JAWE_FLAGS		= --dump-ast --memory
+JAWE_FLAGS		= --print
 
 .PHONY: all clean run
 

@@ -19,8 +19,9 @@ Array::~Array()
 	}
 }
 
-void Array::print(std::ostream& out) const
+void Array::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "[";
 	if( m_elements.size() == 0 ) {
 		out << "]";

@@ -9,7 +9,7 @@ String::String(std::string str)
 String::~String()
 {}
 
-void String::print(std::ostream& out) const
+void String::print(std::ostream& out, int tabs) const
 {
 	out << '"' << m_string << '"';
 }

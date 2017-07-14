@@ -16,17 +16,20 @@ IfElse::~IfElse()
 	delete m_else;
 }
 
-void IfElse::print(std::ostream& out) const
+void IfElse::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "if( ";
 	m_expr->print(out);
-	out << " ) {" << std::endl;
-	m_if->print(out);
-	out << "}";
+	out << " ) ";
+	if( m_if->get_type() != TCommandBlock ) {
+		out << std::endl;
+	}
+	m_if->print(out, tabs+1);
 	if( m_else != nullptr ) {
-		out << std::endl << "else {" << std::endl;
-		m_else->print(out);
-		out << "}";
+		out << std::endl << std::string(4*tabs, ' ')
+			<< "else ";
+		m_else->print(out, tabs+1);
 	}
 }
 

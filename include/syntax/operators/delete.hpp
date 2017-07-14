@@ -8,7 +8,6 @@ namespace jawe {
 class Delete : public UnaryOperator {
 public:
 	Delete(Expr*);
-	void print(std::ostream&) const override;
 };
 }
 

@@ -6,10 +6,13 @@ DotAccess::DotAccess(Expr* left, Expr* right)
 	: BinaryOperator(left, right, ".", TDotAccess)
 {}
 
-void DotAccess::print(std::ostream& out) const
+void DotAccess::print(std::ostream& out, int tabs) const
 {
-	left()->print(out);
+	if( get_parent()->get_type() == TCommandBlock ) {
+		out << std::string(4*tabs, ' ');
+	}
+	left()->print(out, tabs+1);
 	out << ".";
-	right()->print(out);
+	right()->print(out, tabs+1);
 }
 

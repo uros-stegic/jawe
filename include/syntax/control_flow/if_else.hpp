@@ -9,7 +9,7 @@ class IfElse : public Command {
 public:
 	IfElse(Expr*,Command*,Command* = nullptr);
 	~IfElse();
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	Expr* get_expr() const;

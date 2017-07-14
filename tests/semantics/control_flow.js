@@ -10,7 +10,9 @@ while( i < 4 ) {
 	if( x[i] == 3 ) {
 		continue;
 	} 
-	else break;
+	else {
+		break;
+	}
 }
 
 switch( x[i] ) {

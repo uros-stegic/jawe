@@ -9,7 +9,7 @@ class While : public Command {
 public:
 	While(Expr*,Command*);
 	~While();
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	Expr* get_expr() const;

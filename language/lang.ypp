@@ -137,7 +137,14 @@ Delimited	: Expr										{ $$ = $1; 																}
 			|											{ $$ = new jawe::Empty();												}
 			;
 NamedFun	: function_token id_token '(' IDList ')'
-		 		'{' CodeBlock '}'						{ $$ = new jawe::FunctionDeclaration(*$2, new jawe::Function(*$4, $7)); delete $2; delete $4; $7->set_parent($$); }
+		 		'{' CodeBlock '}'						{
+															auto fn = new jawe::Function(*$4, $7);
+															$7->set_parent(fn);
+															$$ = new jawe::FunctionDeclaration(*$2, fn);
+															fn->set_parent($$);
+															delete $2;
+															delete $4;
+														}
 			;
 Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new jawe::Variable(*$2)); delete $2;	}
 			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2); $2->set_parent($$);				}
@@ -242,7 +249,14 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3); $1->set_parent(
 			
 			| new_token Expr							{ $$ = new jawe::New($2); $2->set_parent($$);							}
 
-			| Expr '(' ArgList ')' %prec fn_call_token	{ $$ = new jawe::FunctionCall($1, *$3);	delete $3; $1->set_parent($$);	}
+			| Expr '(' ArgList ')' %prec fn_call_token	{
+															$$ = new jawe::FunctionCall($1, *$3);
+															$1->set_parent($$);
+															for(auto&& arg: *$3) {
+																arg->set_parent($$);
+															}
+															delete $3;
+														}
 			| LValue %prec phony_lval					{ $$ = $1;																}
   			| Literal									{ $$ = $1; 																}
 
@@ -307,7 +321,13 @@ LiteralList	: LiteralList comma_token Expr				{ $$ = $1; $$->push_back($3);					
 		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1};								}
 			|											{ $$ = new std::vector<jawe::Expr*>();									}
 			;
-ObjLiteral	: '{' KVLiterals '}'						{ $$ = new jawe::Object(*$2); delete $2;								}
+ObjLiteral	: '{' KVLiterals '}'						{
+		   													$$ = new jawe::Object(*$2);
+															for(auto&& kval : *$2) {
+																kval.second->set_parent($$);
+															}
+															delete $2;
+		   												}
 		  	;
 KVLiterals	: KVLiterals comma_token KVLiteral			{ $$ = $1; (*$$)[$3->first] = $3->second; delete $3;					}
 		   	| KVLiteral									{ $$ = new std::map<std::string, jawe::Expr*>; (*$$)[$1->first] = $1->second; delete $1; }

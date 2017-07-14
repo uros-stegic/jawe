@@ -1,7 +1,7 @@
 [1, 2===3, 4+1];
 {
 	x: 1,
-	y: 100 + "pera",
+	y: 100 + "Peter",
 	z: [1, 2, null, undefined]
 };
 

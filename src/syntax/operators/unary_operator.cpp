@@ -12,15 +12,21 @@ UnaryOperator::~UnaryOperator()
 	delete m_operand;
 }
 
-void UnaryOperator::print(std::ostream& out) const
+void UnaryOperator::print(std::ostream& out, int tabs) const
 {
+	if( get_parent()->get_type() == TCommandBlock ) {
+		out << std::string(4*tabs, ' ');
+	}
 	out << symbol();
 	if( m_operand->priority() < priority() ) {
 		out << "(";
 	}
-	m_operand->print(out);
+	m_operand->print(out, tabs+1);
 	if( m_operand->priority() < priority() ) {
 		out << ")";
+	}
+	if( get_parent() != nullptr && get_parent()->get_type() == TCommandBlock ) {
+		out << ";";
 	}
 }
 

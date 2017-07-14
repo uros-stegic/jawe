@@ -12,10 +12,11 @@ Default::~Default()
 	delete m_command;
 }
 
-void Default::print(std::ostream& out) const
+void Default::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "default: ";
-	m_command->print(out);
+	m_command->print(out, tabs+1);
 	out << std::endl;
 }
 

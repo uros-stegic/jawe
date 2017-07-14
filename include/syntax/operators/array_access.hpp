@@ -8,7 +8,7 @@ namespace jawe {
 class ArrayAccess : public BinaryOperator {
 public:
 	ArrayAccess(Expr*, Expr*);
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 };
 }
 

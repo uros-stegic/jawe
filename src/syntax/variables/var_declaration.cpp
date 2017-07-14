@@ -6,10 +6,11 @@ VarDeclaration::VarDeclaration(Expr* expr)
 	: Declaration(expr, QVar, TVarDeclaration)
 {}
 
-void VarDeclaration::print(std::ostream& out) const
+void VarDeclaration::print(std::ostream& out, int tabs) const
 {
+	out << std::string(4*tabs, ' ');
 	out << "var ";
-	expr()->print(out);
+	expr()->print(out, tabs+1);
 	out << ";";
 }
 

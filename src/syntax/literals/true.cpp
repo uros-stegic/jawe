@@ -8,7 +8,7 @@ True::True()
 True::~True()
 {}
 
-void True::print(std::ostream& out) const
+void True::print(std::ostream& out, int tabs) const
 {
 	out << "true";
 }

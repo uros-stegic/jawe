@@ -8,7 +8,7 @@ Nan::Nan()
 Nan::~Nan()
 {}
 
-void Nan::print(std::ostream& out) const
+void Nan::print(std::ostream& out, int tabs) const
 {
 	out << "nan";
 }

@@ -9,7 +9,7 @@ class DoWhile : public Command {
 public:
 	DoWhile(Command*,Expr*);
 	~DoWhile();
-	void print(std::ostream&) const override;
+	void print(std::ostream&, int = 0) const override;
 	void dump_ast(std::ostream&, int = 0) const override;
 
 	Expr* get_expr() const;

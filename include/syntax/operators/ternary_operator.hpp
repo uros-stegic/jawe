@@ -10,8 +10,8 @@ public:
 	TernaryOperator(Expr*, Expr*, Expr*, std::string, std::string, const Priority&);
 	~TernaryOperator();
 
-	void print(std::ostream&) const override;
-	void dump_ast(std::ostream& out, int = 0) const override;
+	void print(std::ostream&, int = 0) const override;
+	void dump_ast(std::ostream&, int = 0) const override;
 	Expr* first_operand() const;
 	Expr* second_operand() const;
 	Expr* third_operand() const;
