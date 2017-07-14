@@ -203,7 +203,7 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3); $1->set_parent(
 	 		| Expr times_token Expr						{ $$ = new jawe::Times($1, $3); $1->set_parent($$); $3->set_parent($$);	}
 	 		| Expr divide_token Expr					{ $$ = new jawe::Divide($1, $3); $1->set_parent($$); $3->set_parent($$);}
 	 		| Expr mod_token Expr						{ $$ = new jawe::Mod($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr power_token Expr						{ $$ = new jawe::Mod($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| Expr power_token Expr						{ $$ = new jawe::Power($1, $3); $1->set_parent($$); $3->set_parent($$);	}
 			| plus_token Expr %prec uplus_token			{ $$ = new jawe::UPlus($2); $2->set_parent($$);							}
 			| minus_token Expr %prec uminus_token		{ $$ = new jawe::UMinus($2); $2->set_parent($$);						}
 

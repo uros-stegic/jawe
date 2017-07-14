@@ -45,3 +45,13 @@ Command* FunctionDeclaration::get_body()
 	return m_function->get_body();
 }
 
+Function* FunctionDeclaration::get_function()
+{
+	return m_function;
+}
+
+std::string FunctionDeclaration::name() const
+{
+	return m_name;
+}
+

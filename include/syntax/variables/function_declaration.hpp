@@ -16,6 +16,8 @@ public:
 
 	FunctionDeclaration* copy() override;
 	Command* get_body();
+	Function* get_function();
+	std::string name() const;
 
 private:
 	std::string m_name;

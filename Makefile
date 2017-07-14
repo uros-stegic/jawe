@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/optimizations/hoist5.js
+TEST_EXAMPLE	= ../tests/syntax/functions.js
 JAWE_FLAGS		= --print
 
 .PHONY: all clean run
