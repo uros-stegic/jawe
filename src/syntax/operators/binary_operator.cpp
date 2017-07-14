@@ -22,7 +22,7 @@ void BinaryOperator::print(std::ostream& out, int tabs) const
 	if( m_left->priority() < priority() ) {
 		out << "(";
 	}
-	m_left->print(out);
+	m_left->print(out, tabs);
 	if( m_left->priority() < priority() ) {
 		out << ")";
 	}
@@ -32,7 +32,7 @@ void BinaryOperator::print(std::ostream& out, int tabs) const
 	if( m_right->priority() < priority() ) {
 		out << "(";
 	}
-	m_right->print(out);
+	m_right->print(out, tabs);
 	if( m_right->priority() < priority() ) {
 		out << ")";
 	}

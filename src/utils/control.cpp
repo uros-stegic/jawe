@@ -59,7 +59,6 @@ void Control::run() const
 		Operations::run_compilation<
 			FileChecker,
 			Parser,
-			Printer,
 			Optimizer<Hoister>,
 			Printer
 		>();
