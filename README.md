@@ -32,7 +32,6 @@ make
 Alternatively, you can run only `make` command from the project root and it will automatically create build folder and run cmake from within
 that folder. After that it'll run make and run jawe with one of the javascript files from tests folder.
 
-
 ## Usage
 
 Since this is still a premature stage of development, no real output is provided. Only two thigs can be done at this
