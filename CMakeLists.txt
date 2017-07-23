@@ -34,6 +34,10 @@ include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 include_directories ("${PROJECT_SOURCE_DIR}/include/syntax")
 include_directories ("${PROJECT_SOURCE_DIR}/include/syntax/abstract")
+include_directories ("${PROJECT_SOURCE_DIR}/include/syntax/variables")
+include_directories ("${PROJECT_SOURCE_DIR}/include/syntax/literals")
+include_directories ("${PROJECT_SOURCE_DIR}/include/syntax/operators")
+include_directories ("${PROJECT_SOURCE_DIR}/include/syntax/control_flow")
 
 file(GLOB_RECURSE SOURCES
 	${PROJECT_SOURCE_DIR}/src/*.cpp
