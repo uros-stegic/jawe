@@ -1,4 +1,4 @@
-;(function($) {
+;(function($){
     "use strict";
     $.fn.smartHover = function(options) {
         options = options || {};

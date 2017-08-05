@@ -11,7 +11,7 @@
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
 
-jawe::Command* program;
+jawe::shared_node* program;
 void *err_block;
 
 void yyerror(const std::string&);
@@ -19,16 +19,13 @@ extern int yylex();
 %}
 
 %union {
-	jawe::CommandBlock* block;
-	jawe::Command* command;
-	jawe::Expr* expr;
+	jawe::shared_node* node;
 	double number;
 	std::string* string;
-	std::vector<jawe::Expr*>* expr_vec;
-	std::vector<jawe::Command*> *comm_vec;
+	std::vector<jawe::shared_node>* node_vec;
 	std::vector<std::string> *string_vec;
-	std::map<std::string, jawe::Expr*> *key_vals;
-	std::pair<std::string, jawe::Expr*> *key_val;
+	std::map<std::string, jawe::shared_node> *key_vals;
+	std::pair<std::string, jawe::shared_node> *key_val;
 }
 
 %token delim_token
@@ -99,24 +96,19 @@ extern int yylex();
 %left bracket_token dot_access_token
 %left prec_parens_token
 
-%type<command> Command Undelimited Delimited 
-%type<block> CodeBlock LambdaBody
-%type<command> Cond While For DoWhile SwitchCase Case Default
-%type<command> NamedFun Declaration
-%type<expr> Expr Assign LValue Literal Primitive IndexedObj ArrLiteral ObjLiteral Lambda
+%type<node> Expr Assign LValue Literal Primitive IndexedObj ArrLiteral ObjLiteral Lambda NamedFun Declaration Cond While For DoWhile SwitchCase Case Default CodeBlock LambdaBody Command Undelimited Delimited
 %type<string> Key
-%type<expr_vec> LiteralList ArgList ArgListNone ArgListFull
 %type<key_vals> KVLiterals
 %type<key_val> KVLiteral
-%type<comm_vec> Cases
+%type<node_vec> Cases LiteralList ArgList ArgListNone ArgListFull
 %type<string_vec> IDList IDListFull IDListEmpty
 %%
 
 /****************************************************** Command Structure ******************************************************/
 Program		: CodeBlock									{ program = $1;															}
 		 	;
-CodeBlock	: CodeBlock Command 						{ $$ = $1; $$->insert($2); $2->set_parent($1);							}
-		 	| Command									{ $$ = new jawe::CommandBlock($1); $1->set_parent($$);					}
+CodeBlock	: CodeBlock Command 						{ $$ = $1; std::get<jawe::command_block_node*>((**$$))->push_back(*$2);							}
+		 	| Command									{ $$ = jawe::make_node_ptr<jawe::command_block_node>(*$1); 					}
 			;
 Command		: Delimited delim_token						{ $$ = $1;																}
 		 	| Undelimited								{ $$ = $1; 																}
@@ -131,65 +123,56 @@ Undelimited	: Cond										{ $$ = $1; 																}
 Delimited	: Expr										{ $$ = $1; 																}
 		 	| Declaration								{ $$ = $1; 																}
 			| DoWhile									{ $$ = $1; 																}
-			| return_token Expr							{ $$ = new jawe::Return($2); $2->set_parent($$);						}
-			| cont_token								{ $$ = new jawe::Continue(); 											}
-			| break_token								{ $$ = new jawe::Break();												}
-			|											{ $$ = new jawe::Empty();												}
+			| return_token Expr							{ $$ = jawe::make_node_ptr<jawe::return_node>(*$2); 						}
+			| cont_token								{ $$ = jawe::make_node_ptr<jawe::continue_node>(); 											}
+			| break_token								{ $$ = jawe::make_node_ptr<jawe::break_node>();												}
+			|											{ $$ = jawe::make_node_ptr<jawe::empty_node>();											}
 			;
 NamedFun	: function_token id_token '(' IDList ')'
 		 		'{' CodeBlock '}'						{
-															auto fn = new jawe::Function(*$4, $7);
-															$7->set_parent(fn);
-															$$ = new jawe::FunctionDeclaration(*$2, fn);
-															fn->set_parent($$);
+															auto fn = jawe::make_node_ptr<jawe::function_object_node>(*$4, *$7, *$2);
+															$$ = jawe::make_node_ptr<jawe::function_declaration_node>(*$2, *fn);
 															delete $2;
 															delete $4;
 														}
 			;
-Declaration	: const_token id_token						{ $$ = new jawe::ConstDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| const_token Assign						{ $$ = new jawe::ConstDeclaration($2); $2->set_parent($$);				}
-			| var_token id_token						{ $$ = new jawe::VarDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| var_token Assign							{ $$ = new jawe::VarDeclaration($2); $2->set_parent($$);				}
-			| let_token id_token						{ $$ = new jawe::LetDeclaration(new jawe::Variable(*$2)); delete $2;	}
-			| let_token Assign 							{ $$ = new jawe::LetDeclaration($2); err_block = &@2; $2->set_parent($$);	}
+Declaration	: const_token id_token						{ $$ = jawe::make_node_ptr<jawe::const_declaration_node>(jawe::make_node<jawe::variable_node>(*$2)); delete $2;	}
+			| const_token Assign						{ $$ = jawe::make_node_ptr<jawe::const_declaration_node>(*$2); }
+			| var_token id_token						{ $$ = jawe::make_node_ptr<jawe::var_declaration_node>(jawe::make_node<jawe::variable_node>(*$2)); delete $2;	}
+			| var_token Assign							{ $$ = jawe::make_node_ptr<jawe::var_declaration_node>(*$2);				}
+			| let_token id_token						{ $$ = jawe::make_node_ptr<jawe::let_declaration_node>(jawe::make_node<jawe::variable_node>(*$2)); delete $2;	}
+			| let_token Assign 							{ $$ = jawe::make_node_ptr<jawe::let_declaration_node>(*$2); err_block = &@2; }
 			;
 Cond		: if_token '(' Expr ')' Command
-	  			%prec no_else_token						{ $$ = new jawe::IfElse($3, $5); $3->set_parent($$); $5->set_parent($$);	}
+	  			%prec no_else_token						{ $$ = jawe::make_node_ptr<jawe::if_else_node>(*$3, *$5);	}
 	  		| if_token '(' Expr ')' Command
-				else_token Command						{ $$ = new jawe::IfElse($3, $5, $7); $3->set_parent($$); $5->set_parent($$); $7->set_parent($$); }
+				else_token Command						{ $$ = jawe::make_node_ptr<jawe::if_else_node>(*$3, *$5, *$7); }
 			;
-While		: while_token '(' Expr ')' Command			{ $$ = new jawe::While($3, $5); $3->set_parent($$); $5->set_parent($$);	}
+While		: while_token '(' Expr ')' Command			{ $$ = jawe::make_node_ptr<jawe::while_node>(*$3, *$5);	}
 	   		;
 For			: for_token '('
 	          Delimited delim_token
 			  Expr delim_token
 			  Delimited ')'
-			  Command									{ $$ = new jawe::For($3, $5, $7, $9);
-			  												$3->set_parent($$);
-			  												$5->set_parent($$);
-			  												$7->set_parent($$);
-			  												$9->set_parent($$);
+			  Command									{ $$ = jawe::make_node_ptr<jawe::for_node>(*$3, *$5, *$7, *$9);
 			  											}
 	  		;
-DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = new jawe::DoWhile($2, $5); $2->set_parent($$); $5->set_parent($$);	}
+DoWhile		: do_token Command while_token '(' Expr ')'	{ $$ = jawe::make_node_ptr<jawe::do_while_node>(*$2, *$5); }
 		 	;
 SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{
-		   													$$ = new jawe::Switch($3, *$6);
-															$3->set_parent($$);
-															for(auto &&cs: *$6) {
-																cs->set_parent($$);
-															}
+		   													$$ = jawe::make_node_ptr<jawe::switch_node>(*$3, *$6);
 															delete $6;
 		   												}
 		   	;
-Cases		: Cases Case								{ $$ = $1; $$->push_back($2); 											}
-			| Cases Default								{ $$ = $1; $$->push_back($2); 											}
-			| Case 										{ $$ = new std::vector<jawe::Command*>{$1}; 							}
-			| Default									{ $$ = new std::vector<jawe::Command*>{$1}; 							}
+Cases		: Cases Case								{ $$ = $1; $$->push_back(*$2); 											}
+			| Cases Default								{ $$ = $1; $$->push_back(*$2); 											}
+			| Case 										{ $$ = new std::vector<jawe::shared_node>{*$1}; 							}
+			| Default									{ $$ = new std::vector<jawe::shared_node>{*$1}; 							}
 			;
-Case		: case_token Primitive ':' Command 			{ $$ = new jawe::Case(static_cast<jawe::Primitive*>($2), $4); $4->set_parent($$); }
+Case		: case_token Primitive ':' Command 			{
+	 $$ = jawe::make_node_ptr<jawe::case_node>(*$2, *$4); }
 	  		;
-Default		: default_token ':' Command					{ $$ = new jawe::Default($3); $3->set_parent($$);						}
+Default		: default_token ':' Command					{ $$ = jawe::make_node_ptr<jawe::default_node>(*$3); }
 		 	;
 /*******************************************************************************************************************************/
 
@@ -198,63 +181,56 @@ Default		: default_token ':' Command					{ $$ = new jawe::Default($3); $3->set_p
 
 
 /********************************************************* Expressions *********************************************************/
-Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-	 		| Expr minus_token Expr						{ $$ = new jawe::Minus($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-	 		| Expr times_token Expr						{ $$ = new jawe::Times($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-	 		| Expr divide_token Expr					{ $$ = new jawe::Divide($1, $3); $1->set_parent($$); $3->set_parent($$);}
-	 		| Expr mod_token Expr						{ $$ = new jawe::Mod($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr power_token Expr						{ $$ = new jawe::Power($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| plus_token Expr %prec uplus_token			{ $$ = new jawe::UPlus($2); $2->set_parent($$);							}
-			| minus_token Expr %prec uminus_token		{ $$ = new jawe::UMinus($2); $2->set_parent($$);						}
+Expr		: Expr plus_token Expr						{ $$ = jawe::make_node_ptr<jawe::plus_node>(*$1, *$3);	}
+	 		| Expr minus_token Expr						{ $$ = jawe::make_node_ptr<jawe::minus_node>(*$1, *$3);  }
+	 		| Expr times_token Expr						{ $$ = jawe::make_node_ptr<jawe::times_node>(*$1, *$3);  }
+	 		| Expr divide_token Expr					{ $$ = jawe::make_node_ptr<jawe::divide_node>(*$1, *$3); }
+	 		| Expr mod_token Expr						{ $$ = jawe::make_node_ptr<jawe::mod_node>(*$1, *$3); 	}
+			| Expr power_token Expr						{ $$ = jawe::make_node_ptr<jawe::power_node>(*$1, *$3); }
+			| plus_token Expr %prec uplus_token			{ $$ = jawe::make_node_ptr<jawe::uplus_node>(*$2); }
+			| minus_token Expr %prec uminus_token		{ $$ = jawe::make_node_ptr<jawe::uminus_node>(*$2); }
 
-			| inc_token Expr							{ $$ = new jawe::Increment($2); $2->set_parent($$);						}
-			| dec_token Expr							{ $$ = new jawe::Decrement($2); $2->set_parent($$);						}
-			| Expr inc_token %prec post_inc				{ $$ = new jawe::PostIncrement($1);	$1->set_parent($$);					}
-			| Expr dec_token %prec post_dec				{ $$ = new jawe::PostDecrement($1);	$1->set_parent($$);					}
-			| delete_token Expr							{ $$ = new jawe::Delete($2); $2->set_parent($$); 						}
-			| typeof_token Expr							{ $$ = new jawe::TypeOf($2); $2->set_parent($$);						}
-			| void_token Expr							{ $$ = new jawe::Void($2); $2->set_parent($$);							}
-			
-			| Expr eq_token Expr						{ $$ = new jawe::Equals($1, $3); $1->set_parent($$); $3->set_parent($$);}
-			| Expr not_eq_token Expr					{ $$ = new jawe::NotEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr t_eq_token Expr						{ $$ = new jawe::TypedEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr t_not_eq_token Expr					{ $$ = new jawe::TypedNotEquals($1, $3); $1->set_parent($$); $3->set_parent($$);}
-			| Expr less_token Expr						{ $$ = new jawe::LessThen($1, $3); $1->set_parent($$); $3->set_parent($$);		}
-			| Expr less_eq_token Expr					{ $$ = new jawe::LessOrEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr great_token Expr						{ $$ = new jawe::GreaterThen($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr great_eq_token Expr					{ $$ = new jawe::GreaterOrEquals($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr in_token Expr						{ $$ = new jawe::In($1, $3); $1->set_parent($$); $3->set_parent($$);			}
-			| Expr instanceof_token Expr				{ $$ = new jawe::InstanceOf($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| inc_token Expr							{ $$ = jawe::make_node_ptr<jawe::increment_node>(*$2); 	}
+			| dec_token Expr							{ $$ = jawe::make_node_ptr<jawe::decrement_node>(*$2); 	}
+			| Expr inc_token %prec post_inc				{ $$ = jawe::make_node_ptr<jawe::post_increment_node>(*$1);}
+			| Expr dec_token %prec post_dec				{ $$ = jawe::make_node_ptr<jawe::post_decrement_node>(*$1);}
+			| delete_token Expr							{ $$ = jawe::make_node_ptr<jawe::delete_node>(*$2); }
+			| typeof_token Expr							{ $$ = jawe::make_node_ptr<jawe::typeof_node>(*$2); }
+			| void_token Expr							{ $$ = jawe::make_node_ptr<jawe::void_node>(*$2); }
 
-			| log_not_token Expr						{ $$ = new jawe::LogicNot($2); $2->set_parent($$);								}
-			| Expr log_and_token Expr					{ $$ = new jawe::LogicAnd($1, $3); $1->set_parent($$); $3->set_parent($$);		}
-			| Expr log_or_token Expr					{ $$ = new jawe::LogicOr($1, $3); $1->set_parent($$); $3->set_parent($$);		}
+			| Expr eq_token Expr						{ $$ = jawe::make_node_ptr<jawe::equals_node>(*$1, *$3);}
+			| Expr not_eq_token Expr					{ $$ = jawe::make_node_ptr<jawe::not_equals_node>(*$1, *$3); 	}
+			| Expr t_eq_token Expr						{ $$ = jawe::make_node_ptr<jawe::typed_equals_node>(*$1, *$3);	}
+			| Expr t_not_eq_token Expr					{ $$ = jawe::make_node_ptr<jawe::typed_not_equals_node>(*$1, *$3); }
+			| Expr less_token Expr						{ $$ = jawe::make_node_ptr<jawe::less_then_node>(*$1, *$3); 		}
+			| Expr less_eq_token Expr					{ $$ = jawe::make_node_ptr<jawe::less_or_equals_node>(*$1, *$3); }
+			| Expr great_token Expr						{ $$ = jawe::make_node_ptr<jawe::greater_then_node>(*$1, *$3); 	}
+			| Expr great_eq_token Expr					{ $$ = jawe::make_node_ptr<jawe::greater_or_equals_node>(*$1, *$3);	}
+			| Expr in_token Expr						{ $$ = jawe::make_node_ptr<jawe::in_node>(*$1, *$3); }
+			| Expr instanceof_token Expr				{ $$ = jawe::make_node_ptr<jawe::instance_of_node>(*$1, *$3);	}
 
-			| bit_not_token Expr						{ $$ = new jawe::BitNot($2); $2->set_parent($$);								}
-			| Expr bit_and_token Expr					{ $$ = new jawe::BitAnd($1, $3); $1->set_parent($$); $3->set_parent($$);		}
-			| Expr bit_or_token Expr					{ $$ = new jawe::BitOr($1, $3); $1->set_parent($$); $3->set_parent($$);			}
-			| Expr bit_xor_token Expr					{ $$ = new jawe::BitXor($1, $3); $1->set_parent($$); $3->set_parent($$);		}
-			| Expr bit_shift_l_token Expr				{ $$ = new jawe::BitShiftLeft($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr bit_shift_r_token Expr				{ $$ = new jawe::BitShiftRight($1, $3); $1->set_parent($$); $3->set_parent($$);	}
-			| Expr bit_shift_u_token Expr				{ $$ = new jawe::BitShiftUnsigned($1, $3); $1->set_parent($$); $3->set_parent($$);	}
+			| log_not_token Expr						{ $$ = jawe::make_node_ptr<jawe::logic_not_node>(*$2); }
+			| Expr log_and_token Expr					{ $$ = jawe::make_node_ptr<jawe::logic_and_node>(*$1, *$3);		}
+			| Expr log_or_token Expr					{ $$ = jawe::make_node_ptr<jawe::logic_or_node>(*$1, *$3); 		}
+
+			| bit_not_token Expr						{ $$ = jawe::make_node_ptr<jawe::bit_not_node>(*$2); }
+			| Expr bit_and_token Expr					{ $$ = jawe::make_node_ptr<jawe::bit_and_node>(*$1, *$3); 		}
+			| Expr bit_or_token Expr					{ $$ = jawe::make_node_ptr<jawe::bit_or_node>(*$1, *$3); 			}
+			| Expr bit_xor_token Expr					{ $$ = jawe::make_node_ptr<jawe::bit_xor_node>(*$1, *$3);		}
+			| Expr bit_shift_l_token Expr				{ $$ = jawe::make_node_ptr<jawe::bit_shift_l_node>(*$1, *$3); }
+			| Expr bit_shift_r_token Expr				{ $$ = jawe::make_node_ptr<jawe::bit_shift_r_node>(*$1, *$3); 	}
+			| Expr bit_shift_u_token Expr				{ $$ = jawe::make_node_ptr<jawe::bit_shift_u_node>(*$1, *$3); 	}
 
 			| Expr '?' Expr ':' Expr					{
-															$$ = new jawe::TernaryConditional($1, $3, $5);
-															$1->set_parent($$);
-															$3->set_parent($$);
-															$5->set_parent($$);
+															$$ = jawe::make_node_ptr<jawe::ternary_conditional_node>(*$1, *$3, *$5);
 														}
 
    			| '(' Expr ')' %prec prec_parens_token		{ $$ = $2;																}
-			
-			| new_token Expr							{ $$ = new jawe::New($2); $2->set_parent($$);							}
+
+			| new_token Expr							{ $$ = jawe::make_node_ptr<jawe::new_node>(*$2); 				}
 
 			| Expr '(' ArgList ')' %prec fn_call_token	{
-															$$ = new jawe::FunctionCall($1, *$3);
-															$1->set_parent($$);
-															for(auto&& arg: *$3) {
-																arg->set_parent($$);
-															}
+															$$ = jawe::make_node_ptr<jawe::function_call_node>(*$1, *$3);
 															delete $3;
 														}
 			| LValue %prec phony_lval					{ $$ = $1;																}
@@ -262,31 +238,31 @@ Expr		: Expr plus_token Expr						{ $$ = new jawe::Plus($1, $3); $1->set_parent(
 
 			| Assign									{ $$ = $1;																}
   			;
-LValue		: Expr bracket_token Expr bracket_closed	{ $$ = new jawe::ArrayAccess($1, $3); $1->set_parent($$); $3->set_parent($$); }
-			| Expr dot_access_token Expr				{ $$ = new jawe::DotAccess($1, $3); $1->set_parent($$); $3->set_parent($$);   }
-			| id_token									{ $$ = new jawe::Variable(*$1); delete $1;								}
+LValue		: Expr bracket_token Expr bracket_closed	{ $$ = jawe::make_node_ptr<jawe::array_access_node>(*$1, *$3); }
+			| Expr dot_access_token Expr				{ $$ = jawe::make_node_ptr<jawe::dot_access_node>(*$1, *$3);    }
+			| id_token									{ $$ = jawe::make_node_ptr<jawe::variable_node>(*$1); delete $1;								}
 			;
 ArgList		: ArgListNone								{ $$ = $1;																}
 		 	| ArgListFull								{ $$ = $1;																}
 			;
-ArgListFull	: ArgListFull comma_token Expr				{ $$ = $1; $$->push_back($3);											}
-		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1};								}
+ArgListFull	: ArgListFull comma_token Expr				{ $$ = $1; $$->push_back(*$3);											}
+		 	| Expr										{ $$ = new std::vector<jawe::shared_node>{*$1};								}
 			;
-ArgListNone	: 											{ $$ = new std::vector<jawe::Expr*>;									}
+ArgListNone	: 											{ $$ = new std::vector<jawe::shared_node>;									}
 			;
-Assign		: LValue assign_token Expr					{ $$ = new jawe::Assign($1, $3); $1->set_parent($$); $3->set_parent($$);      }
-			| LValue ass_plus_token Expr				{ $$ = new jawe::AssignPlus($1, $3);$1->set_parent($$); $3->set_parent($$);	  }
-			| LValue ass_minus_token Expr				{ $$ = new jawe::AssignMinus($1, $3);$1->set_parent($$); $3->set_parent($$);  } 
-			| LValue ass_pow_token Expr					{ $$ = new jawe::AssignPow($1, $3);$1->set_parent($$); $3->set_parent($$);    }
-			| LValue ass_mult_token Expr				{ $$ = new jawe::AssignMul($1, $3);$1->set_parent($$); $3->set_parent($$);	  }
-			| LValue ass_div_token Expr					{ $$ = new jawe::AssignDiv($1, $3);	$1->set_parent($$); $3->set_parent($$);   }
-			| LValue ass_mod_token Expr					{ $$ = new jawe::AssignMod($1, $3);	$1->set_parent($$); $3->set_parent($$);	  }
-			| LValue ass_sh_l_token Expr				{ $$ = new jawe::AssignShiftL($1, $3);$1->set_parent($$); $3->set_parent($$); }
-			| LValue ass_sh_r_token Expr				{ $$ = new jawe::AssignShiftR($1, $3);$1->set_parent($$); $3->set_parent($$); }
-			| LValue ass_sh_u_token Expr				{ $$ = new jawe::AssignShiftU($1, $3);$1->set_parent($$); $3->set_parent($$); }
-			| LValue ass_con_b_token Expr				{ $$ = new jawe::AssignBitCon($1, $3);$1->set_parent($$); $3->set_parent($$); }
-			| LValue ass_xor_b_token Expr				{ $$ = new jawe::AssignBitXor($1, $3);$1->set_parent($$); $3->set_parent($$); }
-			| LValue ass_dis_b_token Expr				{ $$ = new jawe::AssignBitDis($1, $3);$1->set_parent($$); $3->set_parent($$); }
+Assign		: LValue assign_token Expr					{ $$ = jawe::make_node_ptr<jawe::assign_node>(*$1, *$3);   }
+			| LValue ass_plus_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_plus_node>(*$1, *$3); 	 }
+			| LValue ass_minus_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_minus_node>(*$1, *$3);  }
+			| LValue ass_pow_token Expr					{ $$ = jawe::make_node_ptr<jawe::assign_pow_node>(*$1, *$3);   }
+			| LValue ass_mult_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_mul_node>(*$1, *$3);  }
+			| LValue ass_div_token Expr					{ $$ = jawe::make_node_ptr<jawe::assign_div_node>(*$1, *$3);   }
+			| LValue ass_mod_token Expr					{ $$ = jawe::make_node_ptr<jawe::assign_mod_node>(*$1, *$3);	  }
+			| LValue ass_sh_l_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_shift_l_node>(*$1, *$3); }
+			| LValue ass_sh_r_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_shift_r_node>(*$1, *$3); }
+			| LValue ass_sh_u_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_shift_u_node>(*$1, *$3); }
+			| LValue ass_con_b_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_bit_con_node>(*$1, *$3); }
+			| LValue ass_xor_b_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_bit_xor_node>(*$1, *$3); }
+			| LValue ass_dis_b_token Expr				{ $$ = jawe::make_node_ptr<jawe::assign_bit_dis_node>(*$1, *$3); }
 			;
 /*******************************************************************************************************************************/
 
@@ -299,49 +275,51 @@ Literal		: Primitive									{ $$ = $1; 																}
 			| IndexedObj								{ $$ = $1; 																}
 			| Lambda									{ $$ = $1;																}
 			;
-Primitive	: undefined_token							{ $$ = new jawe::Undefined();											}
-		 	| null_token								{ $$ = new jawe::Null();												}
-			| nan_token									{ $$ = new jawe::Nan();													}
-			| true_token								{ $$ = new jawe::True();												}
-			| false_token								{ $$ = new jawe::False();												}
-			| num_token									{ $$ = new jawe::Numeric($1);											}
-			| string_token								{ $$ = new jawe::String(*$1); delete $1;								}
+Primitive	: undefined_token							{ $$ = jawe::make_node_ptr<jawe::undefined_node>();											}
+		 	| null_token								{ $$ = jawe::make_node_ptr<jawe::null_node>();												}
+			| nan_token									{ $$ = jawe::make_node_ptr<jawe::nan_node>();													}
+			| true_token								{ $$ = jawe::make_node_ptr<jawe::true_node>();												}
+			| false_token								{ $$ = jawe::make_node_ptr<jawe::false_node>();												}
+			| num_token									{ $$ = jawe::make_node_ptr<jawe::numeric_node>($1);											}
+			| string_token								{ $$ = jawe::make_node_ptr<jawe::string_node>(*$1); delete $1;								}
 			;
 IndexedObj	: ArrLiteral								{ $$ = $1; 																}
 			| ObjLiteral								{ $$ = $1; 																}
 			;
 ArrLiteral	: bracket_token LiteralList bracket_closed	{
-		   													$$ = new jawe::Array(*$2);
-															for(auto&& lit: *$2) {
-																lit->set_parent($$);
+		   													$$ = jawe::make_node_ptr<jawe::array_node>(*$2);
 															}
-														}
 		  	;
-LiteralList	: LiteralList comma_token Expr				{ $$ = $1; $$->push_back($3);											}
-		 	| Expr										{ $$ = new std::vector<jawe::Expr*>{$1};								}
-			|											{ $$ = new std::vector<jawe::Expr*>();									}
+LiteralList	: LiteralList comma_token Expr				{ $$ = $1; $$->push_back(*$3);											}
+		 	| Expr										{ $$ = new std::vector<jawe::shared_node>{*$1};								}
+			|											{ $$ = new std::vector<jawe::shared_node>();									}
 			;
 ObjLiteral	: '{' KVLiterals '}'						{
-		   													$$ = new jawe::Object(*$2);
-															for(auto&& kval : *$2) {
-																kval.second->set_parent($$);
-															}
+		   													$$ = jawe::make_node_ptr<jawe::object_node>(*$2);
 															delete $2;
 		   												}
 		  	;
-KVLiterals	: KVLiterals comma_token KVLiteral			{ $$ = $1; (*$$)[$3->first] = $3->second; delete $3;					}
-		   	| KVLiteral									{ $$ = new std::map<std::string, jawe::Expr*>; (*$$)[$1->first] = $1->second; delete $1; }
-			|											{ $$ = new std::map<std::string, jawe::Expr*>;							}
+KVLiterals	: KVLiterals comma_token KVLiteral			{
+	$$ = $1;
+	(*$$)[$3->first] = $3->second; 
+	delete $3;
+}
+		   	| KVLiteral									{
+					$$ = new std::map<std::string, jawe::shared_node>;
+					(*$$)[$1->first] = $1->second;
+					delete $1;
+				 }
+			|											{ $$ = new std::map<std::string, jawe::shared_node>;							}
 			;
-KVLiteral	: Key ':' Expr								{ $$ = new std::pair<std::string, jawe::Expr*>(*$1, $3); delete $1;		}
+KVLiteral	: Key ':' Expr								{ $$ = new std::pair<std::string, jawe::shared_node>(*$1, *$3); delete $1;		}
 		  	;
 Key			: string_token								{ $$ = $1; 																}
 	  		| id_token									{ $$ = $1; 																}
 			;
 Lambda		: function_token '(' IDList ')'
-				'{' LambdaBody '}'						{ $$ = new jawe::Function(*$3, $6); delete $3; $6->set_parent($$);		}
+				'{' LambdaBody '}'						{ $$ = jawe::make_node_ptr<jawe::function_object_node>(*$3, *$6, "lambda"); }
 LambdaBody	: CodeBlock									{ $$ = $1;																}
-		   	|											{ $$ = new jawe::CommandBlock();										}
+		   	|											{ $$ = jawe::make_node_ptr<jawe::command_block_node>();										}
 			;
 IDList		: IDListFull								{ $$ = $1; 																}
 			| IDListEmpty								{ $$ = $1; 																}
@@ -361,7 +339,7 @@ void yyerror(const std::string& msg) {
 	int position = jawe::Reader::get_reader().get_position();
 	std::string buff = jawe::Reader::get_reader().get_buffer();
 	YYLTYPE* block = (YYLTYPE*)err_block;
-	
+
 	if( block ) {
 		line = block->first_line + 1;
 		position = block->first_column;
@@ -370,7 +348,7 @@ void yyerror(const std::string& msg) {
 	std::cerr	<< "[ERROR] "
 				<< filename
 				<< ":" << (line)
-				<< ":" << (position) 
+				<< ":" << (position)
 				<< ": " << msg
 				<< std::endl;
 
@@ -385,4 +363,3 @@ void yyerror(const std::string& msg) {
 
 	std::exit(EXIT_FAILURE);
 }
-

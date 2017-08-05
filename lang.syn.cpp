@@ -76,7 +76,7 @@
 #define YYDEBUG 1
 #define YYERROR_VERBOSE 1
 
-jawe::Command* program;
+jawe::shared_node* program;
 void *err_block;
 
 void yyerror(const std::string&);
@@ -208,18 +208,15 @@ union YYSTYPE
 {
 #line 21 "language/lang.ypp" /* yacc.c:355  */
 
-	jawe::CommandBlock* block;
-	jawe::Command* command;
-	jawe::Expr* expr;
+	jawe::shared_node* node;
 	double number;
 	std::string* string;
-	std::vector<jawe::Expr*>* expr_vec;
-	std::vector<jawe::Command*> *comm_vec;
+	std::vector<jawe::shared_node>* node_vec;
 	std::vector<std::string> *string_vec;
-	std::map<std::string, jawe::Expr*> *key_vals;
-	std::pair<std::string, jawe::Expr*> *key_val;
+	std::map<std::string, jawe::shared_node> *key_vals;
+	std::pair<std::string, jawe::shared_node> *key_val;
 
-#line 223 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:355  */
+#line 220 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -250,7 +247,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 254 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:358  */
+#line 251 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -557,20 +554,20 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   116,   116,   118,   119,   121,   122,   124,   125,   126,
-     127,   128,   129,   131,   132,   133,   134,   135,   136,   137,
-     139,   149,   150,   151,   152,   153,   154,   156,   158,   161,
-     163,   174,   176,   185,   186,   187,   188,   190,   192,   201,
-     202,   203,   204,   205,   206,   207,   208,   210,   211,   212,
-     213,   214,   215,   216,   218,   219,   220,   221,   222,   223,
-     224,   225,   226,   227,   229,   230,   231,   233,   234,   235,
-     236,   237,   238,   239,   241,   248,   250,   252,   260,   261,
-     263,   265,   266,   267,   269,   270,   272,   273,   275,   277,
-     278,   279,   280,   281,   282,   283,   284,   285,   286,   287,
-     288,   289,   298,   299,   300,   302,   303,   304,   305,   306,
-     307,   308,   310,   311,   313,   320,   321,   322,   324,   332,
-     333,   334,   336,   338,   339,   341,   343,   344,   346,   347,
-     349,   350,   352
+       0,   108,   108,   110,   111,   113,   114,   116,   117,   118,
+     119,   120,   121,   123,   124,   125,   126,   127,   128,   129,
+     131,   139,   140,   141,   142,   143,   144,   146,   148,   151,
+     153,   160,   162,   167,   168,   169,   170,   172,   175,   184,
+     185,   186,   187,   188,   189,   190,   191,   193,   194,   195,
+     196,   197,   198,   199,   201,   202,   203,   204,   205,   206,
+     207,   208,   209,   210,   212,   213,   214,   216,   217,   218,
+     219,   220,   221,   222,   224,   228,   230,   232,   236,   237,
+     239,   241,   242,   243,   245,   246,   248,   249,   251,   253,
+     254,   255,   256,   257,   258,   259,   260,   261,   262,   263,
+     264,   265,   274,   275,   276,   278,   279,   280,   281,   282,
+     283,   284,   286,   287,   289,   293,   294,   295,   297,   302,
+     307,   312,   314,   316,   317,   319,   321,   322,   324,   325,
+     327,   328,   330
 };
 #endif
 
@@ -1881,835 +1878,821 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 116 "language/lang.ypp" /* yacc.c:1646  */
-    { program = (yyvsp[0].block);															}
-#line 1887 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 108 "language/lang.ypp" /* yacc.c:1646  */
+    { program = (yyvsp[0].node);															}
+#line 1884 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 118 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.block) = (yyvsp[-1].block); (yyval.block)->insert((yyvsp[0].command)); (yyvsp[0].command)->set_parent((yyvsp[-1].block));							}
-#line 1893 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 110 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[-1].node); std::get<jawe::command_block_node*>((**(yyval.node)))->push_back(*(yyvsp[0].node));							}
+#line 1890 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 119 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.block) = new jawe::CommandBlock((yyvsp[0].command)); (yyvsp[0].command)->set_parent((yyval.block));					}
-#line 1899 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 111 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::command_block_node>(*(yyvsp[0].node)); 					}
+#line 1896 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 121 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[-1].command);																}
-#line 1905 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 113 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[-1].node);																}
+#line 1902 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 122 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1911 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 114 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1908 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 124 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1917 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 116 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1914 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 125 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1923 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 117 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1920 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 126 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1929 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 118 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1926 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 127 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1935 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 119 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1932 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 128 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1941 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 120 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1938 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 129 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[-1].block); 																}
-#line 1947 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 121 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[-1].node); 																}
+#line 1944 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 131 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].expr); 																}
-#line 1953 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 123 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1950 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 132 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1959 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 124 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1956 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 133 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = (yyvsp[0].command); 																}
-#line 1965 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 125 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 1962 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 134 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Return((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.command));						}
-#line 1971 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 126 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::return_node>(*(yyvsp[0].node)); 						}
+#line 1968 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 135 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Continue(); 											}
-#line 1977 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 127 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::continue_node>(); 											}
+#line 1974 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 136 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Break();												}
-#line 1983 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 128 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::break_node>();												}
+#line 1980 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 137 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Empty();												}
-#line 1989 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 129 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::empty_node>();											}
+#line 1986 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 140 "language/lang.ypp" /* yacc.c:1646  */
+#line 132 "language/lang.ypp" /* yacc.c:1646  */
     {
-															auto fn = new jawe::Function(*(yyvsp[-4].string_vec), (yyvsp[-1].block));
-															(yyvsp[-1].block)->set_parent(fn);
-															(yyval.command) = new jawe::FunctionDeclaration(*(yyvsp[-6].string), fn);
-															fn->set_parent((yyval.command));
+															auto fn = jawe::make_node_ptr<jawe::function_object_node>(*(yyvsp[-4].string_vec), *(yyvsp[-1].node), *(yyvsp[-6].string));
+															(yyval.node) = jawe::make_node_ptr<jawe::function_declaration_node>(*(yyvsp[-6].string), *fn);
 															delete (yyvsp[-6].string);
 															delete (yyvsp[-4].string_vec);
 														}
-#line 2002 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 1997 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 149 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::ConstDeclaration(new jawe::Variable(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
-#line 2008 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 139 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::const_declaration_node>(jawe::make_node<jawe::variable_node>(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
+#line 2003 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 150 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::ConstDeclaration((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.command));				}
-#line 2014 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 140 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::const_declaration_node>(*(yyvsp[0].node)); }
+#line 2009 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 151 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::VarDeclaration(new jawe::Variable(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
-#line 2020 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 141 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::var_declaration_node>(jawe::make_node<jawe::variable_node>(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
+#line 2015 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 152 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::VarDeclaration((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.command));				}
-#line 2026 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 142 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::var_declaration_node>(*(yyvsp[0].node));				}
+#line 2021 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 153 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::LetDeclaration(new jawe::Variable(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
-#line 2032 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 143 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::let_declaration_node>(jawe::make_node<jawe::variable_node>(*(yyvsp[0].string))); delete (yyvsp[0].string);	}
+#line 2027 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 154 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::LetDeclaration((yyvsp[0].expr)); err_block = &(yylsp[0]); (yyvsp[0].expr)->set_parent((yyval.command));	}
-#line 2038 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 144 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::let_declaration_node>(*(yyvsp[0].node)); err_block = &(yylsp[0]); }
+#line 2033 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 157 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::IfElse((yyvsp[-2].expr), (yyvsp[0].command)); (yyvsp[-2].expr)->set_parent((yyval.command)); (yyvsp[0].command)->set_parent((yyval.command));	}
-#line 2044 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 147 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::if_else_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2039 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 159 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::IfElse((yyvsp[-4].expr), (yyvsp[-2].command), (yyvsp[0].command)); (yyvsp[-4].expr)->set_parent((yyval.command)); (yyvsp[-2].command)->set_parent((yyval.command)); (yyvsp[0].command)->set_parent((yyval.command)); }
-#line 2050 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 149 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::if_else_node>(*(yyvsp[-4].node), *(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2045 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 161 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::While((yyvsp[-2].expr), (yyvsp[0].command)); (yyvsp[-2].expr)->set_parent((yyval.command)); (yyvsp[0].command)->set_parent((yyval.command));	}
-#line 2056 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 151 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::while_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2051 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 167 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::For((yyvsp[-6].command), (yyvsp[-4].expr), (yyvsp[-2].command), (yyvsp[0].command));
-			  												(yyvsp[-6].command)->set_parent((yyval.command));
-			  												(yyvsp[-4].expr)->set_parent((yyval.command));
-			  												(yyvsp[-2].command)->set_parent((yyval.command));
-			  												(yyvsp[0].command)->set_parent((yyval.command));
+#line 157 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::for_node>(*(yyvsp[-6].node), *(yyvsp[-4].node), *(yyvsp[-2].node), *(yyvsp[0].node));
 			  											}
-#line 2067 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2058 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 174 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::DoWhile((yyvsp[-4].command), (yyvsp[-1].expr)); (yyvsp[-4].command)->set_parent((yyval.command)); (yyvsp[-1].expr)->set_parent((yyval.command));	}
-#line 2073 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 160 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::do_while_node>(*(yyvsp[-4].node), *(yyvsp[-1].node)); }
+#line 2064 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 176 "language/lang.ypp" /* yacc.c:1646  */
+#line 162 "language/lang.ypp" /* yacc.c:1646  */
     {
-		   													(yyval.command) = new jawe::Switch((yyvsp[-4].expr), *(yyvsp[-1].comm_vec));
-															(yyvsp[-4].expr)->set_parent((yyval.command));
-															for(auto &&cs: *(yyvsp[-1].comm_vec)) {
-																cs->set_parent((yyval.command));
-															}
-															delete (yyvsp[-1].comm_vec);
+		   													(yyval.node) = jawe::make_node_ptr<jawe::switch_node>(*(yyvsp[-4].node), *(yyvsp[-1].node_vec));
+															delete (yyvsp[-1].node_vec);
 		   												}
-#line 2086 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2073 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 185 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.comm_vec) = (yyvsp[-1].comm_vec); (yyval.comm_vec)->push_back((yyvsp[0].command)); 											}
-#line 2092 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 167 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[-1].node_vec); (yyval.node_vec)->push_back(*(yyvsp[0].node)); 											}
+#line 2079 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 186 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.comm_vec) = (yyvsp[-1].comm_vec); (yyval.comm_vec)->push_back((yyvsp[0].command)); 											}
-#line 2098 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 168 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[-1].node_vec); (yyval.node_vec)->push_back(*(yyvsp[0].node)); 											}
+#line 2085 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 187 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.comm_vec) = new std::vector<jawe::Command*>{(yyvsp[0].command)}; 							}
-#line 2104 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 169 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>{*(yyvsp[0].node)}; 							}
+#line 2091 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 188 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.comm_vec) = new std::vector<jawe::Command*>{(yyvsp[0].command)}; 							}
-#line 2110 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 170 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>{*(yyvsp[0].node)}; 							}
+#line 2097 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 190 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Case(static_cast<jawe::Primitive*>((yyvsp[-2].expr)), (yyvsp[0].command)); (yyvsp[0].command)->set_parent((yyval.command)); }
-#line 2116 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 172 "language/lang.ypp" /* yacc.c:1646  */
+    {
+	 (yyval.node) = jawe::make_node_ptr<jawe::case_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2104 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 192 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.command) = new jawe::Default((yyvsp[0].command)); (yyvsp[0].command)->set_parent((yyval.command));						}
-#line 2122 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 175 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::default_node>(*(yyvsp[0].node)); }
+#line 2110 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 201 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Plus((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2128 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 184 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::plus_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2116 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 202 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Minus((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2134 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 185 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::minus_node>(*(yyvsp[-2].node), *(yyvsp[0].node));  }
+#line 2122 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 203 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Times((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2140 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 186 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::times_node>(*(yyvsp[-2].node), *(yyvsp[0].node));  }
+#line 2128 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 204 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Divide((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));}
-#line 2146 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 187 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::divide_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2134 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 205 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Mod((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2152 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 188 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::mod_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	}
+#line 2140 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 206 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Power((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2158 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 189 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::power_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2146 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 207 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::UPlus((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));							}
-#line 2164 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 190 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::uplus_node>(*(yyvsp[0].node)); }
+#line 2152 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 208 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::UMinus((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));						}
-#line 2170 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 191 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::uminus_node>(*(yyvsp[0].node)); }
+#line 2158 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 210 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Increment((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));						}
-#line 2176 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 193 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::increment_node>(*(yyvsp[0].node)); 	}
+#line 2164 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 211 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Decrement((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));						}
-#line 2182 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 194 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::decrement_node>(*(yyvsp[0].node)); 	}
+#line 2170 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 212 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::PostIncrement((yyvsp[-1].expr));	(yyvsp[-1].expr)->set_parent((yyval.expr));					}
-#line 2188 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 195 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::post_increment_node>(*(yyvsp[-1].node));}
+#line 2176 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 213 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::PostDecrement((yyvsp[-1].expr));	(yyvsp[-1].expr)->set_parent((yyval.expr));					}
-#line 2194 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 196 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::post_decrement_node>(*(yyvsp[-1].node));}
+#line 2182 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 214 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Delete((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); 						}
-#line 2200 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 197 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::delete_node>(*(yyvsp[0].node)); }
+#line 2188 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 215 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::TypeOf((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));						}
-#line 2206 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 198 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::typeof_node>(*(yyvsp[0].node)); }
+#line 2194 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 216 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Void((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));							}
-#line 2212 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 199 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::void_node>(*(yyvsp[0].node)); }
+#line 2200 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 218 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Equals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));}
-#line 2218 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 201 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node));}
+#line 2206 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 219 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::NotEquals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2224 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 202 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::not_equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	}
+#line 2212 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 220 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::TypedEquals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2230 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 203 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::typed_equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2218 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 221 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::TypedNotEquals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));}
-#line 2236 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 204 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::typed_not_equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2224 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 222 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::LessThen((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));		}
-#line 2242 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 205 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::less_then_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 		}
+#line 2230 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 223 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::LessOrEquals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2248 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 206 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::less_or_equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2236 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 224 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::GreaterThen((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2254 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 207 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::greater_then_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	}
+#line 2242 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 225 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::GreaterOrEquals((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2260 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 208 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::greater_or_equals_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2248 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 226 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::In((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));			}
-#line 2266 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 209 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::in_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2254 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 227 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::InstanceOf((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2272 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 210 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::instance_of_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	}
+#line 2260 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 229 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::LogicNot((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));								}
-#line 2278 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 212 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::logic_not_node>(*(yyvsp[0].node)); }
+#line 2266 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 230 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::LogicAnd((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));		}
-#line 2284 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 213 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::logic_and_node>(*(yyvsp[-2].node), *(yyvsp[0].node));		}
+#line 2272 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 231 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::LogicOr((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));		}
-#line 2290 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 214 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::logic_or_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 		}
+#line 2278 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 233 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitNot((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));								}
-#line 2296 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 216 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_not_node>(*(yyvsp[0].node)); }
+#line 2284 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 234 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitAnd((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));		}
-#line 2302 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 217 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_and_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 		}
+#line 2290 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 235 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitOr((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));			}
-#line 2308 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 218 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_or_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 			}
+#line 2296 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 236 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitXor((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));		}
-#line 2314 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 219 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_xor_node>(*(yyvsp[-2].node), *(yyvsp[0].node));		}
+#line 2302 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 237 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitShiftLeft((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2320 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 220 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_shift_l_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2308 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 238 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitShiftRight((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2326 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 221 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_shift_r_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	}
+#line 2314 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 239 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::BitShiftUnsigned((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	}
-#line 2332 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 222 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::bit_shift_u_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	}
+#line 2320 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 241 "language/lang.ypp" /* yacc.c:1646  */
+#line 224 "language/lang.ypp" /* yacc.c:1646  */
     {
-															(yyval.expr) = new jawe::TernaryConditional((yyvsp[-4].expr), (yyvsp[-2].expr), (yyvsp[0].expr));
-															(yyvsp[-4].expr)->set_parent((yyval.expr));
-															(yyvsp[-2].expr)->set_parent((yyval.expr));
-															(yyvsp[0].expr)->set_parent((yyval.expr));
+															(yyval.node) = jawe::make_node_ptr<jawe::ternary_conditional_node>(*(yyvsp[-4].node), *(yyvsp[-2].node), *(yyvsp[0].node));
 														}
-#line 2343 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2328 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 248 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[-1].expr);																}
-#line 2349 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 228 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[-1].node);																}
+#line 2334 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 250 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::New((yyvsp[0].expr)); (yyvsp[0].expr)->set_parent((yyval.expr));							}
-#line 2355 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 230 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::new_node>(*(yyvsp[0].node)); 				}
+#line 2340 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 252 "language/lang.ypp" /* yacc.c:1646  */
+#line 232 "language/lang.ypp" /* yacc.c:1646  */
     {
-															(yyval.expr) = new jawe::FunctionCall((yyvsp[-3].expr), *(yyvsp[-1].expr_vec));
-															(yyvsp[-3].expr)->set_parent((yyval.expr));
-															for(auto&& arg: *(yyvsp[-1].expr_vec)) {
-																arg->set_parent((yyval.expr));
-															}
-															delete (yyvsp[-1].expr_vec);
+															(yyval.node) = jawe::make_node_ptr<jawe::function_call_node>(*(yyvsp[-3].node), *(yyvsp[-1].node_vec));
+															delete (yyvsp[-1].node_vec);
 														}
-#line 2368 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2349 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 260 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr);																}
-#line 2374 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 236 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node);																}
+#line 2355 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 261 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr); 																}
-#line 2380 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 237 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 2361 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 263 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr);																}
-#line 2386 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 239 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node);																}
+#line 2367 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 265 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::ArrayAccess((yyvsp[-3].expr), (yyvsp[-1].expr)); (yyvsp[-3].expr)->set_parent((yyval.expr)); (yyvsp[-1].expr)->set_parent((yyval.expr)); }
-#line 2392 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 241 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::array_access_node>(*(yyvsp[-3].node), *(yyvsp[-1].node)); }
+#line 2373 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 266 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::DotAccess((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));   }
-#line 2398 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 242 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::dot_access_node>(*(yyvsp[-2].node), *(yyvsp[0].node));    }
+#line 2379 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 267 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Variable(*(yyvsp[0].string)); delete (yyvsp[0].string);								}
-#line 2404 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 243 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::variable_node>(*(yyvsp[0].string)); delete (yyvsp[0].string);								}
+#line 2385 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 269 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = (yyvsp[0].expr_vec);																}
-#line 2410 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 245 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[0].node_vec);																}
+#line 2391 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 270 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = (yyvsp[0].expr_vec);																}
-#line 2416 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 246 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[0].node_vec);																}
+#line 2397 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 272 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = (yyvsp[-2].expr_vec); (yyval.expr_vec)->push_back((yyvsp[0].expr));											}
-#line 2422 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 248 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[-2].node_vec); (yyval.node_vec)->push_back(*(yyvsp[0].node));											}
+#line 2403 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 273 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = new std::vector<jawe::Expr*>{(yyvsp[0].expr)};								}
-#line 2428 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 249 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>{*(yyvsp[0].node)};								}
+#line 2409 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 275 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = new std::vector<jawe::Expr*>;									}
-#line 2434 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 251 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>;									}
+#line 2415 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 277 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Assign((yyvsp[-2].expr), (yyvsp[0].expr)); (yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));      }
-#line 2440 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 253 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_node>(*(yyvsp[-2].node), *(yyvsp[0].node));   }
+#line 2421 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 278 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignPlus((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	  }
-#line 2446 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 254 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_plus_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); 	 }
+#line 2427 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 279 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignMinus((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));  }
-#line 2452 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 255 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_minus_node>(*(yyvsp[-2].node), *(yyvsp[0].node));  }
+#line 2433 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 280 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignPow((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));    }
-#line 2458 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 256 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_pow_node>(*(yyvsp[-2].node), *(yyvsp[0].node));   }
+#line 2439 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 281 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignMul((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	  }
-#line 2464 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 257 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_mul_node>(*(yyvsp[-2].node), *(yyvsp[0].node));  }
+#line 2445 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 282 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignDiv((yyvsp[-2].expr), (yyvsp[0].expr));	(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));   }
-#line 2470 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 258 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_div_node>(*(yyvsp[-2].node), *(yyvsp[0].node));   }
+#line 2451 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 283 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignMod((yyvsp[-2].expr), (yyvsp[0].expr));	(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr));	  }
-#line 2476 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 259 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_mod_node>(*(yyvsp[-2].node), *(yyvsp[0].node));	  }
+#line 2457 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 284 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignShiftL((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2482 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 260 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_shift_l_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2463 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 285 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignShiftR((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2488 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 261 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_shift_r_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2469 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 286 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignShiftU((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2494 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 262 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_shift_u_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2475 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 287 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignBitCon((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2500 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 263 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_bit_con_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2481 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 288 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignBitXor((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2506 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 264 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_bit_xor_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2487 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 289 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::AssignBitDis((yyvsp[-2].expr), (yyvsp[0].expr));(yyvsp[-2].expr)->set_parent((yyval.expr)); (yyvsp[0].expr)->set_parent((yyval.expr)); }
-#line 2512 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 265 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::assign_bit_dis_node>(*(yyvsp[-2].node), *(yyvsp[0].node)); }
+#line 2493 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 298 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr); 																}
-#line 2518 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 274 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 2499 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 299 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr); 																}
-#line 2524 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 275 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 2505 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 300 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr);																}
-#line 2530 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 276 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node);																}
+#line 2511 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 302 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Undefined();											}
-#line 2536 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 278 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::undefined_node>();											}
+#line 2517 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 303 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Null();												}
-#line 2542 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 279 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::null_node>();												}
+#line 2523 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 304 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Nan();													}
-#line 2548 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 280 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::nan_node>();													}
+#line 2529 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 305 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::True();												}
-#line 2554 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 281 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::true_node>();												}
+#line 2535 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 306 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::False();												}
-#line 2560 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 282 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::false_node>();												}
+#line 2541 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 307 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Numeric((yyvsp[0].number));											}
-#line 2566 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 283 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::numeric_node>((yyvsp[0].number));											}
+#line 2547 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 308 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::String(*(yyvsp[0].string)); delete (yyvsp[0].string);								}
-#line 2572 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 284 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::string_node>(*(yyvsp[0].string)); delete (yyvsp[0].string);								}
+#line 2553 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 310 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr); 																}
-#line 2578 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 286 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 2559 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 311 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[0].expr); 																}
-#line 2584 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 287 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node); 																}
+#line 2565 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 313 "language/lang.ypp" /* yacc.c:1646  */
+#line 289 "language/lang.ypp" /* yacc.c:1646  */
     {
-		   													(yyval.expr) = new jawe::Array(*(yyvsp[-1].expr_vec));
-															for(auto&& lit: *(yyvsp[-1].expr_vec)) {
-																lit->set_parent((yyval.expr));
+		   													(yyval.node) = jawe::make_node_ptr<jawe::array_node>(*(yyvsp[-1].node_vec));
 															}
-														}
-#line 2595 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2573 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 320 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = (yyvsp[-2].expr_vec); (yyval.expr_vec)->push_back((yyvsp[0].expr));											}
-#line 2601 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 293 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = (yyvsp[-2].node_vec); (yyval.node_vec)->push_back(*(yyvsp[0].node));											}
+#line 2579 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 321 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = new std::vector<jawe::Expr*>{(yyvsp[0].expr)};								}
-#line 2607 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 294 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>{*(yyvsp[0].node)};								}
+#line 2585 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 322 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr_vec) = new std::vector<jawe::Expr*>();									}
-#line 2613 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 295 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node_vec) = new std::vector<jawe::shared_node>();									}
+#line 2591 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 324 "language/lang.ypp" /* yacc.c:1646  */
+#line 297 "language/lang.ypp" /* yacc.c:1646  */
     {
-		   													(yyval.expr) = new jawe::Object(*(yyvsp[-1].key_vals));
-															for(auto&& kval : *(yyvsp[-1].key_vals)) {
-																kval.second->set_parent((yyval.expr));
-															}
+		   													(yyval.node) = jawe::make_node_ptr<jawe::object_node>(*(yyvsp[-1].key_vals));
 															delete (yyvsp[-1].key_vals);
 		   												}
-#line 2625 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2600 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 332 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.key_vals) = (yyvsp[-2].key_vals); (*(yyval.key_vals))[(yyvsp[0].key_val)->first] = (yyvsp[0].key_val)->second; delete (yyvsp[0].key_val);					}
-#line 2631 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 302 "language/lang.ypp" /* yacc.c:1646  */
+    {
+	(yyval.key_vals) = (yyvsp[-2].key_vals);
+	(*(yyval.key_vals))[(yyvsp[0].key_val)->first] = (yyvsp[0].key_val)->second; 
+	delete (yyvsp[0].key_val);
+}
+#line 2610 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 333 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.key_vals) = new std::map<std::string, jawe::Expr*>; (*(yyval.key_vals))[(yyvsp[0].key_val)->first] = (yyvsp[0].key_val)->second; delete (yyvsp[0].key_val); }
-#line 2637 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 307 "language/lang.ypp" /* yacc.c:1646  */
+    {
+					(yyval.key_vals) = new std::map<std::string, jawe::shared_node>;
+					(*(yyval.key_vals))[(yyvsp[0].key_val)->first] = (yyvsp[0].key_val)->second;
+					delete (yyvsp[0].key_val);
+				 }
+#line 2620 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 334 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.key_vals) = new std::map<std::string, jawe::Expr*>;							}
-#line 2643 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 312 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.key_vals) = new std::map<std::string, jawe::shared_node>;							}
+#line 2626 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 336 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.key_val) = new std::pair<std::string, jawe::Expr*>(*(yyvsp[-2].string), (yyvsp[0].expr)); delete (yyvsp[-2].string);		}
-#line 2649 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 314 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.key_val) = new std::pair<std::string, jawe::shared_node>(*(yyvsp[-2].string), *(yyvsp[0].node)); delete (yyvsp[-2].string);		}
+#line 2632 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 338 "language/lang.ypp" /* yacc.c:1646  */
+#line 316 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); 																}
-#line 2655 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2638 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 339 "language/lang.ypp" /* yacc.c:1646  */
+#line 317 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); 																}
-#line 2661 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2644 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 342 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.expr) = new jawe::Function(*(yyvsp[-4].string_vec), (yyvsp[-1].block)); delete (yyvsp[-4].string_vec); (yyvsp[-1].block)->set_parent((yyval.expr));		}
-#line 2667 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 320 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::function_object_node>(*(yyvsp[-4].string_vec), *(yyvsp[-1].node), "lambda"); }
+#line 2650 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 343 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.block) = (yyvsp[0].block);																}
-#line 2673 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 321 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = (yyvsp[0].node);																}
+#line 2656 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 344 "language/lang.ypp" /* yacc.c:1646  */
-    { (yyval.block) = new jawe::CommandBlock();										}
-#line 2679 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 322 "language/lang.ypp" /* yacc.c:1646  */
+    { (yyval.node) = jawe::make_node_ptr<jawe::command_block_node>();										}
+#line 2662 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 346 "language/lang.ypp" /* yacc.c:1646  */
+#line 324 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string_vec) = (yyvsp[0].string_vec); 																}
-#line 2685 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2668 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 347 "language/lang.ypp" /* yacc.c:1646  */
+#line 325 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string_vec) = (yyvsp[0].string_vec); 																}
-#line 2691 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2674 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 349 "language/lang.ypp" /* yacc.c:1646  */
+#line 327 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string_vec) = (yyvsp[-2].string_vec); (yyval.string_vec)->push_back(*(yyvsp[0].string)); delete (yyvsp[0].string);								}
-#line 2697 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2680 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 350 "language/lang.ypp" /* yacc.c:1646  */
+#line 328 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string_vec) = new std::vector<std::string>{*(yyvsp[0].string)}; delete (yyvsp[0].string);					}
-#line 2703 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2686 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 352 "language/lang.ypp" /* yacc.c:1646  */
+#line 330 "language/lang.ypp" /* yacc.c:1646  */
     { (yyval.string_vec) = new std::vector<std::string>;									}
-#line 2709 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2692 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2713 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
+#line 2696 "/home/branislava/Programming/jawe/lang.syn.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2944,7 +2927,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 356 "language/lang.ypp" /* yacc.c:1906  */
+#line 334 "language/lang.ypp" /* yacc.c:1906  */
 
 
 void yyerror(const std::string& msg) {
@@ -2953,7 +2936,7 @@ void yyerror(const std::string& msg) {
 	int position = jawe::Reader::get_reader().get_position();
 	std::string buff = jawe::Reader::get_reader().get_buffer();
 	YYLTYPE* block = (YYLTYPE*)err_block;
-	
+
 	if( block ) {
 		line = block->first_line + 1;
 		position = block->first_column;
@@ -2962,7 +2945,7 @@ void yyerror(const std::string& msg) {
 	std::cerr	<< "[ERROR] "
 				<< filename
 				<< ":" << (line)
-				<< ":" << (position) 
+				<< ":" << (position)
 				<< ": " << msg
 				<< std::endl;
 
@@ -2977,4 +2960,3 @@ void yyerror(const std::string& msg) {
 
 	std::exit(EXIT_FAILURE);
 }
-

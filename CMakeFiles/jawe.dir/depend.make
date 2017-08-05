@@ -99,6 +99,7 @@ CMakeFiles/jawe.dir/lang.lex.cpp.o: lang.syn.hpp
 
 
 CMakeFiles/jawe.dir/src/main.cpp.o: src/main.cpp
+CMakeFiles/jawe.dir/src/main.cpp.o: include/syntax/abstract/shared_node.hpp
 CMakeFiles/jawe.dir/src/main.cpp.o: include/utils/control.hpp
 
 CMakeFiles/jawe.dir/src/operations/empty_remover.cpp.o: src/operations/empty_remover.cpp
@@ -399,6 +400,7 @@ CMakeFiles/jawe.dir/src/operations/parser.cpp.o: lang.syn.hpp
 CMakeFiles/jawe.dir/src/operations/printer.cpp.o: src/operations/printer.cpp
 CMakeFiles/jawe.dir/src/operations/printer.cpp.o: include/operations/basic_operation.hpp
 CMakeFiles/jawe.dir/src/operations/printer.cpp.o: include/operations/printer.hpp
+CMakeFiles/jawe.dir/src/operations/printer.cpp.o: include/syntax/abstract/shared_node.hpp
 CMakeFiles/jawe.dir/src/operations/printer.cpp.o: include/utils/control.hpp
 
 CMakeFiles/jawe.dir/src/syntax/abstract/expr_node.cpp.o: src/syntax/abstract/expr_node.cpp
@@ -413,11 +415,8 @@ CMakeFiles/jawe.dir/src/syntax/control_flow/break_node.cpp.o: include/syntax/abs
 CMakeFiles/jawe.dir/src/syntax/control_flow/break_node.cpp.o: include/syntax/control_flow/break_node.hpp
 
 CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: src/syntax/control_flow/case_node.cpp
-CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: include/syntax/abstract/expr_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: include/syntax/abstract/shared_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: include/syntax/control_flow/case_node.hpp
-CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: include/syntax/literals/literal_node.hpp
-CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o: include/syntax/literals/primitive_node.hpp
 
 CMakeFiles/jawe.dir/src/syntax/control_flow/command_block_node.cpp.o: src/syntax/control_flow/command_block_node.cpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/command_block_node.cpp.o: include/syntax/abstract/shared_node.hpp
@@ -448,7 +447,6 @@ CMakeFiles/jawe.dir/src/syntax/control_flow/if_else_node.cpp.o: include/syntax/a
 CMakeFiles/jawe.dir/src/syntax/control_flow/if_else_node.cpp.o: include/syntax/control_flow/if_else_node.hpp
 
 CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o: src/syntax/control_flow/return_node.cpp
-CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o: include/syntax/abstract/expr_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o: include/syntax/abstract/shared_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o: include/syntax/control_flow/return_node.hpp
 

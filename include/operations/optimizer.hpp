@@ -8,7 +8,7 @@
 
 namespace jawe {
 
-extern Command* program;
+extern shared_node* program;
 
 template<typename... Optimizations>
 class Optimizer : public basic_operation {
@@ -35,4 +35,3 @@ private:
 }
 
 #endif // __OPTIMIZER__HPP__
-

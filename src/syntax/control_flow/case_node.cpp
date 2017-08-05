@@ -2,9 +2,8 @@
 
 using namespace jawe;
 
-case_node::case_node(const primitive_node& p, const shared_node& command)
+case_node::case_node(const shared_node& p, const shared_node& command)
 	: basic_node("case")
 	, m_case(p)
 	, m_command(command)
 {}
-

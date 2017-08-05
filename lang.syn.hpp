@@ -136,18 +136,15 @@ union YYSTYPE
 {
 #line 21 "language/lang.ypp" /* yacc.c:1909  */
 
-	jawe::CommandBlock* block;
-	jawe::Command* command;
-	jawe::Expr* expr;
+	jawe::shared_node* node;
 	double number;
 	std::string* string;
-	std::vector<jawe::Expr*>* expr_vec;
-	std::vector<jawe::Command*> *comm_vec;
+	std::vector<jawe::shared_node>* node_vec;
 	std::vector<std::string> *string_vec;
-	std::map<std::string, jawe::Expr*> *key_vals;
-	std::pair<std::string, jawe::Expr*> *key_val;
+	std::map<std::string, jawe::shared_node> *key_vals;
+	std::pair<std::string, jawe::shared_node> *key_val;
 
-#line 151 "/home/branislava/Programming/jawe/lang.syn.hpp" /* yacc.c:1909  */
+#line 148 "/home/branislava/Programming/jawe/lang.syn.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

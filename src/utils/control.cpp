@@ -58,11 +58,11 @@ void Control::run() const
 	else if( m_vars.count("input-file") ) {
 		Operations::run_compilation<
 			FileChecker,
-			Parser,
-			FunctionDecomposer,
-			EmptyRemover,
-			Optimizer<Hoister>,
-			Printer
+			Parser
+			// FunctionDecomposer,
+			// EmptyRemover,
+			// Optimizer<Hoister>,
+			// Printer
 		>();
 	}
 	else {
@@ -105,4 +105,3 @@ bool Control::show_memory() const
 {
 	return m_show_memory;
 }
-

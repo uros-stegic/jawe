@@ -7,8 +7,6 @@
 #include <iostream>
 #include <memory>
 
-
-
 namespace jawe {
 // Concrete classes
 
@@ -189,6 +187,13 @@ template<class NodeT, typename... Args>
 shared_node make_node(Args... args)
 {
 	return shared_node(new node_variant(new NodeT(args...)),
+						   deleter());
+}
+
+template<class NodeT, typename... Args>
+shared_node* make_node_ptr(Args... args)
+{
+	return new shared_node(new node_variant(new NodeT(args...)),
 						   deleter());
 }
 

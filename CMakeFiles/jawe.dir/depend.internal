@@ -100,6 +100,7 @@ CMakeFiles/jawe.dir/lang.lex.cpp.o
 CMakeFiles/jawe.dir/lang.syn.cpp.o
 CMakeFiles/jawe.dir/src/main.cpp.o
  /home/branislava/Programming/jawe/src/main.cpp
+ include/syntax/abstract/shared_node.hpp
  include/utils/control.hpp
 CMakeFiles/jawe.dir/src/operations/empty_remover.cpp.o
  /home/branislava/Programming/jawe/src/operations/empty_remover.cpp
@@ -400,6 +401,7 @@ CMakeFiles/jawe.dir/src/operations/printer.cpp.o
  /home/branislava/Programming/jawe/src/operations/printer.cpp
  include/operations/basic_operation.hpp
  include/operations/printer.hpp
+ include/syntax/abstract/shared_node.hpp
  include/utils/control.hpp
 CMakeFiles/jawe.dir/src/syntax/abstract/expr_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/abstract/expr_node.cpp
@@ -414,11 +416,8 @@ CMakeFiles/jawe.dir/src/syntax/control_flow/break_node.cpp.o
  include/syntax/control_flow/break_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/case_node.cpp
- include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/case_node.hpp
- include/syntax/literals/literal_node.hpp
- include/syntax/literals/primitive_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/command_block_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/command_block_node.cpp
  include/syntax/abstract/shared_node.hpp
@@ -449,7 +448,6 @@ CMakeFiles/jawe.dir/src/syntax/control_flow/if_else_node.cpp.o
  include/syntax/control_flow/if_else_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/return_node.cpp
- include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/return_node.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/switch_node.cpp.o
