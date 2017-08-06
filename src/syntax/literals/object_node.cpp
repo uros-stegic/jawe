@@ -19,4 +19,7 @@ void object_node::set(std::string name, shared_node expr)
 	m_pairs[name] = expr;
 }
 
-
+std::map<std::string, shared_node> object_node::get_pairs()
+{
+	return m_pairs;
+}

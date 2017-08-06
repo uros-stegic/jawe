@@ -14,3 +14,7 @@ std::vector<shared_node>& switch_node::get_cases()
 	return m_cases;
 }
 
+shared_node switch_node::get_expr()
+{
+	return m_expr;
+}

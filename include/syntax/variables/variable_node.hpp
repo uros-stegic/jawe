@@ -9,10 +9,10 @@ class variable_node : public expr_node {
 public:
 	variable_node(std::string);
 
+	std::string get_name();
 private:
 	std::string m_name;
 };
 }
 
 #endif // __VARIABLE_HPP__
-

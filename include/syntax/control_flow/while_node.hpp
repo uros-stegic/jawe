@@ -12,9 +12,8 @@ public:
 	shared_node get_body() const;
 
 private:
-	shared_node m_cond, m_body;
+	shared_node m_expr, m_body;
 };
 }
 
 #endif // __WHILE_HPP__
-

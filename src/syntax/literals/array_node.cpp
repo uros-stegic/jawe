@@ -17,4 +17,7 @@ void array_node::push_back(const shared_node& expr)
 	m_elements.push_back(expr);
 }
 
-
+std::vector<shared_node> array_node::get_elements()
+{
+	return m_elements;
+}

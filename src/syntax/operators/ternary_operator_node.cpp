@@ -16,18 +16,22 @@ ternary_operator_node::ternary_operator_node(
 	, m_symbol2(symbol2)
 {}
 
-shared_node ternary_operator_node::first_operand() const
+shared_node ternary_operator_node::get_first_operand() const
 {
 	return m_first;
 }
 
-shared_node ternary_operator_node::second_operand() const
+shared_node ternary_operator_node::get_second_operand() const
 {
 	return m_second;
 }
 
-shared_node ternary_operator_node::third_operand() const
+shared_node ternary_operator_node::get_third_operand() const
 {
 	return m_third;
 }
 
+std::string ternary_operator_node::get_symbol2() const
+{
+	return m_symbol2;
+}

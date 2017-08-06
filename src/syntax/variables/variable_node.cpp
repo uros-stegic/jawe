@@ -7,3 +7,6 @@ variable_node::variable_node(std::string name)
 	, m_name(name)
 {}
 
+std::string variable_node::get_name() {
+	return m_name;
+}

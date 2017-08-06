@@ -13,6 +13,9 @@ public:
 
 	void push_back(const shared_node&);
 
+	shared_node get_expr();
+	std::vector<shared_node> get_args();
+
 private:
 	shared_node m_expr;
 	std::vector<shared_node> m_args;

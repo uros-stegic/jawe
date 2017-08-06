@@ -13,9 +13,8 @@ public:
 	shared_node get_operand() const;
 
 private:
-	const shared_node& m_operand;
+	shared_node m_operand;
 };
 }
 
 #endif // __UNARY_OPERATOR_HPP__
-

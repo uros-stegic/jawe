@@ -58,11 +58,11 @@ void Control::run() const
 	else if( m_vars.count("input-file") ) {
 		Operations::run_compilation<
 			FileChecker,
-			Parser
+			Parser,
 			// FunctionDecomposer,
 			// EmptyRemover,
 			// Optimizer<Hoister>,
-			// Printer
+			Printer
 		>();
 	}
 	else {

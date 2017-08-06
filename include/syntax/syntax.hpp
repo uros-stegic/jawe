@@ -1,6 +1,9 @@
+
+// abstract
 #include <abstract/shared_node.hpp>
 #include <abstract/expr_node.hpp>
 
+// control_flow
 #include <control_flow/break_node.hpp>
 #include <control_flow/case_node.hpp>
 #include <control_flow/command_block_node.hpp>
@@ -14,6 +17,7 @@
 #include <control_flow/switch_node.hpp>
 #include <control_flow/while_node.hpp>
 
+// literals
 #include <literals/abstract_object_node.hpp>
 #include <literals/array_node.hpp>
 #include <literals/false_node.hpp>
@@ -29,6 +33,7 @@
 #include <literals/true_node.hpp>
 #include <literals/undefined_node.hpp>
 
+// operators
 #include <operators/array_access_node.hpp>
 #include <operators/assign_bit_con_node.hpp>
 #include <operators/assign_bit_dis_node.hpp>
@@ -87,7 +92,7 @@
 #include <operators/uplus_node.hpp>
 #include <operators/void_node.hpp>
 
-
+// variables
 #include <variables/variable_node.hpp>
 #include <variables/declaration_node.hpp>
 #include <variables/let_declaration_node.hpp>

@@ -12,4 +12,3 @@ public:
 }
 
 #endif // __CONST_DECLARATION_HPP__
-

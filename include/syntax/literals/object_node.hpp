@@ -13,6 +13,7 @@ public:
 	object_node();
 	object_node(const std::map<std::string, shared_node>&);
 	void set(std::string, shared_node);
+	std::map<std::string, shared_node> get_pairs();
 
 private:
 	std::map<std::string, shared_node> m_pairs;
@@ -20,4 +21,3 @@ private:
 }
 
 #endif // __OBJECT_HPP__
-

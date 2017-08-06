@@ -8,7 +8,8 @@ namespace jawe {
 class switch_node : public basic_node {
 public:
 	switch_node(const shared_node&, const std::vector<shared_node>&);
-	
+
+	shared_node get_expr();
 	std::vector<shared_node>& get_cases();
 
 private:
@@ -18,4 +19,3 @@ private:
 }
 
 #endif // __SWITCH_HPP__
-

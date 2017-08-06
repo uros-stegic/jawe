@@ -87,7 +87,13 @@ utils/control.hpp
 -
 iostream
 -
+variant
+-
 shared_node.hpp
+-
+syntax.hpp
+-
+utils/lambda_composer.hpp
 -
 
 /home/branislava/Programming/jawe/src/syntax/abstract/expr_node.cpp
@@ -598,6 +604,8 @@ tuple
 
 include/operations/printer.hpp
 operations/basic_operation.hpp
+-
+abstract/shared_node.hpp
 -
 
 include/syntax/abstract/expr_node.hpp
@@ -1331,6 +1339,8 @@ boost/program_options/variables_map.hpp
 include/utils/error.hpp
 string
 -
+
+include/utils/lambda_composer.hpp
 
 include/utils/leak_checker.hpp
 iostream

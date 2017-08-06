@@ -19,3 +19,12 @@ void function_call_node::push_back(const shared_node& expr)
 	m_args.push_back(expr);
 }
 
+shared_node function_call_node::get_expr()
+{
+	return m_expr;
+}
+
+std::vector<shared_node> function_call_node::get_args()
+{
+	return m_args;
+}
