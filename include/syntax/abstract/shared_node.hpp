@@ -6,10 +6,12 @@
 #include <variant>
 #include <iostream>
 #include <memory>
+#include <utils/lambda_composer.hpp>
+
 
 namespace jawe {
-// Concrete classes
 
+// Concrete classes
 class let_declaration_node;
 class const_declaration_node;
 class var_declaration_node;
@@ -91,10 +93,7 @@ class uminus_node;
 class uplus_node;
 class void_node;
 
-
-
-
-using node_variant = std::variant<	let_declaration_node*,
+using node_variant = std::variant<let_declaration_node*,
 									const_declaration_node*,
 									var_declaration_node*,
 									variable_node*,
@@ -177,8 +176,7 @@ using node_variant = std::variant<	let_declaration_node*,
 								>;
 
 struct deleter {
-	void operator() (node_variant*)
-	{}
+	void operator()(node_variant*);
 };
 
 using shared_node = std::shared_ptr<node_variant>;

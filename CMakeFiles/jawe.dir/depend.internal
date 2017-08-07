@@ -95,6 +95,7 @@ CMakeFiles/jawe.dir/lang.lex.cpp.o
  include/syntax/variables/let_declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
  include/utils/reader.hpp
  lang.syn.hpp
 CMakeFiles/jawe.dir/lang.syn.cpp.o
@@ -102,6 +103,7 @@ CMakeFiles/jawe.dir/src/main.cpp.o
  /home/branislava/Programming/jawe/src/main.cpp
  include/syntax/abstract/shared_node.hpp
  include/utils/control.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/operations/empty_remover.cpp.o
  /home/branislava/Programming/jawe/src/operations/empty_remover.cpp
  include/operations/basic_operation.hpp
@@ -198,6 +200,7 @@ CMakeFiles/jawe.dir/src/operations/empty_remover.cpp.o
  include/syntax/variables/let_declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/operations/file_checker.cpp.o
  /home/branislava/Programming/jawe/src/operations/file_checker.cpp
  include/operations/basic_operation.hpp
@@ -299,6 +302,7 @@ CMakeFiles/jawe.dir/src/operations/fn_decompose.cpp.o
  include/syntax/variables/let_declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
  lang.syn.hpp
 CMakeFiles/jawe.dir/src/operations/parser.cpp.o
  /home/branislava/Programming/jawe/src/operations/parser.cpp
@@ -396,6 +400,7 @@ CMakeFiles/jawe.dir/src/operations/parser.cpp.o
  include/syntax/variables/let_declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
  lang.syn.hpp
 CMakeFiles/jawe.dir/src/operations/printer.cpp.o
  /home/branislava/Programming/jawe/src/operations/printer.cpp
@@ -499,63 +504,169 @@ CMakeFiles/jawe.dir/src/syntax/abstract/expr_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/abstract/expr_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/abstract/shared_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/abstract/shared_node.cpp
+ include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
+ include/syntax/control_flow/break_node.hpp
+ include/syntax/control_flow/case_node.hpp
+ include/syntax/control_flow/command_block_node.hpp
+ include/syntax/control_flow/continue_node.hpp
+ include/syntax/control_flow/default_node.hpp
+ include/syntax/control_flow/do_while_node.hpp
+ include/syntax/control_flow/empty_node.hpp
+ include/syntax/control_flow/for_node.hpp
+ include/syntax/control_flow/if_else_node.hpp
+ include/syntax/control_flow/return_node.hpp
+ include/syntax/control_flow/switch_node.hpp
+ include/syntax/control_flow/while_node.hpp
+ include/syntax/literals/abstract_object_node.hpp
+ include/syntax/literals/array_node.hpp
+ include/syntax/literals/false_node.hpp
+ include/syntax/literals/function_object_node.hpp
+ include/syntax/literals/literal_node.hpp
+ include/syntax/literals/logical_literal_node.hpp
+ include/syntax/literals/nan_node.hpp
+ include/syntax/literals/null_node.hpp
+ include/syntax/literals/numeric_node.hpp
+ include/syntax/literals/object_node.hpp
+ include/syntax/literals/primitive_node.hpp
+ include/syntax/literals/string_node.hpp
+ include/syntax/literals/true_node.hpp
+ include/syntax/literals/undefined_node.hpp
+ include/syntax/operators/array_access_node.hpp
+ include/syntax/operators/assign_bit_con_node.hpp
+ include/syntax/operators/assign_bit_dis_node.hpp
+ include/syntax/operators/assign_bit_xor_node.hpp
+ include/syntax/operators/assign_div_node.hpp
+ include/syntax/operators/assign_minus_node.hpp
+ include/syntax/operators/assign_mod_node.hpp
+ include/syntax/operators/assign_mul_node.hpp
+ include/syntax/operators/assign_node.hpp
+ include/syntax/operators/assign_plus_node.hpp
+ include/syntax/operators/assign_pow_node.hpp
+ include/syntax/operators/assign_shift_l_node.hpp
+ include/syntax/operators/assign_shift_r_node.hpp
+ include/syntax/operators/assign_shift_u_node.hpp
+ include/syntax/operators/binary_operator_node.hpp
+ include/syntax/operators/bit_and_node.hpp
+ include/syntax/operators/bit_not_node.hpp
+ include/syntax/operators/bit_or_node.hpp
+ include/syntax/operators/bit_shift_l_node.hpp
+ include/syntax/operators/bit_shift_r_node.hpp
+ include/syntax/operators/bit_shift_u_node.hpp
+ include/syntax/operators/bit_xor_node.hpp
+ include/syntax/operators/decrement_node.hpp
+ include/syntax/operators/delete_node.hpp
+ include/syntax/operators/divide_node.hpp
+ include/syntax/operators/dot_access_node.hpp
+ include/syntax/operators/equals_node.hpp
+ include/syntax/operators/function_call_node.hpp
+ include/syntax/operators/greater_or_equals_node.hpp
+ include/syntax/operators/greater_then_node.hpp
+ include/syntax/operators/in_node.hpp
+ include/syntax/operators/increment_node.hpp
+ include/syntax/operators/instance_of_node.hpp
+ include/syntax/operators/less_or_equals_node.hpp
+ include/syntax/operators/less_then_node.hpp
+ include/syntax/operators/logic_and_node.hpp
+ include/syntax/operators/logic_not_node.hpp
+ include/syntax/operators/logic_or_node.hpp
+ include/syntax/operators/minus_node.hpp
+ include/syntax/operators/mod_node.hpp
+ include/syntax/operators/new_node.hpp
+ include/syntax/operators/not_equals_node.hpp
+ include/syntax/operators/operator_node.hpp
+ include/syntax/operators/plus_node.hpp
+ include/syntax/operators/post_decrement_node.hpp
+ include/syntax/operators/post_increment_node.hpp
+ include/syntax/operators/power_node.hpp
+ include/syntax/operators/ternary_conditional_node.hpp
+ include/syntax/operators/ternary_operator_node.hpp
+ include/syntax/operators/times_node.hpp
+ include/syntax/operators/typed_equals_node.hpp
+ include/syntax/operators/typed_not_equals_node.hpp
+ include/syntax/operators/typeof_node.hpp
+ include/syntax/operators/uminus_node.hpp
+ include/syntax/operators/unary_operator_node.hpp
+ include/syntax/operators/uplus_node.hpp
+ include/syntax/operators/void_node.hpp
+ include/syntax/syntax.hpp
+ include/syntax/variables/const_declaration_node.hpp
+ include/syntax/variables/declaration_node.hpp
+ include/syntax/variables/function_declaration_node.hpp
+ include/syntax/variables/let_declaration_node.hpp
+ include/syntax/variables/var_declaration_node.hpp
+ include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/break_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/break_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/break_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/case_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/case_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/case_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/command_block_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/command_block_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/command_block_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/continue_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/continue_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/continue_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/default_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/default_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/default_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/do_while_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/do_while_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/do_while_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/empty_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/empty_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/empty_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/for_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/for_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/for_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/if_else_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/if_else_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/if_else_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/return_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/return_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/return_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/switch_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/switch_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/switch_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/control_flow/while_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/control_flow/while_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/control_flow/while_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/abstract_object_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/abstract_object_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/literals/abstract_object_node.hpp
  include/syntax/literals/literal_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/array_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/array_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -563,6 +674,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/array_node.cpp.o
  include/syntax/literals/abstract_object_node.hpp
  include/syntax/literals/array_node.hpp
  include/syntax/literals/literal_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/false_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/false_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -571,6 +683,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/false_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/logical_literal_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/function_object_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/function_object_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -578,11 +691,13 @@ CMakeFiles/jawe.dir/src/syntax/literals/function_object_node.cpp.o
  include/syntax/literals/abstract_object_node.hpp
  include/syntax/literals/function_object_node.hpp
  include/syntax/literals/literal_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/literal_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/literal_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/literals/literal_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/logical_literal_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/logical_literal_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -590,6 +705,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/logical_literal_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/logical_literal_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/nan_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/nan_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -597,6 +713,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/nan_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/nan_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/null_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/null_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -604,6 +721,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/null_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/null_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/numeric_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/numeric_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -611,6 +729,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/numeric_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/numeric_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/object_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/object_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -618,12 +737,14 @@ CMakeFiles/jawe.dir/src/syntax/literals/object_node.cpp.o
  include/syntax/literals/abstract_object_node.hpp
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/object_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/primitive_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/primitive_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/primitive_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/string_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/string_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -631,6 +752,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/string_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/primitive_node.hpp
  include/syntax/literals/string_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/true_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/true_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -639,6 +761,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/true_node.cpp.o
  include/syntax/literals/logical_literal_node.hpp
  include/syntax/literals/primitive_node.hpp
  include/syntax/literals/true_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/literals/undefined_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/literals/undefined_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -646,6 +769,7 @@ CMakeFiles/jawe.dir/src/syntax/literals/undefined_node.cpp.o
  include/syntax/literals/literal_node.hpp
  include/syntax/literals/primitive_node.hpp
  include/syntax/literals/undefined_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/array_access_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/array_access_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -653,6 +777,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/array_access_node.cpp.o
  include/syntax/operators/array_access_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_con_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_bit_con_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -660,6 +785,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_con_node.cpp.o
  include/syntax/operators/assign_bit_con_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_dis_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_bit_dis_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -667,6 +793,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_dis_node.cpp.o
  include/syntax/operators/assign_bit_dis_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_xor_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_bit_xor_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -674,6 +801,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_bit_xor_node.cpp.o
  include/syntax/operators/assign_bit_xor_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_div_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_div_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -681,6 +809,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_div_node.cpp.o
  include/syntax/operators/assign_div_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_minus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_minus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -688,6 +817,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_minus_node.cpp.o
  include/syntax/operators/assign_minus_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_mod_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_mod_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -695,6 +825,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_mod_node.cpp.o
  include/syntax/operators/assign_mod_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_mul_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_mul_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -702,6 +833,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_mul_node.cpp.o
  include/syntax/operators/assign_mul_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -709,6 +841,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_node.cpp.o
  include/syntax/operators/assign_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_plus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_plus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -716,6 +849,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_plus_node.cpp.o
  include/syntax/operators/assign_plus_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_pow_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_pow_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -723,6 +857,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_pow_node.cpp.o
  include/syntax/operators/assign_pow_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_l_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_shift_l_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -730,6 +865,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_l_node.cpp.o
  include/syntax/operators/assign_shift_l_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_r_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_shift_r_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -737,6 +873,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_r_node.cpp.o
  include/syntax/operators/assign_shift_r_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_u_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/assign_shift_u_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -744,12 +881,14 @@ CMakeFiles/jawe.dir/src/syntax/operators/assign_shift_u_node.cpp.o
  include/syntax/operators/assign_shift_u_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/binary_operator_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/binary_operator_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_and_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_and_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -757,6 +896,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_and_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_and_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_not_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_not_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -764,6 +904,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_not_node.cpp.o
  include/syntax/operators/bit_not_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_or_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_or_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -771,6 +912,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_or_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_or_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_l_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_shift_l_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -778,6 +920,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_l_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_shift_l_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_r_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_shift_r_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -785,6 +928,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_r_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_shift_r_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_u_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_shift_u_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -792,6 +936,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_shift_u_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_shift_u_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/bit_xor_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/bit_xor_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -799,6 +944,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/bit_xor_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/bit_xor_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/decrement_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/decrement_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -806,6 +952,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/decrement_node.cpp.o
  include/syntax/operators/decrement_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/delete_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/delete_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -813,6 +960,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/delete_node.cpp.o
  include/syntax/operators/delete_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/divide_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/divide_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -820,6 +968,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/divide_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/divide_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/dot_access_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/dot_access_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -827,6 +976,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/dot_access_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/dot_access_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -834,11 +984,13 @@ CMakeFiles/jawe.dir/src/syntax/operators/equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/equals_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/function_call_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/function_call_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/operators/function_call_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/greater_or_equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/greater_or_equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -846,6 +998,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/greater_or_equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/greater_or_equals_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/greater_then_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/greater_then_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -853,6 +1006,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/greater_then_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/greater_then_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/in_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/in_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -860,6 +1014,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/in_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/in_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/increment_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/increment_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -867,6 +1022,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/increment_node.cpp.o
  include/syntax/operators/increment_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/instance_of_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/instance_of_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -874,6 +1030,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/instance_of_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/instance_of_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/less_or_equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/less_or_equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -881,6 +1038,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/less_or_equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/less_or_equals_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/less_then_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/less_then_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -888,6 +1046,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/less_then_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/less_then_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/logic_and_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/logic_and_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -895,6 +1054,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/logic_and_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/logic_and_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/logic_not_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/logic_not_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -902,6 +1062,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/logic_not_node.cpp.o
  include/syntax/operators/logic_not_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/logic_or_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/logic_or_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -909,6 +1070,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/logic_or_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/logic_or_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/minus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/minus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -916,6 +1078,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/minus_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/minus_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/mod_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/mod_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -923,6 +1086,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/mod_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/mod_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/new_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/new_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -930,6 +1094,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/new_node.cpp.o
  include/syntax/operators/new_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/not_equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/not_equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -937,11 +1102,13 @@ CMakeFiles/jawe.dir/src/syntax/operators/not_equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/not_equals_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/operator_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/operator_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/operators/operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/plus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/plus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -949,6 +1116,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/plus_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/plus_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/post_decrement_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/post_decrement_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -956,6 +1124,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/post_decrement_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/post_decrement_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/post_increment_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/post_increment_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -963,6 +1132,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/post_increment_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/post_increment_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/power_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/power_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -970,6 +1140,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/power_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/power_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/ternary_conditional_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/ternary_conditional_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -977,12 +1148,14 @@ CMakeFiles/jawe.dir/src/syntax/operators/ternary_conditional_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/ternary_conditional_node.hpp
  include/syntax/operators/ternary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/ternary_operator_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/ternary_operator_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/ternary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/times_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/times_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -990,6 +1163,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/times_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/times_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/typed_equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/typed_equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -997,6 +1171,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/typed_equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/typed_equals_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/typed_not_equals_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/typed_not_equals_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1004,6 +1179,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/typed_not_equals_node.cpp.o
  include/syntax/operators/binary_operator_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/typed_not_equals_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/typeof_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/typeof_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1011,6 +1187,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/typeof_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/typeof_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/uminus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/uminus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1018,12 +1195,14 @@ CMakeFiles/jawe.dir/src/syntax/operators/uminus_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/uminus_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/unary_operator_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/unary_operator_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/uplus_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/uplus_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1031,6 +1210,7 @@ CMakeFiles/jawe.dir/src/syntax/operators/uplus_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
  include/syntax/operators/uplus_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/operators/void_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/operators/void_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1038,15 +1218,18 @@ CMakeFiles/jawe.dir/src/syntax/operators/void_node.cpp.o
  include/syntax/operators/operator_node.hpp
  include/syntax/operators/unary_operator_node.hpp
  include/syntax/operators/void_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/const_declaration_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/const_declaration_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/variables/const_declaration_node.hpp
  include/syntax/variables/declaration_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/declaration_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/declaration_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/variables/declaration_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/function_declaration_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/function_declaration_node.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1055,21 +1238,25 @@ CMakeFiles/jawe.dir/src/syntax/variables/function_declaration_node.cpp.o
  include/syntax/literals/function_object_node.hpp
  include/syntax/literals/literal_node.hpp
  include/syntax/variables/function_declaration_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/let_declaration_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/let_declaration_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/variables/declaration_node.hpp
  include/syntax/variables/let_declaration_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/var_declaration_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/var_declaration_node.cpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/variables/declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/syntax/variables/variable_node.cpp.o
  /home/branislava/Programming/jawe/src/syntax/variables/variable_node.cpp
  include/syntax/abstract/expr_node.hpp
  include/syntax/abstract/shared_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/transformations/hoister.cpp.o
  /home/branislava/Programming/jawe/src/transformations/hoister.cpp
  include/syntax/abstract/expr_node.hpp
@@ -1166,6 +1353,7 @@ CMakeFiles/jawe.dir/src/transformations/hoister.cpp.o
  include/syntax/variables/variable_node.hpp
  include/transformations/basic_transformation.hpp
  include/transformations/hoister.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/utils/control.cpp.o
  /home/branislava/Programming/jawe/src/utils/control.cpp
  config.h
@@ -1273,6 +1461,7 @@ CMakeFiles/jawe.dir/src/utils/control.cpp.o
  include/transformations/basic_transformation.hpp
  include/transformations/hoister.hpp
  include/utils/control.hpp
+ include/utils/lambda_composer.hpp
 CMakeFiles/jawe.dir/src/utils/error.cpp.o
  /home/branislava/Programming/jawe/src/utils/error.cpp
  include/utils/control.hpp
@@ -1372,6 +1561,7 @@ CMakeFiles/jawe.dir/src/utils/leak_checker.cpp.o
  include/syntax/variables/let_declaration_node.hpp
  include/syntax/variables/var_declaration_node.hpp
  include/syntax/variables/variable_node.hpp
+ include/utils/lambda_composer.hpp
  include/utils/leak_checker.hpp
 CMakeFiles/jawe.dir/src/utils/reader.cpp.o
  /home/branislava/Programming/jawe/src/utils/reader.cpp

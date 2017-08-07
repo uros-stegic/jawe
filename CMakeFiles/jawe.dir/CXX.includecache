@@ -107,6 +107,10 @@ string
 /home/branislava/Programming/jawe/src/syntax/abstract/shared_node.cpp
 shared_node.hpp
 -
+syntax.hpp
+-
+algorithm
+-
 
 /home/branislava/Programming/jawe/src/syntax/control_flow/break_node.cpp
 control_flow/break_node.hpp
@@ -622,6 +626,8 @@ variant
 iostream
 -
 memory
+-
+utils/lambda_composer.hpp
 -
 
 include/syntax/control_flow/break_node.hpp
