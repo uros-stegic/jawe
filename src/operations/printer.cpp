@@ -51,17 +51,23 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](basic_node* node) {
   			std::cout	<< std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
   		},
       // control flow
       [this, num_tabs](break_node* node) {
   			std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
   		},
       [this, num_tabs](case_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // case condition
@@ -72,6 +78,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](command_block_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         auto nodes = node->get_commands();
@@ -84,11 +92,15 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](continue_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
       },
       [this, num_tabs](default_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // default body
@@ -97,6 +109,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](do_while_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // do while body
@@ -107,11 +121,15 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](empty_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
       },
       [this, num_tabs](for_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // for init
@@ -126,6 +144,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](if_else_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // if expr
@@ -140,6 +160,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](return_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // return expr
@@ -148,6 +170,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](switch_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // switch expr
@@ -163,6 +187,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       [this, num_tabs](while_node* node) {
         std::cout << std::string(4*num_tabs, ' ')
       						<< node->get_symbol()
+                  << " "
+                  << node->memory_address()
       						<< std::endl;
 
         // while expr
@@ -177,6 +203,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "Array("
                   << nodes.size()
                   << ") "
+                  << node->memory_address()
       						<< std::endl;
 
         std::for_each(
@@ -203,6 +230,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
         }
 
         std::cout << "] "
+                  << node->memory_address()
       						<< std::endl;
         // function body
         dump_ast(node->get_body(), num_tabs+1);
@@ -212,6 +240,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "Boolean ["
                   << node->get_symbol()
                   << "] "
+                  << node->memory_address()
       						<< std::endl;
       },
       [this, num_tabs](numeric_node* node) {
@@ -219,6 +248,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "Numeric ["
                   << node->get_symbol()
                   << "] "
+                  << node->memory_address()
                   << std::endl;
       },
       [this, num_tabs](object_node* node) {
@@ -227,6 +257,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "Object("
                   << pairs.size()
                   << ") "
+                  << node->memory_address()
       						<< std::endl;
 
         // object key value pairs
@@ -245,6 +276,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "String [\""
                   << node->get_symbol()
                   << "\"] "
+                  << node->memory_address()
                   << std::endl;
       },
       // operators
@@ -253,6 +285,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                   << "operator ["
                   << node->get_symbol()
                   << "] "
+                  << node->memory_address()
                   << std::endl;
 
         // left operator
@@ -262,7 +295,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
       },
       [this, num_tabs](function_call_node* node) {
         std::cout	<< std::string(4*num_tabs, ' ')
-                  << "FunctionCall"
+                  << "FunctionCall "
+                  << node->memory_address()
                   << std::endl;
         // function expr
         dump_ast(node->get_expr(), num_tabs+1);
@@ -291,6 +325,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                     << " "
                     << node->get_symbol2()
                 		<< "] "
+                    << node->memory_address()
                 		<< std::endl;
         	dump_ast(node->get_first_operand(), num_tabs+1);
         	dump_ast(node->get_second_operand(), num_tabs+1);
@@ -301,6 +336,7 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
                 		<< "operator ["
                 		<< node->get_symbol()
                 		<< "] "
+                    << node->memory_address()
                 		<< std::endl;
         	dump_ast(node->get_operand(), num_tabs+1);
       },
@@ -309,7 +345,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
         	std::cout << std::string(4*num_tabs, ' ')
                 		<< "Declaration ["
                     << node->get_symbol()
-                    << "]"
+                    << "] "
+                    << node->memory_address()
                 		<< std::endl;
         	dump_ast(node->get_expr(), num_tabs+1);
       },
@@ -317,7 +354,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
         	std::cout << std::string(4*num_tabs, ' ')
                 		<< "FunctionDeclaration ["
                     << node->get_name()
-                    << "]"
+                    << "] "
+                    << node->memory_address()
                 		<< std::endl;
         	dump_ast(node->get_function_object(), num_tabs+1);
       },
@@ -325,7 +363,8 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
         	std::cout << std::string(4*num_tabs, ' ')
                 		<< "Variable ["
                     << node->get_name()
-                    << "]"
+                    << "] "
+                    << node->memory_address()
                 		<< std::endl;
       },
     }, *program);
