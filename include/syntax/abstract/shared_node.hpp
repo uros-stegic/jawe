@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <utils/lambda_composer.hpp>
+#include <utils/leak_checker.hpp>
 
 
 namespace jawe {
@@ -195,7 +196,7 @@ shared_node* make_node_ptr(Args... args)
 						   deleter());
 }
 
-class basic_node {
+class basic_node : public leak_checker<basic_node> {
 public:
 	std::string get_symbol() const;
 

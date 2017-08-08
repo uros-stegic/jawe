@@ -7,17 +7,17 @@
 
 namespace jawe {
 template <typename T>
-class LeakChecker {
+class leak_checker {
 public:
-	 LeakChecker() {
-		 LeakChecker::s_counter++;
-		 LeakChecker::s_allocated_ptrs.push_back(this);
+	 leak_checker() {
+		 leak_checker::s_counter++;
+		 leak_checker::s_allocated_ptrs.push_back(this);
 	 }
-	~LeakChecker() {
-		LeakChecker::s_counter--;
-		auto start = std::begin(LeakChecker::s_allocated_ptrs);
-		auto end = std::end(LeakChecker::s_allocated_ptrs);
-		LeakChecker::s_allocated_ptrs.erase(
+	~leak_checker() {
+		leak_checker::s_counter--;
+		auto start = std::begin(leak_checker::s_allocated_ptrs);
+		auto end = std::end(leak_checker::s_allocated_ptrs);
+		leak_checker::s_allocated_ptrs.erase(
 			std::remove(start, end, this),
 			end
 		);
@@ -38,20 +38,20 @@ public:
 
 private:
 	static unsigned int s_counter;
-	static std::vector<LeakChecker*> s_allocated_ptrs;
+	static std::vector<leak_checker*> s_allocated_ptrs;
 };
 
-class Command;
-class LeakPreviewer {
+class basic_node;
+class leak_previewer {
 public:
-	static void show_leaked(Command*, std::ostream& = std::cerr);
+	static void show_leaked(basic_node*, std::ostream& = std::cerr);
 };
 
 template <typename T>
-unsigned int LeakChecker<T>::s_counter = 0;
+unsigned int leak_checker<T>::s_counter = 0;
 
 template <typename T>
-std::vector<LeakChecker<T>*> LeakChecker<T>::s_allocated_ptrs;
+std::vector<leak_checker<T>*> leak_checker<T>::s_allocated_ptrs;
 }
 
 #endif // __MEM_LEAK_HPP__
