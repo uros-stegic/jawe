@@ -1,3 +1,0 @@
-/home/branislava/Programming/jawe/CMakeFiles/rebuild_cache.dir
-/home/branislava/Programming/jawe/CMakeFiles/jawe.dir
-/home/branislava/Programming/jawe/CMakeFiles/edit_cache.dir
