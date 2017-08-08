@@ -199,6 +199,7 @@ shared_node* make_node_ptr(Args... args)
 class basic_node : public leak_checker<basic_node> {
 public:
 	std::string get_symbol() const;
+	std::string memory_address() const;
 
 protected:
 	basic_node(std::string);

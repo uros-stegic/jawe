@@ -1,6 +1,8 @@
+#include <algorithm>
+#include <sstream>
 #include <shared_node.hpp>
 #include <syntax.hpp>
-#include <algorithm>
+#include <utils/control.hpp>
 
 using namespace jawe;
 
@@ -13,6 +15,14 @@ std::string basic_node::get_symbol() const {
 	return m_symbol;
 }
 
+std::string basic_node::memory_address() const
+{
+	std::stringstream ss;
+	if( Control::get().show_memory() ) {
+		ss << "[" << this << "]";
+	}
+	return ss.str();
+}
 
 void deleter::operator() (node_variant* node)
 {
@@ -170,27 +180,27 @@ void deleter::operator() (node_variant* node)
 			}
 		},
 		[](ternary_operator_node* node) {
-				node->get_first_operand().reset();
-				node->get_second_operand().reset();
-				node->get_third_operand().reset();
+			node->get_first_operand().reset();
+			node->get_second_operand().reset();
+			node->get_third_operand().reset();
 
-				delete node;
+			delete node;
 		},
 		[](unary_operator_node* node) {
-				node->get_operand().reset();
+			node->get_operand().reset();
 
-				delete node;
+			delete node;
 		},
 		// variables
 		[](declaration_node* node) {
-				node->get_expr().reset();
+			node->get_expr().reset();
 
-				delete node;
+			delete node;
 		},
 		[](function_declaration_node* node) {
-				node->get_function_object().reset();
+			node->get_function_object().reset();
 
-				delete node;
+			delete node;
 		},
 		[](variable_node* node) {
 			delete node;

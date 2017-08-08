@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 	if( program == nullptr ) {
 		return 0;
 	}
+
 	delete program;
 
 	/* Checking for memory leaks */
