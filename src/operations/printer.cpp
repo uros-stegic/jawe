@@ -231,13 +231,13 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
 
         // object key value pairs
         for(auto &p: pairs) {
-          std::cout << std::string(4*num_tabs, ' ')
+          std::cout << std::string(4*(num_tabs+1), ' ')
                     << "KeyValue"
                     << std::endl
-                    << std::string(4*(num_tabs+1), ' ')
+                    << std::string(4*(num_tabs+2), ' ')
                     << p.first
                     << std::endl;
-          dump_ast(p.second, num_tabs+1);
+          dump_ast(p.second, num_tabs+2);
       	}
       },
       [this, num_tabs](string_node* node) {
