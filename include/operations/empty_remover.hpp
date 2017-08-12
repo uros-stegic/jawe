@@ -10,19 +10,9 @@ public:
 	void run() const;
 
 private:
-	void remove(shared_node*) const;
+	void remove(const shared_node&, const shared_node&) const;
+	void remove_impl(const shared_node&, const shared_node&) const;
 
-	// void remove(CommandBlock*) const;
-	// void remove(IfElse*) const;
-	// void remove(While*) const;
-	// void remove(DoWhile*) const;
-	// void remove(For*) const;
-	// void remove(Switch*) const;
-	// void remove(Case*) const;
-	// void remove(Default*) const;
-	// void remove(FunctionDeclaration*) const;
-	// void remove(Declaration*) const;
-	// void remove(Empty*) const;
 };
 }
 

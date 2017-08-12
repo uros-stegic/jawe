@@ -27,22 +27,6 @@ void Printer::run() const
   					<< "~~~~~ Finished printing"
   					<< std::endl << std::endl;
   }
-  // if( Control::get().dump_ast() ) {
-  // 	std::cout	<< "~~~~~ Previewing syntax tree"
-	// 				<< std::endl << std::endl;
-	// 	program->dump_ast(std::cout);
-	// 	std::cout	<< std::endl
-	// 				<< "~~~~~ Finished syntax tree"
-	// 				<< std::endl << std::endl;
-	// }
-	// if( Control::get().dump_program() ) {
-	// 	std::cout	<< "~~~~~ Printing program"
-	// 				<< std::endl << std::endl;
-	// 	program->print(std::cout);
-	// 	std::cout	<< std::endl
-	// 				<< "~~~~~ Finished printing"
-	// 				<< std::endl << std::endl;
-	// }
 }
 
 void Printer::dump_ast(const shared_node& program, int num_tabs) const {
@@ -371,12 +355,5 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
 }
 
 void Printer::dump_program(const shared_node& program, int num_tabs) const {
-
-    // std::visit(lambda::compose{
-  	// 	[this, num_tabs](unary* node) {
-  	// 		std::cout	<< std::string(4*num_tabs, ' ')
-  	// 					<< node->symbol()
-  	// 					<< std::endl;
-  	// 		visit(node->sub(), num_tabs+1);
-  	// 	}, **program);
+  std::cout << "This should be a program printer." << std::endl;
 }

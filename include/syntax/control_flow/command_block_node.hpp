@@ -12,6 +12,7 @@ public:
 	command_block_node(const std::vector<shared_node>&);
 	void push_back(const shared_node&);
 	std::vector<shared_node> get_commands();
+	void remove(const shared_node& node);
 
 private:
 	std::vector<shared_node> m_commands;
@@ -19,4 +20,3 @@ private:
 }
 
 #endif // __COMMAND_BLOCK_HPP__
-

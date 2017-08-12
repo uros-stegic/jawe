@@ -1,142 +1,91 @@
 #include <operations/empty_remover.hpp>
+#include <utils/lambda_composer.hpp>
 #include <syntax.hpp>
 
 using namespace jawe;
 
 extern shared_node* program;
 
-void EmptyRemover::remove(shared_node* root) const
+void EmptyRemover::remove(const shared_node& root, const shared_node& parent) const
 {
-	// switch( root->get_type() ) {
-	// 	case TCommandBlock: {
-	// 		remove(static_cast<CommandBlock*>(root));
-	// 		break;
-	// 	}
-	// 	case TIfElse: {
-	// 		remove(static_cast<IfElse*>(root));
-	// 		break;
-	// 	}
-	// 	case TWhile: {
-	// 		remove(static_cast<While*>(root));
-	// 		break;
-	// 	}
-	// 	case TDoWhile: {
-	// 		remove(static_cast<DoWhile*>(root));
-	// 		break;
-	// 	}
-	// 	case TFor: {
-	// 		remove(static_cast<For*>(root));
-	// 		break;
-	// 	}
-	// 	case TSwitch: {
-	// 		remove(static_cast<Switch*>(root));
-	// 		break;
-	// 	}
-	// 	case TCase: {
-	// 		remove(static_cast<Case*>(root));
-	// 		break;
-	// 	}
-	// 	case TDefault: {
-	// 		remove(static_cast<Default*>(root));
-	// 		break;
-	// 	}
-	// 	case TFunctionDeclaration: {
-	// 		remove(static_cast<FunctionDeclaration*>(root));
-	// 		break;
-	// 	}
-	// 	case TEmpty: {
-	// 		remove(static_cast<Empty*>(root));
-	// 		break;
-	// 	}
-	// 	case TLetDeclaration:
-	// 	case TVarDeclaration: {
-	// 		remove(static_cast<Declaration*>(root));
-	// 		break;
-	// 	}
-	// 	default: {}
-	// }
+	std::visit(lambda_composer {
+		// abstract
+		[root](basic_node* node) {},
+		[this, root](command_block_node* node) {
+			auto commands = node->get_commands();
+
+			std::for_each(
+				std::begin(commands),
+				std::end(commands),
+				[this, root](auto p) {
+					remove(p, root);
+				});
+		},
+		[this, root](if_else_node* node) {
+			auto left = node->get_if();
+			auto right = node->get_else();
+
+			remove(left, root);
+			if( right != nullptr ) {
+				remove(right, root);
+			}
+		},
+		[this, root](while_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](do_while_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](for_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](switch_node* node) {
+			auto commands = node->get_cases();
+			std::for_each(
+				std::begin(commands),
+				std::end(commands),
+				[this, root](auto p) {
+					remove(p, root);
+				});
+		},
+		[this, root](case_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](default_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](function_declaration_node* node) {
+			auto body = node->get_body();
+			remove(body, root);
+		},
+		[this, root](declaration_node* node) {
+			auto expr = node->get_expr();
+			remove(expr, root);
+		},
+		[this, parent, root](empty_node* node) {
+			if(root != parent){
+				remove_impl(root, parent);
+			}
+		},
+	}, *root);
+}
+
+void EmptyRemover::remove_impl(const shared_node& child, const shared_node& parent) const {
+	std::visit(lambda_composer {
+		[](basic_node* node) {},
+		[this, child, parent](command_block_node* node) {
+			node->remove(child);
+		},
+	}, *parent);
+
 }
 
 void EmptyRemover::run() const
 {
-	remove(program);
+	remove(*program, *program);
 }
-
-// void EmptyRemover::remove(CommandBlock* node) const
-// {
-	// auto commands = node->get_commands();
-	// std::for_each(
-	// 	std::begin(commands),
-	// 	std::end(commands),
-	// 	[this](Command* p) {
-	// 		remove(p);
-	// 	}
-	// );
-// }
-// void EmptyRemover::remove(IfElse* node) const
-// {
-// 	auto left = node->get_if();
-// 	auto right = node->get_else();
-// 	remove(left);
-// 	if( right != nullptr ) {
-// 		remove(right);
-// 	}
-// }
-// void EmptyRemover::remove(While* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(DoWhile* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(For* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(Switch* node) const
-// {
-// 	auto commands = node->get_cases();
-// 	std::for_each(
-// 		std::begin(commands),
-// 		std::end(commands),
-// 		[this](Command* p) {
-// 			remove(p);
-// 		}
-// 	);
-// }
-// void EmptyRemover::remove(Case* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(Default* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(FunctionDeclaration* node) const
-// {
-// 	auto body = node->get_body();
-// 	remove(body);
-// }
-// void EmptyRemover::remove(Declaration* node) const
-// {
-// 	if( node->expr()->priority() != TAssign ) {
-// 		return;
-// 	}
-//
-// 	auto* rval = static_cast<Assign*>(node->expr())->right();
-// 	if( rval->priority() == TFunction ) {
-// 		Function* f = static_cast<Function*>(rval);
-// 		remove(f->get_body());
-// 	}
-// }
-// void EmptyRemover::remove(Empty* node) const
-// {
-// 	auto parent = static_cast<CommandBlock*>(node->get_parent());
-// 	parent->remove(node);
-// }

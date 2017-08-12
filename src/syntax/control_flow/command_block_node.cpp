@@ -26,4 +26,7 @@ std::vector<shared_node> command_block_node::get_commands()
 	return m_commands;
 }
 
-
+void command_block_node::remove(const shared_node& node)
+{
+	m_commands.erase(std::remove(std::begin(m_commands), std::end(m_commands), node), std::end(m_commands));
+}

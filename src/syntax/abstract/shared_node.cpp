@@ -92,9 +92,9 @@ void deleter::operator() (node_variant* node)
 			node->get_if().reset();
 			// if else
 			auto else_node = node->get_else();
-			if(else_node != nullptr)
+			if(else_node != nullptr) {
 				else_node.reset();
-
+			}
 			delete node;
 		},
 		[](return_node* node) {
@@ -147,8 +147,9 @@ void deleter::operator() (node_variant* node)
 		[](object_node* node) {
 			auto pairs = node->get_pairs();
 			// object key value pairs
-			for(auto &p: pairs)
-				p.second.reset();
+			for(auto &p: pairs) {
+ 				p.second.reset();
+			}
 
 			delete node;
 		},
@@ -167,7 +168,6 @@ void deleter::operator() (node_variant* node)
 			auto args = node->get_args();
 
 			if(args.size() != 0) {
-
 				std::for_each(
 					std::begin(args),
 					std::end(args),
