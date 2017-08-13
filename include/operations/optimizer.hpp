@@ -28,7 +28,7 @@ private:
 	inline typename std::enable_if<I < sizeof...(Ts), void>::type
 	run(const std::tuple<Ts...>& optimizations) const {
 		auto optimization =  std::get<I>(optimizations);
-		optimization.transform();
+		optimization.run();
 		run<I+1, Ts...>(optimizations);
 	}
 };

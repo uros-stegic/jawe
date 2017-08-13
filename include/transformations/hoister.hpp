@@ -3,14 +3,17 @@
 
 #include <transformations/basic_transformation.hpp>
 #include <syntax.hpp>
+#include <optional>
 
 namespace jawe {
 class Hoister : public BasicTransformation {
 public:
-	void transform() const;
+	void run() const;
 
 private:
-	void decouple(shared_node*) const;
+	void remove(const shared_node&, const shared_node&) const;
+	void decouple(const shared_node&, const shared_node&, const shared_node&) const;
+	std::optional<shared_node> get_decl_ass_op(const shared_node& node) const;
 	// void decouple(CommandBlock*) const;
 	// void decouple(IfElse*) const;
 	// void decouple(While*) const;

@@ -6,183 +6,153 @@ using namespace jawe;
 
 extern shared_node* program;
 
-void Hoister::transform() const
+void Hoister::run() const
 {
-  	decouple(program);
+  	decouple(*program, *program, *program);
 }
-//
-// void Hoister::decouple(CommandBlock* node) const
-// {
-// 	auto commands = node->get_commands();
-// 	std::for_each(
-// 		std::begin(commands),
-// 		std::end(commands),
-// 		[this](Command* p) {
-// 			decouple(p);
-// 		}
-// 	);
-// }
-// void Hoister::decouple(IfElse* node) const
-// {
-// 	auto left = node->get_if();
-// 	auto right = node->get_else();
-// 	decouple(left);
-// 	if( right != nullptr ) {
-// 		decouple(right);
-// 	}
-// }
-// void Hoister::decouple(While* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(DoWhile* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(For* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(Switch* node) const
-// {
-// 	auto commands = node->get_cases();
-// 	std::for_each(
-// 		std::begin(commands),
-// 		std::end(commands),
-// 		[this](Command* p) {
-// 			decouple(p);
-// 		}
-// 	);
-// }
-// void Hoister::decouple(Case* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(Default* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(FunctionDeclaration* node) const
-// {
-// 	auto body = node->get_body();
-// 	decouple(body);
-// }
-// void Hoister::decouple(Declaration* node) const
-// {
-// 	if( node->expr()->priority() != TAssign ) {
-// 		return;
-// 	}
-//
-// 	// Isolate assignment
-// 	auto assignment = static_cast<Assign*>(node->expr()->copy());
-//
-// 	// Isolate variable in question
-// 	auto var = static_cast<Variable*>(assignment->left()->copy());
-//
-// 	// Isolate parenting container
-// 	auto parent = static_cast<CommandBlock*>(node->get_parent());
-//
-// 	// Generate new variable declaration
-// 	Command* decl;
-// 	if( node->get_type() == TVarDeclaration ) {
-// 		decl = new VarDeclaration(var);
-// 	}
-// 	else if( node->get_type() == TLetDeclaration ) {
-// 		decl = new LetDeclaration(var);
-// 	}
-// 	else {
-// 		decl = new ConstDeclaration(var);
-// 	}
-//
-// 	var->set_parent(decl);
-// 	decl->set_parent(parent);
-// 	assignment->set_parent(parent);
-//
-// 	parent->replace(node, assignment);
-//
-// 	CommandBlock* decl_container;
-// 	if( decl->get_type() == TVarDeclaration ) {
-// 		decl_container = find_top_block(parent);
-// 	}
-// 	else {
-// 		decl_container = parent;
-// 	}
-// 	decl_container->prepend(decl);
-//
-// 	auto* rval = assignment->right();
-// 	if( rval->priority() == TFunction ) {
-// 		Function* f = static_cast<Function*>(rval);
-// 		decouple(f->get_body());
-// 	}
-// 	// TLiteral -> {TObject, TFunction, TNumber, ...}
-// }
-//
-void Hoister::decouple(shared_node* root) const
+
+void Hoister::decouple(const shared_node& root, const shared_node& parent_var, const shared_node& parent_let) const
 {
-// 	switch( root->get_type() ) {
-// 		case TCommandBlock: {
-// 			decouple(static_cast<CommandBlock*>(root));
-// 			break;
-// 		}
-// 		case TIfElse: {
-// 			decouple(static_cast<IfElse*>(root));
-// 			break;
-// 		}
-// 		case TWhile: {
-// 			decouple(static_cast<While*>(root));
-// 			break;
-// 		}
-// 		case TDoWhile: {
-// 			decouple(static_cast<DoWhile*>(root));
-// 			break;
-// 		}
-// 		case TFor: {
-// 			decouple(static_cast<For*>(root));
-// 			break;
-// 		}
-// 		case TSwitch: {
-// 			decouple(static_cast<Switch*>(root));
-// 			break;
-// 		}
-// 		case TCase: {
-// 			decouple(static_cast<Case*>(root));
-// 			break;
-// 		}
-// 		case TDefault: {
-// 			decouple(static_cast<Default*>(root));
-// 			break;
-// 		}
-// 		case TFunctionDeclaration: {
-// 			decouple(static_cast<FunctionDeclaration*>(root));
-// 			break;
-// 		}
-// 		case TLetDeclaration:
-// 		case TVarDeclaration: {
-// 			decouple(static_cast<Declaration*>(root));
-// 			break;
-// 		}
-// 		default: {}
-// 	}
+  std::visit(lambda_composer {
+    [](basic_node* node) {},
+    [this, root, parent_var, parent_let](case_node* node) {
+			decouple(node->get_body(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](default_node* node) {
+      decouple(node->get_body(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](do_while_node* node) {
+      decouple(node->get_body(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](for_node* node) {
+      decouple(node->get_body(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](if_else_node* node) {
+      decouple(node->get_if(), parent_var, parent_let);
+			auto else_node = node->get_else();
+			if(else_node != nullptr) {
+        decouple(else_node, parent_var, parent_let);
+			}
+		},
+		[this, root, parent_var, parent_let](return_node* node) {
+			decouple(node->get_expr(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](switch_node* node) {
+			auto nodes = node->get_cases();
+			std::for_each(
+				std::begin(nodes),
+				std::end(nodes),
+        [this, root, parent_var, parent_let](auto n) { decouple(n, parent_var, parent_let); }
+			);
+		},
+		[this, root, parent_var, parent_let](while_node* node) {
+      decouple(node->get_body(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](array_node* node) {
+			auto nodes = node->get_elements();
+
+			std::for_each(
+				std::begin(nodes),
+				std::end(nodes),
+				[this, root, parent_var, parent_let](auto n) { decouple(n, parent_var, parent_let); }
+			);
+		},
+		[this, root, parent_var, parent_let](object_node* node) {
+			auto pairs = node->get_pairs();
+			for(auto &p: pairs) {
+        decouple(p.second, parent_var, parent_let);
+			}
+		},
+		[this, root, parent_var, parent_let](binary_operator_node* node) {
+      decouple(node->get_left(), parent_var, parent_let);
+      decouple(node->get_right(), parent_var, parent_let);
+    },
+		[this, root, parent_var, parent_let](function_call_node* node) {
+			auto args = node->get_args();
+
+			if(args.size() != 0) {
+				std::for_each(
+					std::begin(args),
+					std::end(args),
+					[this, root, parent_var, parent_let](auto expr) {
+            decouple(expr, parent_var, parent_let);
+    			}
+				);
+	    }
+		},
+		[this, root, parent_var, parent_let](ternary_operator_node* node) {
+      decouple(node->get_first_operand(), parent_var, parent_let);
+      decouple(node->get_second_operand(), parent_var, parent_let);
+      decouple(node->get_third_operand(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](unary_operator_node* node) {
+      decouple(node->get_operand(), parent_var, parent_let);
+		},
+    [this, root, parent_var, parent_let](function_declaration_node* node) {
+      decouple(node->get_function_object(), parent_var, parent_let);
+    },
+    // changing parent for var
+    [this, root, parent_var, parent_let](function_object_node* node) {
+      decouple(node->get_body(), node->get_body(), parent_let);
+    },
+		[this, root, parent_var, parent_let](const_declaration_node* node) {
+      decouple(node->get_expr(), parent_var, parent_let);
+		},
+		[this, root, parent_var, parent_let](declaration_node* node) {
+      // x = 5
+      auto assign_expr_op = get_decl_ass_op(node->get_expr());
+      auto parent_var_raw = std::get<command_block_node*>(*parent_var);
+      auto parent_let_raw = std::get<command_block_node*>(*parent_let);
+      auto new_decl = root;
+
+      if(assign_expr_op) {
+        // x = 5
+        auto assign_expr_op_raw = std::get<assign_node*>(**assign_expr_op);
+        // x
+        auto left_ass_exp = assign_expr_op_raw->get_left();
+
+        if(node->get_qualifier() == QVar)
+          // var x;
+          new_decl = make_node<var_declaration_node>(left_ass_exp);
+        else if(node->get_qualifier() == QLet)
+          // let x;
+          new_decl = make_node<let_declaration_node>(left_ass_exp);
+
+        // replace var/let x = 5; with x = 5;
+        parent_let_raw->replace(root, std::move(*assign_expr_op));
+      }
+
+      if(node->get_qualifier() == QVar)
+        // insert var x; in command block
+        parent_var_raw->push_back_var_decl(new_decl);
+      else if(node->get_qualifier() == QLet)
+        // insert let x; in command block
+        parent_let_raw->push_back_var_decl(new_decl);
+
+      decouple(node->get_expr(), parent_var, parent_let);
+		},
+    // changing parent for let
+		[this, root, parent_var, parent_let](command_block_node* node) {
+			auto nodes = node->get_commands();
+
+      std::for_each(
+        std::begin(nodes),
+        std::end(nodes),
+        [this, root, parent_var, parent_let](auto expr) {
+          decouple(expr, parent_var, root);
+        }
+      );
+		},
+  }, *root);
 }
-//
-// CommandBlock* Hoister::find_top_block(Command* block) const {
-// 	auto parent = block->get_parent();
-// 	if( parent == nullptr ) {
-// 		return static_cast<CommandBlock*>(block);
-// 	}
-// 	else if( parent->get_type() == TFunctionDeclaration ) {
-// 		return static_cast<CommandBlock*>(block);
-// 	}
-// 	else if(
-// 		parent->get_type() == TExpr &&
-// 		static_cast<Expr*>(parent)->priority() == TFunction
-// 	) {
-// 		return static_cast<CommandBlock*>(block);
-// 	}
-// 	return find_top_block(block->get_parent());
-// }
+
+std::optional<shared_node> Hoister::get_decl_ass_op(const shared_node& root) const {
+  return std::visit(lambda_composer {
+    [root](assign_node* node) -> std::optional<shared_node> {
+			return root;
+		},
+    [](basic_node* node) -> std::optional<shared_node> {
+			return {};
+		},
+  }, *root);
+}

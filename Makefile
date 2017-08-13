@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/semantics/empty.js
+TEST_EXAMPLE	= ../tests/optimizations/hoist6.js
 JAWE_FLAGS		= --dump-ast
 
 .PHONY: all clean run

@@ -4,9 +4,8 @@
 namespace jawe {
 class BasicTransformation {
 public:
-	void transform() const;
+	void run() const;
 };
 }
 
 #endif // __BASIC_TRANSFORMATION_HPP__
-

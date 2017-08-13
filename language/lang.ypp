@@ -135,6 +135,7 @@ NamedFun	: function_token id_token '(' IDList ')'
 															delete $2;
 															delete $4;
 															delete $7;
+															delete fn;
 														}
 			;
 Declaration	: const_token id_token						{ $$ = jawe::make_node_ptr<jawe::const_declaration_node>(jawe::make_node<jawe::variable_node>(*$2)); delete $2;	}

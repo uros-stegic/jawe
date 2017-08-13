@@ -61,7 +61,7 @@ void Control::run() const
 			Parser,
 			// FunctionDecomposer,
 		  EmptyRemover,
-			// Optimizer<Hoister>,
+			Optimizer<Hoister>,
 			Printer
 		>();
 	}
