@@ -135,9 +135,10 @@ void hoister::decouple(const shared_node& root, const shared_node& parent_var, c
         // insert let x; in command block
         parent_let_raw->push_back_var_decl(new_decl);
       }
-
-      decouple(node->get_expr(), parent_var, parent_let);
-		},
+      if(assign_expr_op) {
+        decouple(node->get_expr(), parent_var, parent_let);
+		  }
+    },
     // changing parent for let
 		[this, root, parent_var, parent_let](command_block_node* node) {
 			auto nodes = node->get_commands();
