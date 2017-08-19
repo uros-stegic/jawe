@@ -14,18 +14,6 @@ private:
 	void remove(const shared_node&, const shared_node&) const;
 	void decouple(const shared_node&, const shared_node&, const shared_node&) const;
 	std::optional<shared_node> get_decl_ass_op(const shared_node& node) const;
-	// void decouple(CommandBlock*) const;
-	// void decouple(IfElse*) const;
-	// void decouple(While*) const;
-	// void decouple(DoWhile*) const;
-	// void decouple(For*) const;
-	// void decouple(Switch*) const;
-	// void decouple(Case*) const;
-	// void decouple(Default*) const;
-	// void decouple(FunctionDeclaration*) const;
-	// void decouple(Declaration*) const;
-	//
-	// CommandBlock* find_top_block(Command*) const;
 };
 }
 

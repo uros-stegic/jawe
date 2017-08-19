@@ -9,6 +9,8 @@
 #include <operations/empty_remover.hpp>
 #include <operations/phaser.hpp>
 #include <operations/optimizer.hpp>
+#include <operations/semantic_analyzer.hpp>
+#include <operations/reference_checker.hpp>
 
 namespace jawe {
 class Operations {
@@ -26,4 +28,3 @@ public:
 }
 
 #endif // __OPERATIONS_HPP__
-

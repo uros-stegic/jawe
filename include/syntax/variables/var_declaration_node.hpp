@@ -12,4 +12,3 @@ public:
 }
 
 #endif // __VAR_DECLARATION_HPP__
-

@@ -62,6 +62,7 @@ void Control::run() const
 			// FunctionDecomposer,
 		  EmptyRemover,
 			Optimizer<Hoister>,
+			semantic_analyzer<reference_checker>,
 			Printer
 		>();
 	}

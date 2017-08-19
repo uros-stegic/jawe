@@ -7,7 +7,6 @@ namespace jawe {
 class const_declaration_node : public declaration_node {
 public:
 	const_declaration_node(const shared_node&);
-
 };
 }
 
