@@ -4,7 +4,7 @@
 #include <string>
 
 namespace jawe {
-class Error {
+class error {
 public:
 	static void print(const std::string&);
 
@@ -14,4 +14,3 @@ private:
 }
 
 #endif // __ERROR_HPP__
-

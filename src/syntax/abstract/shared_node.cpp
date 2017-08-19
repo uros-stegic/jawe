@@ -18,7 +18,7 @@ std::string basic_node::get_symbol() const {
 std::string basic_node::memory_address() const
 {
 	std::stringstream ss;
-	if( Control::get().show_memory() ) {
+	if( control::get().show_memory() ) {
 		ss << "[" << this << "]";
 	}
 	return ss.str();

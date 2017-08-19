@@ -6,7 +6,7 @@
 #include <optional>
 
 namespace jawe {
-class Hoister : public BasicTransformation {
+class hoister : public basic_transformation {
 public:
 	void run() const;
 

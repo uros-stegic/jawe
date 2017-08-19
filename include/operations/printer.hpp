@@ -5,7 +5,7 @@
 #include <abstract/shared_node.hpp>
 
 namespace jawe {
-class Printer : public basic_operation {
+class printer : public basic_operation {
 public:
 	void run() const;
 private:

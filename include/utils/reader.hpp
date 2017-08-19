@@ -8,16 +8,16 @@
 
 namespace jawe {
 
-class Reader {
+class reader {
 public:
-	~Reader();
+	~reader();
 
-	Reader(const Reader&) = delete;
-	Reader(const Reader&&) = delete;
-	Reader& operator=(const Reader&) = delete;
-	Reader& operator=(Reader&&) = delete;
+	reader(const reader&) = delete;
+	reader(const reader&&) = delete;
+	reader& operator=(const reader&) = delete;
+	reader& operator=(reader&&) = delete;
 
-	static Reader& get_reader();
+	static reader& get_reader();
 	std::string get_line(int) const;
 	int get_line() const;
 	int get_position() const;
@@ -36,11 +36,10 @@ private:
 	std::string m_internal_buffer;
 	std::vector<std::string> m_archive;
 
-	Reader(std::string);
+	reader(std::string);
 
 	char pop_char();
 };
 }
 
 #endif // __READER_HPP__
-

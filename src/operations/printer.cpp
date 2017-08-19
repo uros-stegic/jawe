@@ -10,16 +10,16 @@ using namespace jawe;
 
 extern shared_node* program;
 
-void Printer::run() const
+void printer::run() const
 {
-  if( Control::get().dump_ast() ) {
+  if( control::get().dump_ast() ) {
   	// 	std::cout	<< "~~~~~ Printing program"
   	// 				<< std::endl << std::endl;
     dump_ast(*program, 0);
     // 				<< "~~~~~ Finished syntax tree"
   	// 				<< std::endl << std::endl;
   }
-  if( Control::get().dump_program() ) {
+  if( control::get().dump_program() ) {
     	std::cout	<< "~~~~~ Printing program"
   					<< std::endl << std::endl;
     dump_program(*program, 0);
@@ -29,7 +29,7 @@ void Printer::run() const
   }
 }
 
-void Printer::dump_ast(const shared_node& program, int num_tabs) const {
+void printer::dump_ast(const shared_node& program, int num_tabs) const {
     std::visit(lambda_composer {
       // abstract
       [this, num_tabs](basic_node* node) {
@@ -354,6 +354,6 @@ void Printer::dump_ast(const shared_node& program, int num_tabs) const {
     }, *program);
 }
 
-void Printer::dump_program(const shared_node& program, int num_tabs) const {
+void printer::dump_program(const shared_node& program, int num_tabs) const {
   std::cout << "This should be a program printer." << std::endl;
 }

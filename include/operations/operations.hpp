@@ -5,7 +5,6 @@
 #include <operations/file_checker.hpp>
 #include <operations/parser.hpp>
 #include <operations/printer.hpp>
-#include <operations/fn_decompose.hpp>
 #include <operations/empty_remover.hpp>
 #include <operations/phaser.hpp>
 #include <operations/optimizer.hpp>
@@ -13,15 +12,15 @@
 #include <operations/reference_checker.hpp>
 
 namespace jawe {
-class Operations {
+class operations {
 public:
-	Operations() = delete;
-	Operations(const Operations&) = delete;
-	void operator=(const Operations&) = delete;
+	operations() = delete;
+	operations(const operations&) = delete;
+	void operator=(const operations&) = delete;
 
 	template<class... Phases>
 		static void run_compilation() {
-			Phaser<Phases...> phaser;
+			phaser<Phases...> phaser;
 			phaser.run();
 		}
 };

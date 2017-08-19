@@ -17,7 +17,7 @@ extern int yydebug;
 
 namespace bpo = boost::program_options;
 
-Control::Control(int argc, char **argv)
+control::control(int argc, char **argv)
 	: m_argc(argc)
 	, m_argv(argv)
 	, m_desc("Usage: jawe [OPTION]... --input-file program.js")
@@ -41,13 +41,13 @@ Control::Control(int argc, char **argv)
 	m_show_memory = m_vars.count("memory");
 }
 
-Control& Control::get(int argc, char** args)
+control& control::get(int argc, char** args)
 {
-	static Control instance(argc, args);
+	static control instance(argc, args);
 	return instance;
 }
 
-void Control::run() const
+void control::run() const
 {
 	if( m_vars.count("help") ) {
 		m_print_help();
@@ -56,14 +56,14 @@ void Control::run() const
 		m_print_version();
 	}
 	else if( m_vars.count("input-file") ) {
-		Operations::run_compilation<
-			FileChecker,
-			Parser,
+		operations::run_compilation<
+			file_checker,
+			parser,
 			// FunctionDecomposer,
-		  EmptyRemover,
-			Optimizer<Hoister>,
+		  empty_remover,
+			optimizer<hoister>,
 			semantic_analyzer<reference_checker>,
-			Printer
+			printer
 		>();
 	}
 	else {
@@ -72,11 +72,11 @@ void Control::run() const
 	}
 }
 
-void Control::m_print_help() const
+void control::m_print_help() const
 {
 	std::cout << m_desc << std::endl;
 }
-void Control::m_print_version() const
+void control::m_print_version() const
 {
 	std::cout	<< "jawe v"
 				<< jawe_VERSION_MAJOR
@@ -90,19 +90,19 @@ void Control::m_print_version() const
 	std::cout << "Written by Uros Stegic" << std::endl;
 }
 
-std::string Control::input_filename() const
+std::string control::input_filename() const
 {
 	return m_input;
 }
-bool Control::dump_ast() const
+bool control::dump_ast() const
 {
 	return m_dump_ast;
 }
-bool Control::dump_program() const
+bool control::dump_program() const
 {
 	return m_dump_program;
 }
-bool Control::show_memory() const
+bool control::show_memory() const
 {
 	return m_show_memory;
 }

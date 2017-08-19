@@ -4,11 +4,10 @@
 #include <operations/basic_operation.hpp>
 
 namespace jawe {
-class Parser : public basic_operation {
+class parser : public basic_operation {
 public:
 	void run() const;
 };
 }
 
 #endif // __PARSER__HPP__
-

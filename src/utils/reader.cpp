@@ -3,25 +3,25 @@
 
 using namespace jawe;
 
-Reader::Reader(std::string filename)
+reader::reader(std::string filename)
 	: m_current_line(0)
 	, m_current_char(0)
 	, m_input(std::ifstream(filename))
 {}
 
-Reader::~Reader()
+reader::~reader()
 {
 	m_input.close();
 }
 
-Reader& Reader::get_reader()
+reader& reader::get_reader()
 {
-	std::string filename = Control::get().input_filename();
-	static Reader instance(filename);
+	std::string filename = control::get().input_filename();
+	static reader instance(filename);
 	return instance;
 }
 
-int Reader::read(char* buffer)
+int reader::read(char* buffer)
 {
 	char buf = pop_char();
 	if( buf == 0 ) {
@@ -31,24 +31,24 @@ int Reader::read(char* buffer)
 	return 1;
 }
 
-std::string Reader::get_line(int line_no) const
+std::string reader::get_line(int line_no) const
 {
 	return m_archive[line_no];
 }
-int Reader::get_line() const
+int reader::get_line() const
 {
 	return m_current_line;
 }
-int Reader::get_position() const
+int reader::get_position() const
 {
 	return m_current_char;
 }
-std::string Reader::get_buffer() const
+std::string reader::get_buffer() const
 {
 	return m_internal_buffer;
 }
 
-char Reader::pop_char()
+char reader::pop_char()
 {
 	if( m_current_char >= m_internal_buffer.size() ) {
 		if( std::getline(m_input, m_internal_buffer) ) {
@@ -63,4 +63,3 @@ char Reader::pop_char()
 	}
 	return m_internal_buffer[m_current_char++];
 }
-

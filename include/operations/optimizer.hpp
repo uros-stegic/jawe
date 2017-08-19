@@ -11,7 +11,7 @@ namespace jawe {
 extern shared_node* program;
 
 template<typename... Optimizations>
-class Optimizer : public basic_operation {
+class optimizer : public basic_operation {
 public:
 	void run() const {
 		run(m_optimizations);

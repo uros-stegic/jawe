@@ -5,7 +5,7 @@
 
 namespace jawe {
 template<typename... Phases>
-class Phaser {
+class phaser {
 public:
 	void run() const {
 		run(m_phases);
@@ -29,4 +29,3 @@ private:
 }
 
 #endif // __PHASER_HPP__
-

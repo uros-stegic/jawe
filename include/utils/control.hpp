@@ -6,12 +6,12 @@
 #include <boost/program_options/variables_map.hpp>
 
 namespace jawe {
-class Control {
+class control {
 public:
-	Control(const Control&) = delete;
-	void operator=(const Control&) = delete;
+	control(const control&) = delete;
+	void operator=(const control&) = delete;
 
-	static Control& get(int = 0, char ** = nullptr);
+	static control& get(int = 0, char ** = nullptr);
 	std::string input_filename() const;
 	bool dump_ast() const;
 	bool dump_program() const;
@@ -29,12 +29,11 @@ private:
 	bool m_dump_ast;
 	bool m_dump_program;
 	bool m_show_memory;
-	
-	Control(int, char **);
+
+	control(int, char **);
 	void m_print_help() const;
 	void m_print_version() const;
 };
 }
 
 #endif // __CONTROL_HPP__
-

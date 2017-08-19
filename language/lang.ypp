@@ -321,10 +321,10 @@ IDListEmpty	:											{ $$ = new std::vector<std::string>; }
 %%
 
 void yyerror(const std::string& msg) {
-	std::string filename = jawe::Control::get().input_filename();
-	int line = jawe::Reader::get_reader().get_line();
-	int position = jawe::Reader::get_reader().get_position();
-	std::string buff = jawe::Reader::get_reader().get_buffer();
+	std::string filename = jawe::control::get().input_filename();
+	int line = jawe::reader::get_reader().get_line();
+	int position = jawe::reader::get_reader().get_position();
+	std::string buff = jawe::reader::get_reader().get_buffer();
 	YYLTYPE* block = (YYLTYPE*)err_block;
 
 	if( block ) {
@@ -339,7 +339,7 @@ void yyerror(const std::string& msg) {
 				<< ": " << msg
 				<< std::endl;
 
-	buff = jawe::Reader::get_reader().get_line(line-1);
+	buff = jawe::reader::get_reader().get_line(line-1);
 	int old_len = buff.size();
 	boost::trim(buff);
 	int new_len = buff.size();

@@ -6,7 +6,7 @@ using namespace jawe;
 
 extern shared_node* program;
 
-void EmptyRemover::remove(const shared_node& root, const shared_node& parent) const
+void empty_remover::remove(const shared_node& root, const shared_node& parent) const
 {
 	std::visit(lambda_composer {
 		// abstract
@@ -75,7 +75,7 @@ void EmptyRemover::remove(const shared_node& root, const shared_node& parent) co
 	}, *root);
 }
 
-void EmptyRemover::remove_impl(const shared_node& child, const shared_node& parent) const {
+void empty_remover::remove_impl(const shared_node& child, const shared_node& parent) const {
 	std::visit(lambda_composer {
 		[](basic_node* node) {},
 		[this, child, parent](command_block_node* node) {
@@ -85,7 +85,7 @@ void EmptyRemover::remove_impl(const shared_node& child, const shared_node& pare
 
 }
 
-void EmptyRemover::run() const
+void empty_remover::run() const
 {
 	remove(*program, *program);
 }

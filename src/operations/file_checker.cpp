@@ -7,9 +7,9 @@
 
 using namespace jawe;
 
-void FileChecker::run() const
+void file_checker::run() const
 {
-	std::string input = Control::get().input_filename();
+	std::string input = control::get().input_filename();
 	std::ifstream test_input(input);
 	if( !test_input ) {
 		std::cerr << "jawe: Cannot open input file " << input << std::endl;

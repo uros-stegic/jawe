@@ -6,16 +6,16 @@
 
 using namespace jawe;
 
-void Error::print(const std::string& msg)
+void error::print(const std::string& msg)
 {
-	std::string filename = Control::get().input_filename();
-	int line = Reader::get_reader().get_line();
-	int position = Reader::get_reader().get_position();
-	
+	std::string filename = control::get().input_filename();
+	int line = reader::get_reader().get_line();
+	int position = reader::get_reader().get_position();
+
 	std::cerr	<< "[ERROR] "
 				<< filename
 				<< ":" << line
-				<< ":" << position 
+				<< ":" << position
 				<< ": " << msg
 				<< std::endl;
 
@@ -23,12 +23,11 @@ void Error::print(const std::string& msg)
 	std::exit(EXIT_FAILURE);
 }
 
-void Error::print_line(const std::string& filename, int line, int position)
+void error::print_line(const std::string& filename, int line, int position)
 {
-	std::string buff = Reader::get_reader().get_buffer();
+	std::string buff = reader::get_reader().get_buffer();
 	std::cerr	<< std::string(2, ' ')
 				<< buff << std::endl
 				<< std::string(2, ' ') << std::string(position, ' ')
 				<< "^" << std::endl;
 }
-

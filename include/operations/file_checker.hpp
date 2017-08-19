@@ -4,11 +4,10 @@
 #include <operations/basic_operation.hpp>
 
 namespace jawe {
-class FileChecker : public basic_operation {
+class file_checker : public basic_operation {
 public:
 	void run() const;
 };
 }
 
 #endif // __FILE_CHECKER__HPP__
-

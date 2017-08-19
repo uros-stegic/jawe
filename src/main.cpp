@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
 	program = nullptr;
 
-	jawe::Control::get(argc, argv).run();
+	jawe::control::get(argc, argv).run();
 
 	if( program == nullptr ) {
 		return 0;

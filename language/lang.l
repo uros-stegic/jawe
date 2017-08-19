@@ -17,7 +17,7 @@
 #include <lang.syn.hpp>
 
 #define YY_INPUT(buf,result,max_size) \
-	result = jawe::Reader::get_reader().read(buf);
+	result = jawe::reader::get_reader().read(buf);
 
 void llerror(const std::string& msg)
 {
@@ -176,7 +176,7 @@ BRK_CACCESS	"]"
 {FALSE}				{ return false_token;		}
 {STRING}			{ auto tmp = std::string(yytext); yylval.string = new std::string(tmp.substr(1, tmp.size()-2)); return string_token; }
 {NAN}				{ return nan_token;			}
-   
+
 {ASS_POW}			{ return ass_pow_token;		}
 {ASS_PLUS}			{ return ass_plus_token;	}
 {ASS_MINUS}			{ return ass_minus_token;	}
@@ -193,7 +193,7 @@ BRK_CACCESS	"]"
 {DELETE}			{ return delete_token;		}
 {VOID}				{ return void_token;		}
 {TYPEOF}			{ return typeof_token;		}
-	
+
 {INC}				{ return inc_token;			}
 {DEC}				{ return dec_token;			}
 {POW}				{ return power_token;		}
@@ -212,7 +212,7 @@ BRK_CACCESS	"]"
 {T_EQ}				{ return t_eq_token;		}
 {NOT_EQ}			{ return not_eq_token;		}
 {EQ}				{ return eq_token;			}
-	
+
 {BIT_NOT}			{ return bit_not_token;		}
 {BIT_AND}			{ return bit_and_token;		}
 {BIT_OR}			{ return bit_or_token;		}
@@ -221,7 +221,7 @@ BRK_CACCESS	"]"
 {LOG_NOT}			{ return log_not_token;		}
 {LOG_AND}			{ return log_and_token;		}
 {LOG_OR}			{ return log_or_token;		}
-	
+
 {PLUS}				{ return plus_token;		}
 {MINUS}				{ return minus_token;		}
 {TIMES}				{ return times_token;		}
@@ -234,9 +234,7 @@ BRK_CACCESS	"]"
 {PARENS}			{ return *yytext; 			}
 
 {ID}				{ yylval.string = new std::string(yytext); return id_token;	}
-	
+
 {BLANK}+			{}
 .					{ llerror(yytext); }
 %%
-
-

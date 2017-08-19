@@ -4,7 +4,7 @@
 
 using namespace jawe;
 
-void Parser::run() const
+void parser::run() const
 {
 	yyparse();
 }

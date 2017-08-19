@@ -6,12 +6,12 @@ using namespace jawe;
 
 extern shared_node* program;
 
-void Hoister::run() const
+void hoister::run() const
 {
   	decouple(*program, *program, *program);
 }
 
-void Hoister::decouple(const shared_node& root, const shared_node& parent_var, const shared_node& parent_let) const
+void hoister::decouple(const shared_node& root, const shared_node& parent_var, const shared_node& parent_let) const
 {
   std::visit(lambda_composer {
     [](basic_node* node) {},
@@ -146,7 +146,7 @@ void Hoister::decouple(const shared_node& root, const shared_node& parent_var, c
   }, *root);
 }
 
-std::optional<shared_node> Hoister::get_decl_ass_op(const shared_node& root) const {
+std::optional<shared_node> hoister::get_decl_ass_op(const shared_node& root) const {
   return std::visit(lambda_composer {
     [root](assign_node* node) -> std::optional<shared_node> {
 			return root;

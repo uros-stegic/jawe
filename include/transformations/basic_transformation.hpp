@@ -2,7 +2,7 @@
 #define __BASIC_TRANSFORMATION_HPP__
 
 namespace jawe {
-class BasicTransformation {
+class basic_transformation {
 public:
 	void run() const;
 };

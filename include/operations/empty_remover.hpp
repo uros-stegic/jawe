@@ -5,7 +5,7 @@
 #include <syntax.hpp>
 
 namespace jawe {
-class EmptyRemover : public basic_operation {
+class empty_remover : public basic_operation {
 public:
 	void run() const;
 
