@@ -111,23 +111,30 @@ void hoister::decouple(const shared_node& root, const shared_node& parent_var, c
         // x
         auto left_ass_exp = assign_expr_op_raw->get_left();
 
-        if(node->get_qualifier() == QVar)
+        if(node->get_qualifier() == QVar){
           // var x;
           new_decl = make_node<var_declaration_node>(left_ass_exp);
-        else if(node->get_qualifier() == QLet)
+        }
+        else if(node->get_qualifier() == QLet){
           // let x;
           new_decl = make_node<let_declaration_node>(left_ass_exp);
+        }
 
         // replace var/let x = 5; with x = 5;
         parent_let_raw->replace(root, std::move(*assign_expr_op));
       }
+      else {
+        parent_let_raw->remove(root);
+      }
 
-      if(node->get_qualifier() == QVar)
+      if(node->get_qualifier() == QVar){
         // insert var x; in command block
         parent_var_raw->push_back_var_decl(new_decl);
-      else if(node->get_qualifier() == QLet)
+      }
+      else if(node->get_qualifier() == QLet){
         // insert let x; in command block
         parent_let_raw->push_back_var_decl(new_decl);
+      }
 
       decouple(node->get_expr(), parent_var, parent_let);
 		},

@@ -59,7 +59,6 @@ void control::run() const
 		operations::run_compilation<
 			file_checker,
 			parser,
-			// FunctionDecomposer,
 		  empty_remover,
 			optimizer<hoister>,
 			semantic_analyzer<reference_checker>,
