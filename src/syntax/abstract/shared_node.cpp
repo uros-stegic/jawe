@@ -175,9 +175,8 @@ void deleter::operator() (node_variant* node)
 						expr.reset();
 					}
 				);
-
-				delete node;
 			}
+			delete node;
 		},
 		[](ternary_operator_node* node) {
 			node->get_first_operand().reset();

@@ -164,8 +164,8 @@ SwitchCase	: switch_token '(' Expr ')' '{' Cases '}'	{ $$ = jawe::make_node_ptr<
 		   	;
 Cases		: Cases Case								{ $$ = $1; $$->push_back(*$2); delete $2; }
 			| Cases Default								{ $$ = $1; $$->push_back(*$2); delete $2; }
-			| Case 										{ $$ = new std::vector<jawe::shared_node>{*$1}; }
-			| Default									{ $$ = new std::vector<jawe::shared_node>{*$1}; }
+			| Case 										{ $$ = new std::vector<jawe::shared_node>{*$1}; delete $1; }
+			| Default									{ $$ = new std::vector<jawe::shared_node>{*$1}; delete $1; }
 			;
 Case		: case_token Primitive ':' Command 			{ $$ = jawe::make_node_ptr<jawe::case_node>(*$2, *$4); delete $2; delete $4;}
 	  		;
