@@ -1,4 +1,8 @@
+#include <sstream>
+
 #include <operations/reference_checker.hpp>
+#include <utils/error_reporter.hpp>
+
 using namespace jawe;
 
 extern shared_node* program;
@@ -142,24 +146,28 @@ void reference_checker::check(const shared_node& root)
 				check(node->get_body());
 				m_scopes.pop_back();
 			},
-			[this](declaration_node* node) {
+			[this, root](declaration_node* node) {
 				// get last scope
 				auto last_scope = m_scopes.rbegin();
 				// get variable name
 				auto var_name = get_decl_var_name(node->get_expr());
 				// check if var name already exists in last scope
 				if(std::find(last_scope->begin(), last_scope->end(), var_name) != last_scope->end()) {
-					std::cerr << "Indentifier " << var_name << " has already been declared" << std::endl;
+					std::stringstream s;
+					s << "Indentifier " << var_name << " has already been declared";
+					error_reporter::error(s.str(), root);
 				}
 				// add var name to scope
 				last_scope->push_back(var_name);
 				// check for expr
 				check(node->get_expr());
 			},
-			[this](variable_node* node) {
+			[this, root](variable_node* node) {
 				if(!find_variable(node->get_symbol())){
 					// error
-					std::cerr << "ReferenceError: " << node->get_symbol() << " is not defined" << std::endl;
+					std::stringstream s;
+					s << "ReferenceError: " << node->get_symbol() << " is not defined";
+					error_reporter::error(s.str(), root);
 				}
 			},
 		}, *root);

@@ -200,12 +200,16 @@ class basic_node : public leak_checker<basic_node> {
 public:
 	std::string get_symbol() const;
 	std::string memory_address() const;
+	int get_row() const;
+	int get_column() const;
 
 protected:
 	basic_node(std::string);
 
 private:
 	std::string m_symbol;
+	int m_row;
+	int m_column;
 };
 }
 #endif // __SHARED_NODE_HPP__

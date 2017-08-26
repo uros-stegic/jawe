@@ -1,5 +1,6 @@
-TEST_EXAMPLE	= ../tests/syntax/arrays.js
-JAWE_FLAGS		= --check-leaks --dump-ast --memory
+#TEST_EXAMPLE	= ../tests/reference_checker/err1.js
+TEST_EXAMPLE	= ../tests/error/err1.js
+JAWE_FLAGe		= ""
 
 .PHONY: all clean run
 

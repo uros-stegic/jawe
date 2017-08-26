@@ -6,6 +6,7 @@
 #include <syntax.hpp>
 #include <utils/reader.hpp>
 #include <utils/control.hpp>
+#include <utils/error_reporter.hpp>
 #include <boost/algorithm/string.hpp>
 
 #define YYDEBUG 1
@@ -321,32 +322,5 @@ IDListEmpty	:											{ $$ = new std::vector<std::string>; }
 %%
 
 void yyerror(const std::string& msg) {
-	std::string filename = jawe::control::get().input_filename();
-	int line = jawe::reader::get_reader().get_line();
-	int position = jawe::reader::get_reader().get_position();
-	std::string buff = jawe::reader::get_reader().get_buffer();
-	YYLTYPE* block = (YYLTYPE*)err_block;
-
-	if( block ) {
-		line = block->first_line + 1;
-		position = block->first_column;
-	}
-
-	std::cerr	<< "[ERROR] "
-				<< filename
-				<< ":" << (line)
-				<< ":" << (position)
-				<< ": " << msg
-				<< std::endl;
-
-	buff = jawe::reader::get_reader().get_line(line-1);
-	int old_len = buff.size();
-	boost::trim(buff);
-	int new_len = buff.size();
-	std::cerr	<< std::string(4, ' ');
-	std::cerr	<< buff << std::endl
-				<< std::string(4 + position-3 - (old_len - new_len), ' ')
-				<< "--^--" << std::endl;
-
-	std::exit(EXIT_FAILURE);
+	jawe::error_reporter::error(msg);
 }

@@ -3,16 +3,29 @@
 #include <shared_node.hpp>
 #include <syntax.hpp>
 #include <utils/control.hpp>
+#include <utils/reader.hpp>
 
 using namespace jawe;
 
 
 basic_node::basic_node(std::string symbol)
-	:m_symbol(symbol)
+	: m_symbol(symbol)
+	, m_row(reader::get_reader().get_line())
+	, m_column(reader::get_reader().get_position())
 {}
 
 std::string basic_node::get_symbol() const {
 	return m_symbol;
+}
+
+int basic_node::get_row() const
+{
+	return m_row;
+}
+
+int basic_node::get_column() const
+{
+	return m_column;
 }
 
 std::string basic_node::memory_address() const
