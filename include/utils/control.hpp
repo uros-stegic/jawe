@@ -16,6 +16,7 @@ public:
 	bool dump_ast() const;
 	bool dump_program() const;
 	bool show_memory() const;
+	bool check_leaks() const;
 
 	void run() const;
 
@@ -29,6 +30,7 @@ private:
 	bool m_dump_ast;
 	bool m_dump_program;
 	bool m_show_memory;
+	bool m_check_leaks;
 
 	control(int, char **);
 	void m_print_help() const;

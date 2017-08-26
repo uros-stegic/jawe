@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/error/err4.js
-JAWE_FLAGS		= --dump-ast
+TEST_EXAMPLE	= ../tests/syntax/arrays.js
+JAWE_FLAGS		= "--check-leaks"
 
 .PHONY: all clean run
 

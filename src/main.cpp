@@ -17,21 +17,24 @@ int main(int argc, char **argv)
 
 	delete program;
 
-	/* Checking for memory leaks */
-	std::cerr << std::endl << "~~~~~~~~~~~~~~~~~~~~" << std::endl;
-	std::visit(jawe::lambda_composer {
-		[](auto program) {
-			if( !program->check() ) {
-				std::cerr << "Program has failed to deallocate " << program->get() << " instances." << std::endl;
-				jawe::leak_previewer::show_leaked(program);
-			}
-			else {
-				std::cout << "Program finished without memory leaks" << std::endl;
-			}
+	
+	if( jawe::control::get().check_leaks() ) {
+		/* Checking for memory leaks */
+		std::cerr << std::endl << "~~~~~~~~~~~~~~~~~~~~" << std::endl;
+		std::visit(jawe::lambda_composer {
+			[](auto program) {
+				if( !program->check() ) {
+					std::cerr << "Program has failed to deallocate " << program->get() << " instances." << std::endl;
+					jawe::leak_previewer::show_leaked(program);
+				}
+				else {
+					std::cout << "Program finished without memory leaks" << std::endl;
+				}
 
-		}
-	}, **program);
-	std::cerr << std::endl << "~~~~~~~~~~~~~~~~~~~~" << std::endl;
+			}
+		}, **program);
+		std::cerr << std::endl << "~~~~~~~~~~~~~~~~~~~~" << std::endl;
+	}
 
 	return 0;
 }

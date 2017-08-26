@@ -29,6 +29,7 @@ control::control(int argc, char **argv)
 		("dump-ast",	"prints parsed abstract syntax tree")
 		("print",		"prints input program back to the output")
 		("memory",		"shows memory addresses of AST nodes")
+		("check-leaks",	"checks if any AST node failed to deallocate")
 		("input-file",	bpo::value<std::string>(&m_input), "input filename")
 		("output-file",	bpo::value<std::string>(&m_output)->default_value("a.out"), "output filename")
 	;
@@ -39,6 +40,7 @@ control::control(int argc, char **argv)
 	m_dump_ast = m_vars.count("dump-ast");
 	m_dump_program = m_vars.count("print");
 	m_show_memory = m_vars.count("memory");
+	m_check_leaks = m_vars.count("check-leaks");
 }
 
 control& control::get(int argc, char** args)
@@ -104,4 +106,8 @@ bool control::dump_program() const
 bool control::show_memory() const
 {
 	return m_show_memory;
+}
+bool control::check_leaks() const
+{
+	return m_check_leaks;
 }
