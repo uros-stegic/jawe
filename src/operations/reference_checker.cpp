@@ -93,6 +93,9 @@ void reference_checker::check(const shared_node& root)
 				check(node->get_left());
 				check(node->get_right());
 			},
+			[this](dot_access_node* node) {
+				check(node->get_left());
+			},
 			[this](ternary_operator_node* node) {
 				check(node->get_first_operand());
 				check(node->get_second_operand());
