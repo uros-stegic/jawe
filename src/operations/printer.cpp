@@ -13,11 +13,7 @@ extern shared_node* program;
 void printer::run() const
 {
   if( control::get().dump_ast() ) {
-  	// 	std::cout	<< "~~~~~ Printing program"
-  	// 				<< std::endl << std::endl;
     dump_ast(*program, 0);
-    // 				<< "~~~~~ Finished syntax tree"
-  	// 				<< std::endl << std::endl;
   }
   if( control::get().dump_program() ) {
     	std::cout	<< "~~~~~ Printing program"
@@ -27,6 +23,8 @@ void printer::run() const
   					<< "~~~~~ Finished printing"
   					<< std::endl << std::endl;
   }
+
+  control::get().get_module()->dump();
 }
 
 void printer::dump_ast(const shared_node& program, int num_tabs) const {

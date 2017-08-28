@@ -2,8 +2,12 @@
 #define __CONTROL_HPP__
 
 #include <string>
+#include <memory>
+
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
+
+#include <llvm/IR/Module.h>
 
 namespace jawe {
 class control {
@@ -19,6 +23,8 @@ public:
 	bool check_leaks() const;
 
 	void run() const;
+	llvm::LLVMContext& get_context();
+	std::unique_ptr<llvm::Module>& get_module();
 
 private:
 	int m_argc;
@@ -32,9 +38,14 @@ private:
 	bool m_show_memory;
 	bool m_check_leaks;
 
+	/* LLVM stuff */
+	llvm::LLVMContext m_context;
+	std::unique_ptr<llvm::Module> m_module;
+
 	control(int, char **);
 	void m_print_help() const;
 	void m_print_version() const;
+
 };
 }
 

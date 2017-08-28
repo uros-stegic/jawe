@@ -6,7 +6,7 @@ set (jawe_VERSION_MAJOR 1)
 set (jawe_VERSION_MINOR 1)
 set (TARGET jawe)
 
-# -std=c++14
+# -std=c++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
@@ -29,6 +29,13 @@ ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 find_package(Boost COMPONENTS program_options REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
+# LLVM
+find_package(LLVM REQUIRED CONFIG)
+include_directories(${LLVM_INCLUDE_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
+llvm_map_components_to_libnames(llvm_libs support core irreader)
+
+# Set up my class search paths
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories ("${PROJECT_SOURCE_DIR}/include")
@@ -49,5 +56,5 @@ add_executable(${TARGET}
 	${SOURCES}
 )
 
-target_link_libraries(${TARGET} ${Boost_LIBRARIES})
+target_link_libraries(${TARGET} ${Boost_LIBRARIES} ${llvm_libs})
 

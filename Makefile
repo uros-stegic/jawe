@@ -1,5 +1,4 @@
-#TEST_EXAMPLE	= ../tests/reference_checker/err1.js
-TEST_EXAMPLE	= ../tests/error/err1.js
+TEST_EXAMPLE	= ../tests/codegen/const.js
 JAWE_FLAGe		= ""
 
 .PHONY: all clean run

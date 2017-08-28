@@ -21,6 +21,8 @@ control::control(int argc, char **argv)
 	: m_argc(argc)
 	, m_argv(argv)
 	, m_desc("Usage: jawe [OPTION]... --input-file program.js")
+	, m_context()
+	, m_module(std::make_unique<llvm::Module>("main_module", m_context))
 {
 	m_desc.add_options()
 		("help,h",		"prints this help message")
@@ -64,6 +66,7 @@ void control::run() const
 		  	empty_remover,
 			optimizer<hoister>,
 			semantic_analyzer<reference_checker>,
+			code_generator,
 			printer
 		>();
 	}
@@ -111,3 +114,13 @@ bool control::check_leaks() const
 {
 	return m_check_leaks;
 }
+llvm::LLVMContext& control::get_context()
+{
+	return m_context;
+}
+
+std::unique_ptr<llvm::Module>& control::get_module()
+{
+	return m_module;
+}
+
