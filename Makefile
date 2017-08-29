@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/codegen/shiftu.js
+TEST_EXAMPLE	= ../tests/codegen/not_equals.js
 JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run

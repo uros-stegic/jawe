@@ -190,6 +190,48 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			return m_ir_builder.CreateLShr(left, right, "lshrtmp");
 		},
+		[this](less_then_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpULT(left, right, "ulttmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](greater_then_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpUGT(left, right, "ulttmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](less_or_equals_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpULE(left, right, "uletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](greater_or_equals_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpUGE(left, right, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](equals_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpOEQ(left, right, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](not_equals_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			auto slttmp = m_ir_builder.CreateFCmpONE(left, right, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
 		[this](numeric_node* node) -> llvm::Value* {
 			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(node->get_value()));
 		}
