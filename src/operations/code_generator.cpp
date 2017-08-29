@@ -148,6 +148,8 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			codegen(node->get_expr());
 			return nullptr;
 		},
+
+		/*************** Arithmetic nodes ****************/
 		[this](plus_node* node) -> llvm::Value* {
 			auto left = codegen(node->get_left());
 			auto right = codegen(node->get_right());
@@ -172,6 +174,36 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			return m_ir_builder.CreateFDiv(left, right, "divtmp");
 		},
+		[this](mod_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateFRem(left, right, "fremtmp");
+		},
+		/*************************************************/
+
+		/****************** Bitwise ops ******************/
+		[this](bit_and_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateAnd(left, right, "andtmp");
+		},
+		[this](bit_or_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateOr(left, right, "ortmp");
+		},
+		[this](bit_xor_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateXor(left, right, "xortmp");
+		},
+		/*************************************************/
+
+		/****************** Shift nodes ******************/
 		[this](bit_shift_l_node* node) -> llvm::Value* {
 			auto left = codegen(node->get_left());
 			auto right = codegen(node->get_right());
@@ -190,6 +222,9 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			return m_ir_builder.CreateLShr(left, right, "lshrtmp");
 		},
+		/*************************************************/
+
+		/***************** Compare nodes *****************/
 		[this](less_then_node* node) -> llvm::Value* {
 			auto left = codegen(node->get_left());
 			auto right = codegen(node->get_right());
@@ -232,9 +267,13 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			auto slttmp = m_ir_builder.CreateFCmpONE(left, right, "gletmp");
 			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
 		},
+		/*************************************************/
+
+		/***************** Numeric nodes *****************/
 		[this](numeric_node* node) -> llvm::Value* {
 			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(node->get_value()));
 		}
+		/*************************************************/
 	}, *root);
 }
 

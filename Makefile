@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/codegen/not_equals.js
+TEST_EXAMPLE	= ../tests/codegen/bit-xor.js
 JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run
