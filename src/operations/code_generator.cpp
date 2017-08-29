@@ -1,4 +1,5 @@
 #include <operations/code_generator.hpp>
+
 #include <utils/control.hpp>
 
 using namespace jawe;
@@ -6,15 +7,26 @@ using namespace jawe;
 extern shared_node* program;
 
 code_generator::code_generator()
-	: m_llvm_builder(control::get().get_context())
-{}
-code_generator::code_generator(const code_generator& other)
-	: m_llvm_builder(m_llvm_builder)
+	: m_ir_builder(control::get().get_context())
 {}
 
 void code_generator::run()
 {
-	codegen(*program);
+	std::vector<llvm::Type*> empty_func_type(0, llvm::Type::getDoubleTy(control::get().get_context()));
+	llvm::FunctionType *FT = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), empty_func_type, false);
+  
+	llvm::Function* global_scope = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "global", control::get().get_module().get());
+  
+	llvm::BasicBlock *BB = llvm::BasicBlock::Create(control::get().get_context(), "entry", global_scope);
+	m_ir_builder.SetInsertPoint(BB);
+	
+	auto expr = codegen(*program);
+	if( expr != nullptr ) {
+		m_ir_builder.CreateRet(expr);
+	}
+	else {
+		global_scope->eraseFromParent();
+	}
 }
 
 llvm::Value* code_generator::codegen(const shared_node& root)
@@ -28,14 +40,18 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		},
 		[this](command_block_node* node) -> llvm::Value* {
 			auto nodes = node->get_commands();
+			llvm::Value* last = nullptr;
 			std::for_each(
 				std::begin(nodes),
 				std::end(nodes),
-				[this](auto expr) {
-					codegen(expr);
+				[this, &last](auto expr) {
+					auto tmp = codegen(expr);
+					if( tmp != nullptr ) {
+						last = tmp;
+					}
 				}
 			);
-			return nullptr;
+			return last;
 		},
 		[this](default_node* node) -> llvm::Value* {
 			codegen(node->get_body());
@@ -131,6 +147,51 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		[this](declaration_node* node) -> llvm::Value* {
 			codegen(node->get_expr());
 			return nullptr;
+		},
+		[this](plus_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateFAdd(left, right, "addtmp");
+		},
+		[this](minus_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateFSub(left, right, "subtmp");
+		},
+		[this](times_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateFMul(left, right, "multmp");
+		},
+		[this](divide_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateFDiv(left, right, "divtmp");
+		},
+		[this](bit_shift_l_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateShl(left, right, "shltmp");
+		},
+		[this](bit_shift_r_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateAShr(left, right, "ashrtmp");
+		},
+		[this](bit_shift_u_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			return m_ir_builder.CreateLShr(left, right, "lshrtmp");
+		},
+		[this](numeric_node* node) -> llvm::Value* {
+			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(node->get_value()));
 		}
 	}, *root);
 }

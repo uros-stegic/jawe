@@ -19,12 +19,14 @@ public:
 	std::string input_filename() const;
 	bool dump_ast() const;
 	bool dump_program() const;
+	bool dump_ir() const;
 	bool show_memory() const;
 	bool check_leaks() const;
 
-	void run() const;
 	llvm::LLVMContext& get_context();
 	std::unique_ptr<llvm::Module>& get_module();
+
+	void run() const;
 
 private:
 	int m_argc;
@@ -35,6 +37,7 @@ private:
 	std::string m_output;
 	bool m_dump_ast;
 	bool m_dump_program;
+	bool m_dump_ir;
 	bool m_show_memory;
 	bool m_check_leaks;
 
@@ -45,8 +48,8 @@ private:
 	control(int, char **);
 	void m_print_help() const;
 	void m_print_version() const;
-
 };
 }
 
 #endif // __CONTROL_HPP__
+

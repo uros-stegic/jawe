@@ -3,6 +3,10 @@
 #include <shared_node.hpp>
 #include <syntax.hpp>
 
+#include <llvm/IR/Module.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Verifier.h>
+
 extern jawe::shared_node* program;
 
 int main(int argc, char **argv)

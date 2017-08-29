@@ -6,25 +6,47 @@
 #include <syntax.hpp>
 #include <utils/lambda_composer.hpp>
 
+#include <llvm/IR/Module.h>
+
+extern llvm::Module* TheModule;
+
 using namespace jawe;
 
 extern shared_node* program;
 
 void printer::run() const
 {
-  if( control::get().dump_ast() ) {
-    dump_ast(*program, 0);
-  }
-  if( control::get().dump_program() ) {
+	if( control::get().dump_ast() ) {
+    	std::cout	<< "~~~~~ Dumping AST"
+  					<< std::endl << std::endl;
+
+    	dump_ast(*program, 0);
+
+    	std::cout	<< std::endl
+  					<< "~~~~~ Finished dumping AST"
+  					<< std::endl << std::endl;
+	}
+	if( control::get().dump_program() ) {
     	std::cout	<< "~~~~~ Printing program"
   					<< std::endl << std::endl;
-    dump_program(*program, 0);
+
+    	dump_program(*program, 0);
+
     	std::cout	<< std::endl
   					<< "~~~~~ Finished printing"
   					<< std::endl << std::endl;
-  }
+	}
 
-  control::get().get_module()->dump();
+	if( control::get().dump_ir() ) {
+		std::cerr	<< "~~~~~ Dumping LLVM IR code:"
+	  				<< std::endl << std::endl;
+
+		control::get().get_module()->dump();
+
+  		std::cerr	<< std::endl
+	  				<< "~~~~~ Finished dumping LLVM IR code:"
+	  				<< std::endl << std::endl;
+	}
 }
 
 void printer::dump_ast(const shared_node& program, int num_tabs) const {

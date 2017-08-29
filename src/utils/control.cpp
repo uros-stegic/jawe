@@ -29,6 +29,7 @@ control::control(int argc, char **argv)
 		("version,v",	"prints version info")
 		("verbose",		"prints verbose parsing information")
 		("dump-ast",	"prints parsed abstract syntax tree")
+		("dump-ir",		"prints llvm IR code")
 		("print",		"prints input program back to the output")
 		("memory",		"shows memory addresses of AST nodes")
 		("check-leaks",	"checks if any AST node failed to deallocate")
@@ -40,6 +41,7 @@ control::control(int argc, char **argv)
 
 	yydebug = m_vars.count("verbose");
 	m_dump_ast = m_vars.count("dump-ast");
+	m_dump_ir = m_vars.count("dump-ir");
 	m_dump_program = m_vars.count("print");
 	m_show_memory = m_vars.count("memory");
 	m_check_leaks = m_vars.count("check-leaks");
@@ -102,6 +104,10 @@ bool control::dump_ast() const
 {
 	return m_dump_ast;
 }
+bool control::dump_ir() const
+{
+	return m_dump_ir;
+}
 bool control::dump_program() const
 {
 	return m_dump_program;
@@ -114,11 +120,11 @@ bool control::check_leaks() const
 {
 	return m_check_leaks;
 }
+
 llvm::LLVMContext& control::get_context()
 {
 	return m_context;
 }
-
 std::unique_ptr<llvm::Module>& control::get_module()
 {
 	return m_module;

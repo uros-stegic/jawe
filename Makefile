@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/codegen/const.js
-JAWE_FLAGe		= ""
+TEST_EXAMPLE	= ../tests/codegen/shiftu.js
+JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run
 
