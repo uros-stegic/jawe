@@ -41,6 +41,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		[this](command_block_node* node) -> llvm::Value* {
 			auto nodes = node->get_commands();
 			llvm::Value* last = nullptr;
+			open_scope();
 			std::for_each(
 				std::begin(nodes),
 				std::end(nodes),
@@ -51,6 +52,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 					}
 				}
 			);
+			close_scope();
 			return last;
 		},
 		[this](default_node* node) -> llvm::Value* {
@@ -62,10 +64,12 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return nullptr;
 		},
 		[this](for_node* node) -> llvm::Value* {
+			open_scope();
 			codegen(node->get_init());
 			codegen(node->get_expr());
 			codegen(node->get_post());
 			codegen(node->get_body());
+			close_scope();
 			return nullptr;
 		},
 		[this](if_else_node* node) -> llvm::Value* {
@@ -141,13 +145,36 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return nullptr;
 		},
 		[this](function_object_node* node) -> llvm::Value* {
+			open_scope();
 			codegen(node->get_body());
+			close_scope();
 			return nullptr;
 		},
-		[this](declaration_node* node) -> llvm::Value* {
-			codegen(node->get_expr());
-			return nullptr;
+		/**************** Variable nodes *****************/
+		[this](declaration_node* node) -> llvm::Value* {},
+		[this](variable_node* node) -> llvm::Value* {
+			//codegen(node->get_expr());
+			auto var = find_variable(node->get_name());
+			return m_ir_builder.CreateLoad(var, node->get_name().c_str());
 		},
+		[this](assign_node* node) -> llvm::Value* {
+			auto right = codegen(node->get_right());
+			auto var_name = std::get<variable_node*>(*(node->get_left()))->get_name();
+
+			// Allocating space in stack for variable
+			auto alloca = find_variable(var_name);
+			if( alloca == nullptr ) {
+				alloca = create_alloca(m_ir_builder.GetInsertBlock()->getParent(), var_name.c_str());
+			}
+
+			// Storing a value in pre-allocated space
+			m_ir_builder.CreateStore(right, alloca);
+
+			// Stacking ptr to stacked variable
+			push_variable(var_name, alloca);
+			return right;
+		},
+		/*************************************************/
 
 		/*************** Arithmetic nodes ****************/
 		[this](plus_node* node) -> llvm::Value* {
@@ -328,5 +355,54 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		}
 		/*************************************************/
 	}, *root);
+}
+
+void code_generator::open_scope()
+{
+	m_scopes.emplace_back();
+}
+void code_generator::close_scope()
+{
+	m_scopes.pop_back();
+}
+
+void code_generator::print_scopes() const
+{
+	for(auto&& scope : m_scopes) {
+		for(auto&& var : scope) {
+			std::cout << var.first /* var.name */ << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+void code_generator::push_variable(const std::string& var_name, llvm::AllocaInst* var_alloc)
+{
+	(*m_scopes.rbegin())[var_name] = var_alloc;
+}
+
+llvm::AllocaInst* code_generator::find_variable(const std::string& var_name) const
+{
+	for(auto scope = m_scopes.rbegin(); scope != m_scopes.rend(); scope++) {
+		for(auto&& var : *scope) {
+			if( var.first == var_name ) {
+				return var.second;
+			}
+		}
+	}
+	return nullptr;
+}
+
+llvm::AllocaInst* code_generator::create_alloca(llvm::Function* f, const char* var_name) const
+{
+	llvm::IRBuilder<> entry_block_builder(
+		&f->getEntryBlock(),
+		f->getEntryBlock().begin()
+	);
+	return entry_block_builder.CreateAlloca(
+		llvm::Type::getDoubleTy(control::get().get_context()),
+		0,
+		var_name
+	);
 }
 

@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/codegen/log-not.js
+TEST_EXAMPLE	= ../tests/codegen/vars.js
 JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run
