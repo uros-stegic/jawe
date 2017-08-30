@@ -180,6 +180,18 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			return m_ir_builder.CreateFRem(left, right, "fremtmp");
 		},
+		[this](uminus_node* node) -> llvm::Value* {
+			auto op = codegen(node->get_operand());
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+
+			return m_ir_builder.CreateFSub(zero, op, "subtmp");
+		},
+		[this](uplus_node* node) -> llvm::Value* {
+			auto op = codegen(node->get_operand());
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+
+			return m_ir_builder.CreateFAdd(zero, op, "addtmp");
+		},
 		/*************************************************/
 
 		/****************** Bitwise ops ******************/
@@ -201,9 +213,14 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			return m_ir_builder.CreateXor(left, right, "xortmp");
 		},
+		[this](bit_not_node* node) -> llvm::Value* {
+			auto op = codegen(node->get_operand());
+
+			return m_ir_builder.CreateNot(op, "nottmp");
+		},
 		/*************************************************/
 
-		/****************** Bitwise ops ******************/
+		/****************** Logical ops ******************/
 		[this](logic_and_node* node) -> llvm::Value* {
 			auto left = codegen(node->get_left());
 			auto right = codegen(node->get_right());
@@ -226,6 +243,15 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			/* result = (x | y) != 0 */
 			auto slttmp = m_ir_builder.CreateFCmpONE(andtmp, zero, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](logic_not_node* node) -> llvm::Value* {
+			auto op = codegen(node->get_operand());
+
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+
+			/* tmp = x == 0 */
+			auto slttmp = m_ir_builder.CreateFCmpOEQ(op, zero, "slttmp");
 			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
 		},
 		/*************************************************/
