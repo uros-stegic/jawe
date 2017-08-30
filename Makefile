@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/codegen/bit-xor.js
+TEST_EXAMPLE	= ../tests/codegen/log-or.js
 JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run

@@ -203,6 +203,33 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		},
 		/*************************************************/
 
+		/****************** Bitwise ops ******************/
+		[this](logic_and_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			/* tmp = x & y */
+			auto andtmp = m_ir_builder.CreateAnd(left, right, "andtmp");
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+
+			/* result = (x & y) != 0 */
+			auto slttmp = m_ir_builder.CreateFCmpONE(andtmp, zero, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		[this](logic_or_node* node) -> llvm::Value* {
+			auto left = codegen(node->get_left());
+			auto right = codegen(node->get_right());
+
+			/* tmp = x | y */
+			auto andtmp = m_ir_builder.CreateOr(left, right, "ortmp");
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+
+			/* result = (x | y) != 0 */
+			auto slttmp = m_ir_builder.CreateFCmpONE(andtmp, zero, "gletmp");
+			return m_ir_builder.CreateUIToFP(slttmp, llvm::Type::getDoubleTy(control::get().get_context()));
+		},
+		/*************************************************/
+
 		/****************** Shift nodes ******************/
 		[this](bit_shift_l_node* node) -> llvm::Value* {
 			auto left = codegen(node->get_left());
