@@ -31,3 +31,12 @@ run:
 	@echo " "
 	@echo "|_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_/^\_|"
 	@echo " "
+
+jquery:
+	@mkdir -p build
+	@cd build; \
+	cmake ..;\
+	make;
+	@cd build; \
+	time ./jawe --input-file ../tests/projects/jquery-1.12.4.js
+
