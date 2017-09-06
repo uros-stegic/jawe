@@ -16,11 +16,12 @@ configure_file (
 	"${PROJECT_BINARY_DIR}/config.h"
 )
 
+# Debugging symbols
+set(CMAKE_BUILD_TYPE Debug)
 
 # Flex&Bison configuration
 find_package (FLEX 2.5.35)
 find_package (BISON 2.4.1)
-
 BISON_TARGET(MyParser language/lang.ypp ${CMAKE_CURRENT_BINARY_DIR}/lang.syn.cpp VERBOSE)
 FLEX_TARGET(MyScanner language/lang.l ${CMAKE_CURRENT_BINARY_DIR}/lang.lex.cpp)
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
