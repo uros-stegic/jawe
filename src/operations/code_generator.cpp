@@ -15,7 +15,7 @@ void code_generator::run()
 	std::vector<llvm::Type*> empty_func_type(0, llvm::Type::getDoubleTy(control::get().get_context()));
 	llvm::FunctionType *FT = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), empty_func_type, false);
   
-	llvm::Function* global_scope = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "global", control::get().get_module().get());
+	llvm::Function* global_scope = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", control::get().get_module().get());
   
 	llvm::BasicBlock *BB = llvm::BasicBlock::Create(control::get().get_context(), "entry", global_scope);
 	m_ir_builder.SetInsertPoint(BB);
@@ -32,7 +32,7 @@ void code_generator::run()
 llvm::Value* code_generator::codegen(const shared_node& root)
 {
 	return std::visit(lambda_composer {
-		[](basic_node* node) -> llvm::Value* {},
+		[](basic_node* node) -> llvm::Value* { return nullptr; },
 		[this](case_node* node) -> llvm::Value* {
 			codegen(node->get_case());
 			codegen(node->get_body());
@@ -70,14 +70,6 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			codegen(node->get_post());
 			codegen(node->get_body());
 			close_scope();
-			return nullptr;
-		},
-		[this](if_else_node* node) -> llvm::Value* {
-			codegen(node->get_if());
-			auto else_node = node->get_else();
-			if(else_node != nullptr) {
-				codegen(else_node);
-			}
 			return nullptr;
 		},
 		[this](return_node* node) -> llvm::Value* {
@@ -151,7 +143,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return nullptr;
 		},
 		/**************** Variable nodes *****************/
-		[this](declaration_node* node) -> llvm::Value* {},
+		[this](declaration_node* node) -> llvm::Value* { return nullptr; },
 		[this](variable_node* node) -> llvm::Value* {
 			//codegen(node->get_expr());
 			auto var = find_variable(node->get_name());
@@ -352,6 +344,48 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		/***************** Numeric nodes *****************/
 		[this](numeric_node* node) -> llvm::Value* {
 			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(node->get_value()));
+		},
+		/*************************************************/
+
+		/***************** Control nodes *****************/
+		[this](if_else_node* node) -> llvm::Value* {
+			auto cond = m_ir_builder.CreateFCmpONE(codegen(node->get_expr()), llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0)), "ifcond");
+			auto current_function = m_ir_builder.GetInsertBlock()->getParent();
+
+			// enable branching points
+			auto then_bb = llvm::BasicBlock::Create(control::get().get_context(), "then", current_function);
+			auto else_bb = llvm::BasicBlock::Create(control::get().get_context(), "else");
+			auto merge_bb = llvm::BasicBlock::Create(control::get().get_context(), "ifcont");
+
+			m_ir_builder.CreateCondBr(cond, then_bb, else_bb);
+
+			// if-branch
+			m_ir_builder.SetInsertPoint(then_bb);
+			auto then_ir = codegen(node->get_if());
+			m_ir_builder.CreateBr(merge_bb);
+			then_bb = m_ir_builder.GetInsertBlock();
+
+			// else-branch
+			auto else_node = node->get_else();
+			llvm::Value* else_ir;
+			if( else_node ) {
+				current_function->getBasicBlockList().push_back(else_bb);
+				m_ir_builder.SetInsertPoint(else_bb);
+				else_ir = codegen(else_node);
+				m_ir_builder.CreateBr(merge_bb);
+				else_bb = m_ir_builder.GetInsertBlock();
+			}
+
+			// merging branches
+			current_function->getBasicBlockList().push_back(merge_bb);
+			m_ir_builder.SetInsertPoint(merge_bb);
+			auto phi_node = m_ir_builder.CreatePHI(llvm::Type::getDoubleTy(control::get().get_context()), 2, "iftmp");
+			phi_node->addIncoming(then_ir, then_bb);
+			if( else_node ) {
+				phi_node->addIncoming(else_ir, then_bb);
+			}
+
+			return phi_node;
 		}
 		/*************************************************/
 	}, *root);
