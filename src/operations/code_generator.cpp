@@ -63,15 +63,6 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			codegen(node->get_body());
 			return nullptr;
 		},
-		[this](for_node* node) -> llvm::Value* {
-			open_scope();
-			codegen(node->get_init());
-			codegen(node->get_expr());
-			codegen(node->get_post());
-			codegen(node->get_body());
-			close_scope();
-			return nullptr;
-		},
 		[this](return_node* node) -> llvm::Value* {
 			codegen(node->get_expr());
 			return nullptr;
@@ -143,9 +134,23 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return nullptr;
 		},
 		/**************** Variable nodes *****************/
-		[this](declaration_node* node) -> llvm::Value* { return nullptr; },
+		[this](declaration_node* node) -> llvm::Value* {
+			auto expr = node->get_expr();
+			return std::visit(lambda_composer{
+				[](basic_node* node) -> llvm::Value* { return nullptr; },
+				[this](variable_node* node) -> llvm::Value* {
+					auto var_name = node->get_name();
+					auto alloca = create_alloca(m_ir_builder.GetInsertBlock()->getParent(), var_name.c_str());
+					push_variable(var_name, alloca);
+					return alloca;
+				},
+				[this, expr](assign_node* node) -> llvm::Value* {
+					return codegen(expr);
+				}
+			}, *expr);
+			return codegen(node->get_expr());
+		},
 		[this](variable_node* node) -> llvm::Value* {
-			//codegen(node->get_expr());
 			auto var = find_variable(node->get_name());
 			return m_ir_builder.CreateLoad(var, node->get_name().c_str());
 		},
@@ -386,6 +391,56 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			}
 
 			return phi_node;
+		},
+		[this](for_node* node) -> llvm::Value* {
+			open_scope();
+				auto init_val = codegen(node->get_init());
+				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
+
+				/* basic block for initialization part*/
+				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+
+				/* basic block for condition checking */
+				auto cond_bb = llvm::BasicBlock::Create(control::get().get_context(), "cond", current_function);
+
+				/* basic block for real loop to happen */
+				auto loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "loop", current_function);
+
+				/* basic block for after loop */
+				auto after_loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "afterloop", current_function);
+
+				m_ir_builder.SetInsertPoint(entry_bb);
+				m_ir_builder.CreateBr(cond_bb); /* goto: condition check */
+
+				/* Starting the outer loop (condition check) */
+				m_ir_builder.SetInsertPoint(cond_bb);
+
+				auto phi_node = m_ir_builder.CreatePHI(llvm::Type::getDoubleTy(control::get().get_context()), 2, "loop_phi_node");
+				phi_node->addIncoming(init_val, entry_bb);
+				phi_node->addIncoming(init_val, loop_bb);
+
+				/* cond = i < n */
+				auto cond = codegen(node->get_expr());
+
+				/* cond = i < n == 0 */
+				cond = m_ir_builder.CreateFCmpONE(cond, llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0)), "loopcond");
+
+				/* if cond == 0 goto after loop, owherwise goto inner loop */
+				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
+
+				m_ir_builder.SetInsertPoint(loop_bb);
+				open_scope();
+					/* Inner loop (real loop body) */
+					auto body = codegen(node->get_body());
+					auto post = codegen(node->get_post());
+				close_scope();
+				
+				/* goto: condition check */
+				m_ir_builder.CreateBr(cond_bb);
+
+  				m_ir_builder.SetInsertPoint(after_loop_bb);
+			close_scope();
+			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
 		}
 		/*************************************************/
 	}, *root);
