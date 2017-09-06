@@ -59,10 +59,6 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			codegen(node->get_body());
 			return nullptr;
 		},
-		[this](do_while_node* node) -> llvm::Value* {
-			codegen(node->get_body());
-			return nullptr;
-		},
 		[this](return_node* node) -> llvm::Value* {
 			codegen(node->get_expr());
 			return nullptr;
@@ -74,10 +70,6 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				std::end(nodes),
 				[this](auto n) { codegen(n); }
 			);
-			return nullptr;
-		},
-		[this](while_node* node) -> llvm::Value* {
-			codegen(node->get_body());
 			return nullptr;
 		},
 		[this](array_node* node) -> llvm::Value* {
@@ -441,7 +433,98 @@ llvm::Value* code_generator::codegen(const shared_node& root)
   				m_ir_builder.SetInsertPoint(after_loop_bb);
 			close_scope();
 			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
-		}
+		},
+		[this](do_while_node* node) -> llvm::Value* {
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+			open_scope();
+				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
+
+				/* basic block for initialization part*/
+				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+
+				/* basic block for real loop to happen */
+				auto loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "loop", current_function);
+
+				/* basic block for after loop */
+				auto after_loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "afterloop", current_function);
+
+				m_ir_builder.SetInsertPoint(entry_bb);
+				m_ir_builder.CreateBr(loop_bb); /* goto: inner loop */
+
+				/* Starting the inner loop */
+				m_ir_builder.SetInsertPoint(loop_bb);
+
+				auto phi_node = m_ir_builder.CreatePHI(llvm::Type::getDoubleTy(control::get().get_context()), 2, "loop_phi_node");
+				phi_node->addIncoming(zero, entry_bb);
+				phi_node->addIncoming(zero, loop_bb);
+
+				m_ir_builder.SetInsertPoint(loop_bb);
+				open_scope();
+					auto body = codegen(node->get_body());
+				close_scope();
+				
+				/* cond = i < n */
+				auto cond = codegen(node->get_expr());
+
+				/* cond = i < n == 0 */
+				cond = m_ir_builder.CreateFCmpONE(cond, llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0)), "loopcond");
+
+				/* if cond == 0 goto after loop, owherwise goto inner loop */
+				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
+
+  				m_ir_builder.SetInsertPoint(after_loop_bb);
+			close_scope();
+			return zero;
+		},
+		[this](while_node* node) -> llvm::Value* {
+			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
+			open_scope();
+				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
+
+				/* basic block for initialization part*/
+				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+
+				/* basic block for condition checking */
+				auto cond_bb = llvm::BasicBlock::Create(control::get().get_context(), "cond", current_function);
+
+				/* basic block for real loop to happen */
+				auto loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "loop", current_function);
+
+				/* basic block for after loop */
+				auto after_loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "afterloop", current_function);
+
+				m_ir_builder.SetInsertPoint(entry_bb);
+				m_ir_builder.CreateBr(cond_bb); /* goto: condition check */
+
+				/* Starting the outer loop (condition check) */
+				m_ir_builder.SetInsertPoint(cond_bb);
+
+				auto phi_node = m_ir_builder.CreatePHI(llvm::Type::getDoubleTy(control::get().get_context()), 2, "loop_phi_node");
+				phi_node->addIncoming(zero, entry_bb);
+				phi_node->addIncoming(zero, loop_bb);
+
+				/* cond = i < n */
+				auto cond = codegen(node->get_expr());
+
+				/* cond = i < n == 0 */
+				cond = m_ir_builder.CreateFCmpONE(cond, llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0)), "loopcond");
+
+				/* if cond == 0 goto after loop, owherwise goto inner loop */
+				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
+
+				m_ir_builder.SetInsertPoint(loop_bb);
+				open_scope();
+					/* Inner loop (real loop body) */
+					auto body = codegen(node->get_body());
+				close_scope();
+				
+				/* goto: condition check */
+				m_ir_builder.CreateBr(cond_bb);
+
+  				m_ir_builder.SetInsertPoint(after_loop_bb);
+			close_scope();
+			return zero;
+		},
 		/*************************************************/
 	}, *root);
 }

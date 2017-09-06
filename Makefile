@@ -1,4 +1,4 @@
-TEST_EXAMPLE	= ../tests/codegen/for.js
+TEST_EXAMPLE	= ../tests/codegen/do-while.js
 JAWE_FLAGS		= "--dump-ir"
 
 .PHONY: all clean run
