@@ -69,6 +69,7 @@ void control::run() const
 			optimizer<hoister>,
 			semantic_analyzer<reference_checker>,
 			code_generator,
+			assembly_generator,
 			printer
 		>();
 	}
