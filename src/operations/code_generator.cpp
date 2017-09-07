@@ -43,13 +43,15 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		[this](command_block_node* node) -> llvm::Value* {
 			auto nodes = node->get_commands();
 			llvm::Value* last = nullptr;
+			auto current_bb = m_ir_builder.GetInsertBlock(); 
 			open_scope();
 			std::for_each(
 				std::begin(nodes),
 				std::end(nodes),
-				[this, &last](auto expr) {
+				[this, &last, current_bb](auto expr) {
 					auto tmp = codegen(expr);
 					if( tmp != nullptr ) {
+						m_ir_builder.SetInsertPoint(current_bb);
 						last = tmp;
 					}
 				}

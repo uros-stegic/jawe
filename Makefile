@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/codegen/fn-decl.js
-JAWE_FLAGS		= --dump-ir --dump-ast
+TEST_EXAMPLE	= ../tests/codegen/fn-decl2.js
+JAWE_FLAGS		= --dump-ir
 
 .PHONY: all clean run
 
