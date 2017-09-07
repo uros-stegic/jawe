@@ -15,17 +15,19 @@ void code_generator::run()
 	std::vector<llvm::Type*> empty_func_type(0, llvm::Type::getDoubleTy(control::get().get_context()));
 	llvm::FunctionType *FT = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), empty_func_type, false);
   
-	llvm::Function* global_scope = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", control::get().get_module().get());
+	llvm::Function* main_fn= llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "global", control::get().get_module().get());
   
-	llvm::BasicBlock *BB = llvm::BasicBlock::Create(control::get().get_context(), "entry", global_scope);
+	llvm::BasicBlock *BB = llvm::BasicBlock::Create(control::get().get_context(), "entry", main_fn);
 	m_ir_builder.SetInsertPoint(BB);
 	
+	auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
 	auto expr = codegen(*program);
 	if( expr != nullptr ) {
-		m_ir_builder.CreateRet(expr);
+		m_ir_builder.SetInsertPoint(BB);
+		m_ir_builder.CreateRet(zero);
 	}
 	else {
-		global_scope->eraseFromParent();
+		main_fn->eraseFromParent();
 	}
 }
 
@@ -57,10 +59,6 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		},
 		[this](default_node* node) -> llvm::Value* {
 			codegen(node->get_body());
-			return nullptr;
-		},
-		[this](return_node* node) -> llvm::Value* {
-			codegen(node->get_expr());
 			return nullptr;
 		},
 		[this](switch_node* node) -> llvm::Value* {
@@ -103,28 +101,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			codegen(node->get_operand());
 			return nullptr;
 		},
-		[this](function_call_node* node) -> llvm::Value* {
-			auto args = node->get_args();
-			std::for_each(
-				std::begin(args),
-				std::end(args),
-				[this](auto expr) {
-					codegen(expr);
-				}
-			);
-			codegen(node->get_expr());
-			return nullptr;
-		},
-		[this](function_declaration_node* node) -> llvm::Value* {
-			codegen(node->get_function_object());
-			return nullptr;
-		},
-		[this](function_object_node* node) -> llvm::Value* {
-			open_scope();
-			codegen(node->get_body());
-			close_scope();
-			return nullptr;
-		},
+
 		/**************** Variable nodes *****************/
 		[this](declaration_node* node) -> llvm::Value* {
 			auto expr = node->get_expr();
@@ -524,6 +501,74 @@ llvm::Value* code_generator::codegen(const shared_node& root)
   				m_ir_builder.SetInsertPoint(after_loop_bb);
 			close_scope();
 			return zero;
+		},
+		/*************************************************/
+
+		/**************** Function nodes *****************/
+		[this](function_declaration_node* node) -> llvm::Value* {
+			auto fn_name = node->get_name();
+			
+			auto fn_object = std::get<function_object_node*>(*(node->get_function_object()));
+			auto args = fn_object->get_args();
+			std::vector<llvm::Type*> arg_types(args.size(), llvm::Type::getDoubleTy(control::get().get_context()));
+			auto fn_type = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), arg_types, false); // R^n -> R
+			
+			auto fn = llvm::Function::Create(fn_type, llvm::Function::ExternalLinkage, fn_name, control::get().get_module().get());
+			
+			unsigned idx = 0;
+			for( auto &arg : fn->args() ) {
+				arg.setName(args[idx++]);
+			}
+			
+			// Create a new basic block to start insertion into.
+			auto fn_bb = llvm::BasicBlock::Create(control::get().get_context(), "entry", fn);
+			m_ir_builder.SetInsertPoint(fn_bb);
+			
+			// Record the function arguments in the NamedValues map.
+			open_scope();
+			for (auto &arg : fn->args()) {
+				auto arg_name = arg.getName().str();
+				auto arg_alloca = create_alloca(fn, arg_name.c_str());
+				push_variable(arg.getName().str(), arg_alloca);
+				m_ir_builder.CreateStore(&arg, arg_alloca);
+			}
+			
+			open_scope();
+			auto ret_val = codegen(node->get_body());
+			close_scope();
+			m_ir_builder.CreateRet(ret_val);
+
+			//fn_pass_mgr->run(*fn);
+
+			close_scope();
+			return fn;
+		},
+		[this](function_object_node* node) -> llvm::Value* {
+			open_scope();
+			codegen(node->get_body());
+			close_scope();
+			return nullptr;
+		},
+		[this](return_node* node) -> llvm::Value* {
+			return codegen(node->get_expr());
+		},
+		[this](function_call_node* node) -> llvm::Value* {
+			//TODO: extract fn name in all other cases
+			//this is only for funtion foo() {} case.
+			auto fn_name = std::visit(lambda_composer{
+				[](basic_node* node) -> std::string { return ""; },
+				[](variable_node* node) -> std::string { return node->get_name(); }
+			}, *(node->get_expr()));
+
+			llvm::Function *callee = control::get().get_module()->getFunction(fn_name);
+			auto args = node->get_args();
+			
+			std::vector<llvm::Value *> callee_args;
+			for(auto &&arg : args) {
+				callee_args.push_back(codegen(arg));
+			}
+			
+			return m_ir_builder.CreateCall(callee, callee_args, "calltmp");
 		},
 		/*************************************************/
 	}, *root);

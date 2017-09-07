@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/codegen/do-while.js
-JAWE_FLAGS		= "--dump-ir"
+TEST_EXAMPLE	= ../tests/codegen/fn-decl.js
+JAWE_FLAGS		= --dump-ir --dump-ast
 
 .PHONY: all clean run
 
