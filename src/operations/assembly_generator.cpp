@@ -4,35 +4,36 @@
 #include <iostream>
 #include <system_error>
 
-#include <llvm/ADT/Optional.h>
-
-#include <llvm/IR/LegacyPassManager.h>
-
-#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Host.h>
-#include <llvm/Support/TargetRegistry.h>
 #include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/raw_ostream.h>
-
+#include <llvm/Support/TargetRegistry.h>
 #include <llvm/Target/TargetMachine.h>
-#include <llvm/Target/TargetOptions.h>
+#include <llvm/Support/CodeGen.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/ADT/Optional.h>
+#include <llvm/IR/LegacyPassManager.h>
+#include <llvm/Support/raw_ostream.h>
 
 
 using namespace jawe;
 
 void assembly_generator::run() const
 {
+	auto target_triple = llvm::sys::getDefaultTargetTriple();
+
 	llvm::InitializeAllTargetInfos();
 	llvm::InitializeAllTargets();
 	llvm::InitializeAllTargetMCs();
 	llvm::InitializeAllAsmParsers();
 	llvm::InitializeAllAsmPrinters();
 
-	auto target_triple = llvm::sys::getDefaultTargetTriple();
-	control::get().get_module()->setTargetTriple(target_triple);
-
 	std::string error_msg;
 	auto target = llvm::TargetRegistry::lookupTarget(target_triple, error_msg);
+
+	if( !target ) {
+  		std::cerr << error_msg << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 
 	auto CPU = "generic";
 	auto features = "";
@@ -42,6 +43,7 @@ void assembly_generator::run() const
 	auto target_machine = target->createTargetMachine(target_triple, CPU, features, opt, RM);
 
 	control::get().get_module()->setDataLayout(target_machine->createDataLayout());
+	control::get().get_module()->setTargetTriple(target_triple);
 
 	auto filename = "a.out";
 	std::error_code EC;
