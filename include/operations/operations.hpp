@@ -11,7 +11,6 @@
 #include <operations/semantic_analyzer.hpp>
 #include <operations/reference_checker.hpp>
 #include <operations/code_generator.hpp>
-#include <operations/assembly_generator.hpp>
 
 namespace jawe {
 class operations {
