@@ -11,10 +11,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 In order to successfuly compile jawe, you'll need to install the following:
 
-* [gcc](https://gcc.gnu.org/) - GNU compiler for C/C++ (tested on gcc 6.3.1)
+* [gcc](https://gcc.gnu.org/) - GNU compiler for C/C++ (tested on gcc 7.2)
 * [make](https://www.gnu.org/software/make/manual/make.html) - build system from GNU (tested on: 4.2.1)
-* [cmake](https://cmake.org/) - cross-platform build system (min: 3.8)
-* [boost](http://www.boost.org/) - set of C++ libraries (tested on: 1.63)
+* [cmake](https://cmake.org/) - cross-platform build system (min: 3.7.2)
+* [boost](http://www.boost.org/) - set of C++ libraries (tested on: 1.65.1-1)
 * [flex](https://github.com/westes/flex) - lexical analyzer generator (min: 2.5.35)
 * [bison](https://www.gnu.org/software/bison/) - general-purpose parser generator from GNU (min: 2.4.1)
 
