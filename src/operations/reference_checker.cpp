@@ -22,9 +22,8 @@ void reference_checker::check(const shared_node& root)
 			},
 			[this](command_block_node* node) {
 				auto nodes = node->get_commands();
-				auto new_scope = std::vector<std::string>();
 				// adding new scope to stack
-				m_scopes.push_back(new_scope);
+				m_scopes.open_scope();
 				// recursive call for every command
 				// with new scopes stack
 				std::for_each(
@@ -35,26 +34,27 @@ void reference_checker::check(const shared_node& root)
 					}
 				);
 				// remove last scope
-				m_scopes.pop_back();
+				m_scopes.close_scope();
 			},
 			[this](default_node* node) {
 				check(node->get_body());
 			},
 			[this](do_while_node* node) {
 				check(node->get_body());
+				check(node->get_expr());
 			},
 			[this](for_node* node) {
-				auto new_scope = std::vector<std::string>();
 				// adding new scope to stack
-				m_scopes.push_back(new_scope);
+				m_scopes.open_scope();
 				check(node->get_init());
 				check(node->get_expr());
 				check(node->get_post());
 				check(node->get_body());
 				// remove last scope
-				m_scopes.pop_back();
+				m_scopes.close_scope();
 			},
 			[this](if_else_node* node) {
+			check(node->get_expr());
 				// check for if body
 				check(node->get_if());
 				// check for else body if exists
@@ -67,6 +67,7 @@ void reference_checker::check(const shared_node& root)
 				check(node->get_expr());
 			},
 			[this](switch_node* node) {
+				check(node->get_expr());
 				// check for every case
 				auto nodes = node->get_cases();
 				std::for_each(
@@ -76,6 +77,7 @@ void reference_checker::check(const shared_node& root)
 				);
 			},
 			[this](while_node* node) {
+				check(node->get_expr());
 				check(node->get_body());
 			},
 			[this](array_node* node) {
@@ -109,6 +111,7 @@ void reference_checker::check(const shared_node& root)
 				check(node->get_operand());
 			},
 			[this](function_call_node* node) {
+				check(node->get_expr());
 				// get function args
 				auto args = node->get_args();
 				// check for every arg
@@ -124,46 +127,41 @@ void reference_checker::check(const shared_node& root)
 				check(node->get_expr());
 			},
 			[this](function_declaration_node* node) {
-				// get last scope
-				auto last_scope = m_scopes.rbegin();
 				// add function name to scope
-				last_scope->push_back(node->get_name());
+				m_scopes.insert(node->get_name());
 				// check for function body
 				check(node->get_function_object());
 			},
 			[this](function_object_node* node) {
-				auto new_scope = std::vector<std::string>();
 				auto args = node->get_args();
+				m_scopes.open_scope();
 				// adding f.args to new scope stack
 				std::for_each(
 					std::begin(args),
 					std::end(args),
-					[&new_scope](auto arg) {
-						new_scope.push_back(arg);
+					[this](auto arg) {
+						m_scopes.insert(arg);
 					}
 				);
-				m_scopes.push_back(new_scope);
 				check(node->get_body());
-				m_scopes.pop_back();
+				m_scopes.close_scope();
 			},
 			[this, root](declaration_node* node) {
-				// get last scope
-				auto last_scope = m_scopes.rbegin();
 				// get variable name
 				auto var_name = get_decl_var_name(node->get_expr());
 				// check if var name already exists in last scope
-				if(std::find(last_scope->begin(), last_scope->end(), var_name) != last_scope->end()) {
+				if(m_scopes.fetch_last(var_name)) {
 					std::stringstream s;
 					s << "Indentifier " << var_name << " has already been declared";
 					error_reporter::error(s.str(), root);
 				}
 				// add var name to scope
-				last_scope->push_back(var_name);
+				m_scopes.insert(var_name);
 				// check for expr
 				check(node->get_expr());
 			},
 			[this, root](variable_node* node) {
-				if(!find_variable(node->get_symbol())){
+				if(!m_scopes.fetch(node->get_symbol())){
 					// error
 					std::stringstream s;
 					s << "ReferenceError: " << node->get_symbol() << " is not defined";
@@ -173,33 +171,13 @@ void reference_checker::check(const shared_node& root)
 		}, *root);
 }
 
-bool reference_checker::find_variable(const std::string& variable) const
-{
-	bool x = std::find_if(m_scopes.begin(), m_scopes.end(),
-									 [variable](auto scope){
-										 	return std::find(scope.begin(), scope.end(), variable) != scope.end();
-										}) != m_scopes.end();
-	return x;
-}
-
-void reference_checker::print_stacks() const
-{
-	std::cout << "================================" << '\n';
-	for(int i = 0; i < m_scopes.size(); i++){
-		std::cout << "	Stack No." << i << std::endl;
-		for(int j=0; j<m_scopes[i].size(); j++)
-			std::cout << "		Elem: " << m_scopes[i][j] << std::endl;
-	}
-	std::cout << "================================" << '\n';
-}
-
 std::string reference_checker::get_decl_var_name(const shared_node& root)
 {
 		return std::visit( lambda_composer {
 			[this, root](variable_node* node) -> std::string {
 				return node->get_name();
 			},
-			[this](assign_node* node) -> std::string {
+			[this](abstract_assign_node* node) -> std::string {
 				return get_decl_var_name(node->get_left());
 			},
 			[](basic_node* node) -> std::string {

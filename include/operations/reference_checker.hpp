@@ -4,16 +4,19 @@
 #include <operations/basic_operation.hpp>
 #include <syntax.hpp>
 #include <optional>
+#include <utils/scope.hpp>
 
 namespace jawe {
+using namespace utils;
 class reference_checker : public basic_operation {
 public:
 	void run();
 private:
-	std::vector<std::vector<std::string>> m_scopes;
+	scope<utils::empty> m_scopes;
+
 	void check(const shared_node& root);
-	bool find_variable(const std::string&) const;
 	void print_stacks() const;
+
 	std::string get_decl_var_name(const shared_node& root);
 
 };
