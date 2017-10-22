@@ -11,7 +11,7 @@
 namespace jawe {
 namespace utils {
 
-using empty = bool;
+class empty {};
 template<typename T = empty> class scope;
 
 template<typename T = empty>
@@ -20,8 +20,8 @@ class scope_pimpl {
 	std::vector<std::map<std::string, T>> m_scope;
 
 	std::optional<T> fetch(const std::string& var_name) const	{
-		for(auto&& scope : m_scope) {
-			for(auto&& var : scope) {
+		for(auto scope = m_scope.rbegin(); scope != m_scope.rend(); scope++) {
+			for(auto&& var : *scope) {
 				if( var.first == var_name ) return var.second;
 			}
 		}
@@ -43,7 +43,7 @@ class scope_pimpl {
 		for(auto&& sc : m_scope) {
 			std::cout << "*********" << std::endl;
 			for(auto&& var : sc) {
-				std::cout << var.first << std::endl;
+				std::cout << var.first << " " << var.second << std::endl;
 			}
 		}
 	}
@@ -75,7 +75,7 @@ class scope_pimpl<empty> {
 		if( f == m_scope.rend() ) {
 			return {};
 		}
-		return true;
+		return empty{};
 	}
 
 	std::optional<empty> fetch_last(const std::string& var_name) const	{
@@ -86,7 +86,7 @@ class scope_pimpl<empty> {
 		if( f == m_scope.rbegin()->end() ) {
 			return {};
 		}
-		return true;
+		return empty{};
 	}
 };
 
