@@ -65,7 +65,7 @@ void control::run() const
 		operations::run_compilation<
 			file_checker,
 			parser,
-		  	empty_remover,
+		  empty_remover,
 			optimizer<hoister>,
 			semantic_analyzer<reference_checker>,
 			code_generator,
@@ -129,4 +129,3 @@ std::unique_ptr<llvm::Module>& control::get_module()
 {
 	return m_module;
 }
-
