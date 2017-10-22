@@ -14,12 +14,12 @@ void code_generator::run()
 {
 	std::vector<llvm::Type*> empty_func_type(0, llvm::Type::getDoubleTy(control::get().get_context()));
 	llvm::FunctionType *FT = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), empty_func_type, false);
-  
+
 	llvm::Function* main_fn= llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "global", control::get().get_module().get());
-  
+
 	llvm::BasicBlock *BB = llvm::BasicBlock::Create(control::get().get_context(), "entry", main_fn);
 	m_ir_builder.SetInsertPoint(BB);
-	
+
 	auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
 	auto expr = codegen(*program);
 	if( expr != nullptr ) {
@@ -43,8 +43,8 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		[this](command_block_node* node) -> llvm::Value* {
 			auto nodes = node->get_commands();
 			llvm::Value* last = nullptr;
-			auto current_bb = m_ir_builder.GetInsertBlock(); 
-			open_scope();
+			auto current_bb = m_ir_builder.GetInsertBlock();
+			m_scopes.open_scope();
 			std::for_each(
 				std::begin(nodes),
 				std::end(nodes),
@@ -56,7 +56,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 					}
 				}
 			);
-			close_scope();
+			m_scopes.close_scope();
 			return last;
 		},
 		[this](default_node* node) -> llvm::Value* {
@@ -112,7 +112,7 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				[this](variable_node* node) -> llvm::Value* {
 					auto var_name = node->get_name();
 					auto alloca = create_alloca(m_ir_builder.GetInsertBlock()->getParent(), var_name.c_str());
-					push_variable(var_name, alloca);
+					m_scopes.insert(var_name, alloca);
 					return alloca;
 				},
 				[this, expr](assign_node* node) -> llvm::Value* {
@@ -122,24 +122,24 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return codegen(node->get_expr());
 		},
 		[this](variable_node* node) -> llvm::Value* {
-			auto var = find_variable(node->get_name());
-			return m_ir_builder.CreateLoad(var, node->get_name().c_str());
+			auto var = m_scopes.fetch(node->get_name());
+			return m_ir_builder.CreateLoad(*var, node->get_name().c_str());
 		},
 		[this](assign_node* node) -> llvm::Value* {
 			auto right = codegen(node->get_right());
 			auto var_name = std::get<variable_node*>(*(node->get_left()))->get_name();
 
 			// Allocating space in stack for variable
-			auto alloca = find_variable(var_name);
-			if( alloca == nullptr ) {
-				alloca = create_alloca(m_ir_builder.GetInsertBlock()->getParent(), var_name.c_str());
+			auto alloca = m_scopes.fetch(var_name);
+			if( *alloca == nullptr ) {
+				*alloca = create_alloca(m_ir_builder.GetInsertBlock()->getParent(), var_name.c_str());
 			}
 
 			// Storing a value in pre-allocated space
-			m_ir_builder.CreateStore(right, alloca);
+			m_ir_builder.CreateStore(right, *alloca);
 
 			// Stacking ptr to stacked variable
-			push_variable(var_name, alloca);
+			m_scopes.insert(var_name, *alloca);
 			return right;
 		},
 		/*************************************************/
@@ -364,12 +364,12 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 			return phi_node;
 		},
 		[this](for_node* node) -> llvm::Value* {
-			open_scope();
+			m_scopes.open_scope();
 				auto init_val = codegen(node->get_init());
 				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
 
 				/* basic block for initialization part*/
-				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+				auto entry_bb = m_ir_builder.GetInsertBlock();
 
 				/* basic block for condition checking */
 				auto cond_bb = llvm::BasicBlock::Create(control::get().get_context(), "cond", current_function);
@@ -400,26 +400,26 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
 
 				m_ir_builder.SetInsertPoint(loop_bb);
-				open_scope();
+				m_scopes.open_scope();
 					/* Inner loop (real loop body) */
 					auto body = codegen(node->get_body());
 					auto post = codegen(node->get_post());
-				close_scope();
-				
+				m_scopes.close_scope();
+
 				/* goto: condition check */
 				m_ir_builder.CreateBr(cond_bb);
 
   				m_ir_builder.SetInsertPoint(after_loop_bb);
-			close_scope();
+			m_scopes.close_scope();
 			return llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
 		},
 		[this](do_while_node* node) -> llvm::Value* {
 			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
-			open_scope();
+			m_scopes.open_scope();
 				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
 
 				/* basic block for initialization part*/
-				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+				auto entry_bb = m_ir_builder.GetInsertBlock();
 
 				/* basic block for real loop to happen */
 				auto loop_bb = llvm::BasicBlock::Create(control::get().get_context(), "loop", current_function);
@@ -438,10 +438,10 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				phi_node->addIncoming(zero, loop_bb);
 
 				m_ir_builder.SetInsertPoint(loop_bb);
-				open_scope();
+				m_scopes.open_scope();
 					auto body = codegen(node->get_body());
-				close_scope();
-				
+				m_scopes.close_scope();
+
 				/* cond = i < n */
 				auto cond = codegen(node->get_expr());
 
@@ -452,16 +452,16 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
 
   				m_ir_builder.SetInsertPoint(after_loop_bb);
-			close_scope();
+			m_scopes.close_scope();
 			return zero;
 		},
 		[this](while_node* node) -> llvm::Value* {
 			auto zero = llvm::ConstantFP::get(control::get().get_context(), llvm::APFloat(0.0));
-			open_scope();
+			m_scopes.open_scope();
 				auto current_function = m_ir_builder.GetInsertBlock()->getParent();
 
 				/* basic block for initialization part*/
-				auto entry_bb = m_ir_builder.GetInsertBlock(); 
+				auto entry_bb = m_ir_builder.GetInsertBlock();
 
 				/* basic block for condition checking */
 				auto cond_bb = llvm::BasicBlock::Create(control::get().get_context(), "cond", current_function);
@@ -492,16 +492,16 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 				m_ir_builder.CreateCondBr(cond, loop_bb, after_loop_bb);
 
 				m_ir_builder.SetInsertPoint(loop_bb);
-				open_scope();
+				m_scopes.open_scope();
 					/* Inner loop (real loop body) */
 					auto body = codegen(node->get_body());
-				close_scope();
-				
+				m_scopes.close_scope();
+
 				/* goto: condition check */
 				m_ir_builder.CreateBr(cond_bb);
 
   				m_ir_builder.SetInsertPoint(after_loop_bb);
-			close_scope();
+			m_scopes.close_scope();
 			return zero;
 		},
 		/*************************************************/
@@ -509,46 +509,46 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 		/**************** Function nodes *****************/
 		[this](function_declaration_node* node) -> llvm::Value* {
 			auto fn_name = node->get_name();
-			
+
 			auto fn_object = std::get<function_object_node*>(*(node->get_function_object()));
 			auto args = fn_object->get_args();
 			std::vector<llvm::Type*> arg_types(args.size(), llvm::Type::getDoubleTy(control::get().get_context()));
 			auto fn_type = llvm::FunctionType::get(llvm::Type::getDoubleTy(control::get().get_context()), arg_types, false); // R^n -> R
-			
+
 			auto fn = llvm::Function::Create(fn_type, llvm::Function::ExternalLinkage, fn_name, control::get().get_module().get());
-			
+
 			unsigned idx = 0;
 			for( auto &arg : fn->args() ) {
 				arg.setName(args[idx++]);
 			}
-			
+
 			// Create a new basic block to start insertion into.
 			auto fn_bb = llvm::BasicBlock::Create(control::get().get_context(), "entry", fn);
 			m_ir_builder.SetInsertPoint(fn_bb);
-			
+
 			// Record the function arguments in the NamedValues map.
-			open_scope();
+			m_scopes.open_scope();
 			for (auto &arg : fn->args()) {
 				auto arg_name = arg.getName().str();
 				auto arg_alloca = create_alloca(fn, arg_name.c_str());
-				push_variable(arg.getName().str(), arg_alloca);
+				m_scopes.insert(arg.getName().str(), arg_alloca);
 				m_ir_builder.CreateStore(&arg, arg_alloca);
 			}
-			
-			open_scope();
+
+			m_scopes.open_scope();
 			auto ret_val = codegen(node->get_body());
-			close_scope();
+			m_scopes.close_scope();
 			m_ir_builder.CreateRet(ret_val);
 
 			//fn_pass_mgr->run(*fn);
 
-			close_scope();
+			m_scopes.close_scope();
 			return fn;
 		},
 		[this](function_object_node* node) -> llvm::Value* {
-			open_scope();
+			m_scopes.open_scope();
 			codegen(node->get_body());
-			close_scope();
+			m_scopes.close_scope();
 			return nullptr;
 		},
 		[this](return_node* node) -> llvm::Value* {
@@ -564,53 +564,18 @@ llvm::Value* code_generator::codegen(const shared_node& root)
 
 			llvm::Function *callee = control::get().get_module()->getFunction(fn_name);
 			auto args = node->get_args();
-			
+
 			std::vector<llvm::Value *> callee_args;
 			for(auto &&arg : args) {
 				callee_args.push_back(codegen(arg));
 			}
-			
+
 			return m_ir_builder.CreateCall(callee, callee_args, "calltmp");
 		},
 		/*************************************************/
 	}, *root);
 }
 
-void code_generator::open_scope()
-{
-	m_scopes.emplace_back();
-}
-void code_generator::close_scope()
-{
-	m_scopes.pop_back();
-}
-
-void code_generator::print_scopes() const
-{
-	for(auto&& scope : m_scopes) {
-		for(auto&& var : scope) {
-			std::cout << var.first /* var.name */ << " ";
-		}
-		std::cout << std::endl;
-	}
-}
-
-void code_generator::push_variable(const std::string& var_name, llvm::AllocaInst* var_alloc)
-{
-	(*m_scopes.rbegin())[var_name] = var_alloc;
-}
-
-llvm::AllocaInst* code_generator::find_variable(const std::string& var_name) const
-{
-	for(auto scope = m_scopes.rbegin(); scope != m_scopes.rend(); scope++) {
-		for(auto&& var : *scope) {
-			if( var.first == var_name ) {
-				return var.second;
-			}
-		}
-	}
-	return nullptr;
-}
 
 llvm::AllocaInst* code_generator::create_alloca(llvm::Function* f, const char* var_name) const
 {
@@ -624,4 +589,3 @@ llvm::AllocaInst* code_generator::create_alloca(llvm::Function* f, const char* v
 		var_name
 	);
 }
-
