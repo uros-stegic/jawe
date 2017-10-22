@@ -12,7 +12,7 @@ class const_checker : public basic_operation {
 public:
 	void run();
 private:
-  scope<utils::empty> m_scopes;
+  scope<bool> m_scopes;
 
 	void check(const shared_node& root);
 	void print_stacks() const;

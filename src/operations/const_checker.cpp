@@ -137,25 +137,40 @@ void const_checker::check(const shared_node& root)
 				// get variable name
 				auto var_name = get_decl_var_name(node->get_expr());
 				// check if var name already exists in last scope
-				if(m_scopes.fetch_last(var_name)) {
+				auto last_var_opt = m_scopes.fetch_last(var_name);
+				if(last_var_opt && *last_var_opt) {
 					std::stringstream s;
 					s << "Const variable " << var_name << " has already been declared";
 					error_reporter::error(s.str(), root);
 				}
-				// add var name to scope
-				m_scopes.insert(var_name);
-				// check for expr
-				check(node->get_expr());
+				// add var name to scope, true because its const
+				m_scopes.insert(var_name, true);
+
+				std::visit( lambda_composer {
+					[this](assign_node* node) {
+						check(node->get_right());
+					},
+					[var_name, node](basic_node* _node) {
+						std::stringstream s;
+						s << "Const variable " << var_name << " must be initialized";
+						error_reporter::error(s.str(), node->get_expr());
+					}
+				}, *(node->get_expr()));
 			},
 			[this, root](declaration_node* node) {
+				// get variable name
+				auto var_name = get_decl_var_name(node->get_expr());
+				// add var name to scope, false because its not const
+				m_scopes.insert(var_name, false);
 				// check for expr
 				check(node->get_expr());
 			},
 			[this, root](abstract_assign_node* node) {
 				// get variable name
 				auto var_name = get_decl_var_name(node->get_left());
-				// check if var name already exists in last scope
-				if(m_scopes.fetch(var_name)) {
+				// check if var name already exists
+				auto var_opt = m_scopes.fetch(var_name);
+				if(var_opt && *var_opt) {
 					std::stringstream s;
 					s << "Cannot assign value to a const variable " << var_name;
 					error_reporter::error(s.str(), root);

@@ -1,5 +1,5 @@
-TEST_EXAMPLE	= ../tests/codegen/fn-decl2.js
-JAWE_FLAGS		= --dump-ir
+TEST_EXAMPLE	= ../tests/const_checker/err4.js
+JAWE_FLAGS		= --dump-ir --dump-ast
 
 .PHONY: all clean run
 
@@ -39,4 +39,3 @@ jquery:
 	make;
 	@cd build; \
 	time ./jawe --input-file ../tests/projects/jquery-1.12.4.js
-

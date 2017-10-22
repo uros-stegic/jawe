@@ -67,7 +67,7 @@ void control::run() const
 			parser,
 		  empty_remover,
 			optimizer<hoister>,
-			semantic_analyzer<reference_checker>,
+			semantic_analyzer<reference_checker, const_checker>,
 			code_generator,
 			printer
 		>();

@@ -10,6 +10,7 @@
 #include <operations/optimizer.hpp>
 #include <operations/semantic_analyzer.hpp>
 #include <operations/reference_checker.hpp>
+#include <operations/const_checker.hpp>
 #include <operations/code_generator.hpp>
 
 namespace jawe {
