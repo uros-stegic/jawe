@@ -1,0 +1,84 @@
+\hypertarget{classjawe_1_1code__generator}{}\section{jawe\+:\+:code\+\_\+generator Class Reference}
+\label{classjawe_1_1code__generator}\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+
+
+{\ttfamily \#include $<$code\+\_\+generator.\+hpp$>$}
+
+Inheritance diagram for jawe\+:\+:code\+\_\+generator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classjawe_1_1code__generator}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classjawe_1_1code__generator_a1218452973234e90972be154fc25bf92}{code\+\_\+generator} ()
+\item 
+void \hyperlink{classjawe_1_1code__generator_af280f3dcaeb6cbbf30b5e9eb55771b21}{run} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+llvm\+::\+Value $\ast$ \hyperlink{classjawe_1_1code__generator_a88b1f6fff308ef1b6c3b63d211a457f3}{codegen} (const \hyperlink{namespacejawe_a3f307481d921b6cbb50cc8511fc2b544}{shared\+\_\+node} \&)
+\item 
+llvm\+::\+Alloca\+Inst $\ast$ \hyperlink{classjawe_1_1code__generator_a508a01a4a5d0c53070d3186640ccb8c5}{create\+\_\+alloca} (llvm\+::\+Function $\ast$, const char $\ast$) const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+llvm\+::\+I\+R\+Builder \hyperlink{classjawe_1_1code__generator_aad2f012dfc4d811c02e4e580d4fd3390}{m\+\_\+ir\+\_\+builder}
+\item 
+\hyperlink{classjawe_1_1utils_1_1scope}{utils\+::scope}$<$ llvm\+::\+Alloca\+Inst $\ast$ $>$ \hyperlink{classjawe_1_1code__generator_a209dd65e5b96fd20ea63fdb13f17b052}{m\+\_\+scopes}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classjawe_1_1code__generator_a1218452973234e90972be154fc25bf92}\label{classjawe_1_1code__generator_a1218452973234e90972be154fc25bf92}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!code\+\_\+generator@{code\+\_\+generator}}
+\index{code\+\_\+generator@{code\+\_\+generator}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{code\+\_\+generator()}{code\_generator()}}
+{\footnotesize\ttfamily code\+\_\+generator\+::code\+\_\+generator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classjawe_1_1code__generator_a88b1f6fff308ef1b6c3b63d211a457f3}\label{classjawe_1_1code__generator_a88b1f6fff308ef1b6c3b63d211a457f3}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!codegen@{codegen}}
+\index{codegen@{codegen}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{codegen()}{codegen()}}
+{\footnotesize\ttfamily llvm\+::\+Value $\ast$ code\+\_\+generator\+::codegen (\begin{DoxyParamCaption}\item[{const \hyperlink{namespacejawe_a3f307481d921b6cbb50cc8511fc2b544}{shared\+\_\+node} \&}]{root }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1code__generator_a508a01a4a5d0c53070d3186640ccb8c5}\label{classjawe_1_1code__generator_a508a01a4a5d0c53070d3186640ccb8c5}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!create\+\_\+alloca@{create\+\_\+alloca}}
+\index{create\+\_\+alloca@{create\+\_\+alloca}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{create\+\_\+alloca()}{create\_alloca()}}
+{\footnotesize\ttfamily llvm\+::\+Alloca\+Inst $\ast$ code\+\_\+generator\+::create\+\_\+alloca (\begin{DoxyParamCaption}\item[{llvm\+::\+Function $\ast$}]{f,  }\item[{const char $\ast$}]{var\+\_\+name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1code__generator_af280f3dcaeb6cbbf30b5e9eb55771b21}\label{classjawe_1_1code__generator_af280f3dcaeb6cbbf30b5e9eb55771b21}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!run@{run}}
+\index{run@{run}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void code\+\_\+generator\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classjawe_1_1code__generator_aad2f012dfc4d811c02e4e580d4fd3390}\label{classjawe_1_1code__generator_aad2f012dfc4d811c02e4e580d4fd3390}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!m\+\_\+ir\+\_\+builder@{m\+\_\+ir\+\_\+builder}}
+\index{m\+\_\+ir\+\_\+builder@{m\+\_\+ir\+\_\+builder}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{m\+\_\+ir\+\_\+builder}{m\_ir\_builder}}
+{\footnotesize\ttfamily llvm\+::\+I\+R\+Builder jawe\+::code\+\_\+generator\+::m\+\_\+ir\+\_\+builder\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1code__generator_a209dd65e5b96fd20ea63fdb13f17b052}\label{classjawe_1_1code__generator_a209dd65e5b96fd20ea63fdb13f17b052}} 
+\index{jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}!m\+\_\+scopes@{m\+\_\+scopes}}
+\index{m\+\_\+scopes@{m\+\_\+scopes}!jawe\+::code\+\_\+generator@{jawe\+::code\+\_\+generator}}
+\subsubsection{\texorpdfstring{m\+\_\+scopes}{m\_scopes}}
+{\footnotesize\ttfamily \hyperlink{classjawe_1_1utils_1_1scope}{utils\+::scope}$<$llvm\+::\+Alloca\+Inst$\ast$$>$ jawe\+::code\+\_\+generator\+::m\+\_\+scopes\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/operations/\hyperlink{code__generator_8hpp}{code\+\_\+generator.\+hpp}\item 
+src/operations/\hyperlink{code__generator_8cpp}{code\+\_\+generator.\+cpp}\end{DoxyCompactItemize}

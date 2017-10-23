@@ -1,0 +1,289 @@
+\hypertarget{classjawe_1_1control}{}\section{jawe\+:\+:control Class Reference}
+\label{classjawe_1_1control}\index{jawe\+::control@{jawe\+::control}}
+
+
+Singleton class that manages the state of compiler.  
+
+
+
+
+{\ttfamily \#include $<$control.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classjawe_1_1control_a389d474b7c44f71337414bc0654be440}{control} (const \hyperlink{classjawe_1_1control}{control} \&)=delete
+\item 
+void \hyperlink{classjawe_1_1control_ae93188db9e9ff6f31820b65338170743}{operator=} (const \hyperlink{classjawe_1_1control}{control} \&)=delete
+\item 
+std\+::string \hyperlink{classjawe_1_1control_adba7db777afd24542c7964b37c40ddd9}{input\+\_\+filename} () const
+\item 
+bool \hyperlink{classjawe_1_1control_af6b03624889bba5b03ec0c2587dfcb0a}{dump\+\_\+ast} () const
+\item 
+bool \hyperlink{classjawe_1_1control_ad13168abb7f48d6e748a4f13f45db5b4}{dump\+\_\+program} () const
+\item 
+bool \hyperlink{classjawe_1_1control_a2e83d269a8836025b9f825beef846fe7}{dump\+\_\+ir} () const
+\item 
+bool \hyperlink{classjawe_1_1control_a504da571a1eeb32bf9c9b5957dca5ae1}{show\+\_\+memory} () const
+\item 
+bool \hyperlink{classjawe_1_1control_a3770ef7a1572ac8d25f30785d04c4e1a}{check\+\_\+leaks} () const
+\item 
+llvm\+::\+L\+L\+V\+M\+Context \& \hyperlink{classjawe_1_1control_a77eced5b2483f1d9b3f95d8137f2e8b6}{get\+\_\+context} ()
+\item 
+std\+::unique\+\_\+ptr$<$ llvm\+::\+Module $>$ \& \hyperlink{classjawe_1_1control_ab332f27bb37743e03c9e61ddc93da26c}{get\+\_\+module} ()
+\item 
+void \hyperlink{classjawe_1_1control_aedf6bf138a9ef62d589458b65f62eae5}{run} () const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classjawe_1_1control}{control} \& \hyperlink{classjawe_1_1control_ad702fe6d2f641c518d12665278df20a3}{get} (int argc=0, char $\ast$$\ast$argv=nullptr)
+\begin{DoxyCompactList}\small\item\em Gets singleton instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classjawe_1_1control_abaa77c23608e1eec0077bc9e4ae1554c}{control} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Constructs control (singleton) instance. \end{DoxyCompactList}\item 
+void \hyperlink{classjawe_1_1control_ab5a7e27e96ce6489a1cd3f858ebee6c3}{m\+\_\+print\+\_\+help} () const
+\item 
+void \hyperlink{classjawe_1_1control_a6142361ac84b3a77c41b6137d8dfcc6f}{m\+\_\+print\+\_\+version} () const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classjawe_1_1control_a3e68b0df0786c7d69313e870f991d34a}{m\+\_\+argc}
+\item 
+char $\ast$$\ast$ \hyperlink{classjawe_1_1control_a1449ae95dcbd6fb6fee97bc28d38e246}{m\+\_\+argv}
+\item 
+boost\+::program\+\_\+options\+::options\+\_\+description \hyperlink{classjawe_1_1control_a7e86c44df163e1991167626e7e3e32d5}{m\+\_\+desc}
+\item 
+boost\+::program\+\_\+options\+::variables\+\_\+map \hyperlink{classjawe_1_1control_ada42ec370e2de6b2473e76efffaf25af}{m\+\_\+vars}
+\item 
+std\+::string \hyperlink{classjawe_1_1control_ad13652c476203209baef18476bb0ca8d}{m\+\_\+input}
+\item 
+std\+::string \hyperlink{classjawe_1_1control_a3847da990d053ee84fe7b66847e66cda}{m\+\_\+output}
+\item 
+bool \hyperlink{classjawe_1_1control_a993a9e6eff6a143ef985083c57ae267b}{m\+\_\+dump\+\_\+ast}
+\item 
+bool \hyperlink{classjawe_1_1control_acc4256916f57b4c8721fa24d8c15f3b5}{m\+\_\+dump\+\_\+program}
+\item 
+bool \hyperlink{classjawe_1_1control_a216a5071cb4effe06bc36216c61e55c1}{m\+\_\+dump\+\_\+ir}
+\item 
+bool \hyperlink{classjawe_1_1control_acaf44d403cbccc7d16f514c5c0dcceed}{m\+\_\+show\+\_\+memory}
+\item 
+bool \hyperlink{classjawe_1_1control_a91b200a38784da33881a0692925db04e}{m\+\_\+check\+\_\+leaks}
+\item 
+llvm\+::\+L\+L\+V\+M\+Context \hyperlink{classjawe_1_1control_aa996f999ce396f57e18448d06bd46a14}{m\+\_\+context}
+\item 
+std\+::unique\+\_\+ptr$<$ llvm\+::\+Module $>$ \hyperlink{classjawe_1_1control_a86b9aa016d912fd00d08bc1b9597839f}{m\+\_\+module}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Singleton class that manages the state of compiler. 
+
+It\textquotesingle{} primarily purpose is to manage the state, run the steps, and to set the flags that are passed when running the compiler. Also, it is the owner of L\+L\+VM module and context. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classjawe_1_1control_a389d474b7c44f71337414bc0654be440}\label{classjawe_1_1control_a389d474b7c44f71337414bc0654be440}} 
+\index{jawe\+::control@{jawe\+::control}!control@{control}}
+\index{control@{control}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{control()}{control()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily jawe\+::control\+::control (\begin{DoxyParamCaption}\item[{const \hyperlink{classjawe_1_1control}{control} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+Deleted copy constructor. Prevention against copying singleton instance. \mbox{\Hypertarget{classjawe_1_1control_abaa77c23608e1eec0077bc9e4ae1554c}\label{classjawe_1_1control_abaa77c23608e1eec0077bc9e4ae1554c}} 
+\index{jawe\+::control@{jawe\+::control}!control@{control}}
+\index{control@{control}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{control()}{control()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily control\+::control (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Constructs control (singleton) instance. 
+
+This constructor is used when first creating an instance. It accepts command line arguments so that they can be passed to boost\+::program\+\_\+options library. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & number of command line arguments. \\
+\hline
+{\em argv} & an array of strings (command line arguments) \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classjawe_1_1control_a3770ef7a1572ac8d25f30785d04c4e1a}\label{classjawe_1_1control_a3770ef7a1572ac8d25f30785d04c4e1a}} 
+\index{jawe\+::control@{jawe\+::control}!check\+\_\+leaks@{check\+\_\+leaks}}
+\index{check\+\_\+leaks@{check\+\_\+leaks}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{check\+\_\+leaks()}{check\_leaks()}}
+{\footnotesize\ttfamily bool control\+::check\+\_\+leaks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Checks if --check-\/leaks flag is passed. \mbox{\Hypertarget{classjawe_1_1control_af6b03624889bba5b03ec0c2587dfcb0a}\label{classjawe_1_1control_af6b03624889bba5b03ec0c2587dfcb0a}} 
+\index{jawe\+::control@{jawe\+::control}!dump\+\_\+ast@{dump\+\_\+ast}}
+\index{dump\+\_\+ast@{dump\+\_\+ast}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{dump\+\_\+ast()}{dump\_ast()}}
+{\footnotesize\ttfamily bool control\+::dump\+\_\+ast (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Checks if --dump-\/ast flag is passed. \mbox{\Hypertarget{classjawe_1_1control_a2e83d269a8836025b9f825beef846fe7}\label{classjawe_1_1control_a2e83d269a8836025b9f825beef846fe7}} 
+\index{jawe\+::control@{jawe\+::control}!dump\+\_\+ir@{dump\+\_\+ir}}
+\index{dump\+\_\+ir@{dump\+\_\+ir}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{dump\+\_\+ir()}{dump\_ir()}}
+{\footnotesize\ttfamily bool control\+::dump\+\_\+ir (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Checks if --dump-\/ir flag is passed. \mbox{\Hypertarget{classjawe_1_1control_ad13168abb7f48d6e748a4f13f45db5b4}\label{classjawe_1_1control_ad13168abb7f48d6e748a4f13f45db5b4}} 
+\index{jawe\+::control@{jawe\+::control}!dump\+\_\+program@{dump\+\_\+program}}
+\index{dump\+\_\+program@{dump\+\_\+program}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{dump\+\_\+program()}{dump\_program()}}
+{\footnotesize\ttfamily bool control\+::dump\+\_\+program (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Checks if --dump-\/program flag is passed. \mbox{\Hypertarget{classjawe_1_1control_ad702fe6d2f641c518d12665278df20a3}\label{classjawe_1_1control_ad702fe6d2f641c518d12665278df20a3}} 
+\index{jawe\+::control@{jawe\+::control}!get@{get}}
+\index{get@{get}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \hyperlink{classjawe_1_1control}{control} \& control\+::get (\begin{DoxyParamCaption}\item[{int}]{argc = {\ttfamily 0},  }\item[{char $\ast$$\ast$}]{argv = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets singleton instance. 
+
+Command line arguments must be passed in order to construct the original instance. Once constructed, these arguments become obsolete, and should not be passed again. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & number of command line arguments. \\
+\hline
+{\em argv} & an array of strings (command line arguments) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classjawe_1_1control_a77eced5b2483f1d9b3f95d8137f2e8b6}\label{classjawe_1_1control_a77eced5b2483f1d9b3f95d8137f2e8b6}} 
+\index{jawe\+::control@{jawe\+::control}!get\+\_\+context@{get\+\_\+context}}
+\index{get\+\_\+context@{get\+\_\+context}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{get\+\_\+context()}{get\_context()}}
+{\footnotesize\ttfamily llvm\+::\+L\+L\+V\+M\+Context \& control\+::get\+\_\+context (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets L\+L\+VM context. \mbox{\Hypertarget{classjawe_1_1control_ab332f27bb37743e03c9e61ddc93da26c}\label{classjawe_1_1control_ab332f27bb37743e03c9e61ddc93da26c}} 
+\index{jawe\+::control@{jawe\+::control}!get\+\_\+module@{get\+\_\+module}}
+\index{get\+\_\+module@{get\+\_\+module}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{get\+\_\+module()}{get\_module()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$ llvm\+::\+Module $>$ \& control\+::get\+\_\+module (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets pointer to L\+L\+VM module. \mbox{\Hypertarget{classjawe_1_1control_adba7db777afd24542c7964b37c40ddd9}\label{classjawe_1_1control_adba7db777afd24542c7964b37c40ddd9}} 
+\index{jawe\+::control@{jawe\+::control}!input\+\_\+filename@{input\+\_\+filename}}
+\index{input\+\_\+filename@{input\+\_\+filename}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{input\+\_\+filename()}{input\_filename()}}
+{\footnotesize\ttfamily std\+::string control\+::input\+\_\+filename (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Gets the filename (path) of the input file. \mbox{\Hypertarget{classjawe_1_1control_ab5a7e27e96ce6489a1cd3f858ebee6c3}\label{classjawe_1_1control_ab5a7e27e96ce6489a1cd3f858ebee6c3}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+print\+\_\+help@{m\+\_\+print\+\_\+help}}
+\index{m\+\_\+print\+\_\+help@{m\+\_\+print\+\_\+help}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+print\+\_\+help()}{m\_print\_help()}}
+{\footnotesize\ttfamily void control\+::m\+\_\+print\+\_\+help (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Prints help message (gets called if --help flag is set) \mbox{\Hypertarget{classjawe_1_1control_a6142361ac84b3a77c41b6137d8dfcc6f}\label{classjawe_1_1control_a6142361ac84b3a77c41b6137d8dfcc6f}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+print\+\_\+version@{m\+\_\+print\+\_\+version}}
+\index{m\+\_\+print\+\_\+version@{m\+\_\+print\+\_\+version}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+print\+\_\+version()}{m\_print\_version()}}
+{\footnotesize\ttfamily void control\+::m\+\_\+print\+\_\+version (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Prints version message (gets called if --version flag is set) \mbox{\Hypertarget{classjawe_1_1control_ae93188db9e9ff6f31820b65338170743}\label{classjawe_1_1control_ae93188db9e9ff6f31820b65338170743}} 
+\index{jawe\+::control@{jawe\+::control}!operator=@{operator=}}
+\index{operator=@{operator=}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void jawe\+::control\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classjawe_1_1control}{control} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+Deleted copy assignment operator. Prevention against copying singleton instance. \mbox{\Hypertarget{classjawe_1_1control_aedf6bf138a9ef62d589458b65f62eae5}\label{classjawe_1_1control_aedf6bf138a9ef62d589458b65f62eae5}} 
+\index{jawe\+::control@{jawe\+::control}!run@{run}}
+\index{run@{run}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void control\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Starts all the phases of compiler. \mbox{\Hypertarget{classjawe_1_1control_a504da571a1eeb32bf9c9b5957dca5ae1}\label{classjawe_1_1control_a504da571a1eeb32bf9c9b5957dca5ae1}} 
+\index{jawe\+::control@{jawe\+::control}!show\+\_\+memory@{show\+\_\+memory}}
+\index{show\+\_\+memory@{show\+\_\+memory}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{show\+\_\+memory()}{show\_memory()}}
+{\footnotesize\ttfamily bool control\+::show\+\_\+memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Checks if --show-\/memory flag is passed. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classjawe_1_1control_a3e68b0df0786c7d69313e870f991d34a}\label{classjawe_1_1control_a3e68b0df0786c7d69313e870f991d34a}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+argc@{m\+\_\+argc}}
+\index{m\+\_\+argc@{m\+\_\+argc}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+argc}{m\_argc}}
+{\footnotesize\ttfamily int jawe\+::control\+::m\+\_\+argc\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a1449ae95dcbd6fb6fee97bc28d38e246}\label{classjawe_1_1control_a1449ae95dcbd6fb6fee97bc28d38e246}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+argv@{m\+\_\+argv}}
+\index{m\+\_\+argv@{m\+\_\+argv}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+argv}{m\_argv}}
+{\footnotesize\ttfamily char$\ast$$\ast$ jawe\+::control\+::m\+\_\+argv\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a91b200a38784da33881a0692925db04e}\label{classjawe_1_1control_a91b200a38784da33881a0692925db04e}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+check\+\_\+leaks@{m\+\_\+check\+\_\+leaks}}
+\index{m\+\_\+check\+\_\+leaks@{m\+\_\+check\+\_\+leaks}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+check\+\_\+leaks}{m\_check\_leaks}}
+{\footnotesize\ttfamily bool jawe\+::control\+::m\+\_\+check\+\_\+leaks\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_aa996f999ce396f57e18448d06bd46a14}\label{classjawe_1_1control_aa996f999ce396f57e18448d06bd46a14}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+context@{m\+\_\+context}}
+\index{m\+\_\+context@{m\+\_\+context}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+context}{m\_context}}
+{\footnotesize\ttfamily llvm\+::\+L\+L\+V\+M\+Context jawe\+::control\+::m\+\_\+context\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a7e86c44df163e1991167626e7e3e32d5}\label{classjawe_1_1control_a7e86c44df163e1991167626e7e3e32d5}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+desc@{m\+\_\+desc}}
+\index{m\+\_\+desc@{m\+\_\+desc}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+desc}{m\_desc}}
+{\footnotesize\ttfamily boost\+::program\+\_\+options\+::options\+\_\+description jawe\+::control\+::m\+\_\+desc\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a993a9e6eff6a143ef985083c57ae267b}\label{classjawe_1_1control_a993a9e6eff6a143ef985083c57ae267b}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+dump\+\_\+ast@{m\+\_\+dump\+\_\+ast}}
+\index{m\+\_\+dump\+\_\+ast@{m\+\_\+dump\+\_\+ast}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+dump\+\_\+ast}{m\_dump\_ast}}
+{\footnotesize\ttfamily bool jawe\+::control\+::m\+\_\+dump\+\_\+ast\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a216a5071cb4effe06bc36216c61e55c1}\label{classjawe_1_1control_a216a5071cb4effe06bc36216c61e55c1}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+dump\+\_\+ir@{m\+\_\+dump\+\_\+ir}}
+\index{m\+\_\+dump\+\_\+ir@{m\+\_\+dump\+\_\+ir}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+dump\+\_\+ir}{m\_dump\_ir}}
+{\footnotesize\ttfamily bool jawe\+::control\+::m\+\_\+dump\+\_\+ir\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_acc4256916f57b4c8721fa24d8c15f3b5}\label{classjawe_1_1control_acc4256916f57b4c8721fa24d8c15f3b5}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+dump\+\_\+program@{m\+\_\+dump\+\_\+program}}
+\index{m\+\_\+dump\+\_\+program@{m\+\_\+dump\+\_\+program}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+dump\+\_\+program}{m\_dump\_program}}
+{\footnotesize\ttfamily bool jawe\+::control\+::m\+\_\+dump\+\_\+program\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_ad13652c476203209baef18476bb0ca8d}\label{classjawe_1_1control_ad13652c476203209baef18476bb0ca8d}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+input@{m\+\_\+input}}
+\index{m\+\_\+input@{m\+\_\+input}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+input}{m\_input}}
+{\footnotesize\ttfamily std\+::string jawe\+::control\+::m\+\_\+input\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a86b9aa016d912fd00d08bc1b9597839f}\label{classjawe_1_1control_a86b9aa016d912fd00d08bc1b9597839f}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+module@{m\+\_\+module}}
+\index{m\+\_\+module@{m\+\_\+module}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+module}{m\_module}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$llvm\+::\+Module$>$ jawe\+::control\+::m\+\_\+module\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_a3847da990d053ee84fe7b66847e66cda}\label{classjawe_1_1control_a3847da990d053ee84fe7b66847e66cda}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+output@{m\+\_\+output}}
+\index{m\+\_\+output@{m\+\_\+output}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+output}{m\_output}}
+{\footnotesize\ttfamily std\+::string jawe\+::control\+::m\+\_\+output\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_acaf44d403cbccc7d16f514c5c0dcceed}\label{classjawe_1_1control_acaf44d403cbccc7d16f514c5c0dcceed}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+show\+\_\+memory@{m\+\_\+show\+\_\+memory}}
+\index{m\+\_\+show\+\_\+memory@{m\+\_\+show\+\_\+memory}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+show\+\_\+memory}{m\_show\_memory}}
+{\footnotesize\ttfamily bool jawe\+::control\+::m\+\_\+show\+\_\+memory\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classjawe_1_1control_ada42ec370e2de6b2473e76efffaf25af}\label{classjawe_1_1control_ada42ec370e2de6b2473e76efffaf25af}} 
+\index{jawe\+::control@{jawe\+::control}!m\+\_\+vars@{m\+\_\+vars}}
+\index{m\+\_\+vars@{m\+\_\+vars}!jawe\+::control@{jawe\+::control}}
+\subsubsection{\texorpdfstring{m\+\_\+vars}{m\_vars}}
+{\footnotesize\ttfamily boost\+::program\+\_\+options\+::variables\+\_\+map jawe\+::control\+::m\+\_\+vars\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/utils/\hyperlink{control_8hpp}{control.\+hpp}\item 
+src/utils/\hyperlink{control_8cpp}{control.\+cpp}\end{DoxyCompactItemize}

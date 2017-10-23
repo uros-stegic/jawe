@@ -1,0 +1,107 @@
+\hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4}{}\section{jawe\+:\+:utils\+:\+:scope\+\_\+pimpl$<$ empty $>$ Class Template Reference}
+\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4}\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+
+
+Scope implementation when no additional information about variables are needed.  
+
+
+
+
+{\ttfamily \#include $<$scope.\+hpp$>$}
+
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a882dea09bc4ee971c8effa5004b5dee3}{insert} (const std\+::string \&var\+\_\+name)
+\item 
+void \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_aead3f87985117e0e8a7214a7c719b410}{dump} ()
+\item 
+std\+::optional$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_afceb49bc52fb07097987a3a8ac527fb1}{fetch} (const std\+::string \&var\+\_\+name) const
+\item 
+std\+::optional$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ab2950539698581fa27a3c59937ac9c1e}{fetch\+\_\+last} (const std\+::string \&var\+\_\+name) const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::set$<$ std\+::string $>$ $>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a54818451cbe56d4e17fa12c2a195c33a}{m\+\_\+scope}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ad892ae47ebacee276bb9a4ac0aae408e}{scope$<$ empty $>$}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$$>$\newline
+class jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}
+
+Scope implementation when no additional information about variables are needed. 
+
+When user just wants to store variable names in scoped manner, std\+::map is overkill since it would have pure overhead with unused second map parameter. Instead implementation of scope in this case is done with std\+::set container (more precisely, a vector of sets). This class is not to be used by it self, it\textquotesingle{}s a implementational detail.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1utils_1_1scope}{jawe\+::utils\+::scope} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_aead3f87985117e0e8a7214a7c719b410}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_aead3f87985117e0e8a7214a7c719b410}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!dump@{dump}}
+\index{dump@{dump}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{dump()}{dump()}}
+{\footnotesize\ttfamily void \hyperlink{classjawe_1_1utils_1_1scope__pimpl}{jawe\+::utils\+::scope\+\_\+pimpl}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\+::dump (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1utils_1_1scope_a97240fdcdf9b05029449ba0f652c3417}{jawe\+::utils\+::scope$<$\+T$>$\+::dump()} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_afceb49bc52fb07097987a3a8ac527fb1}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_afceb49bc52fb07097987a3a8ac527fb1}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!fetch@{fetch}}
+\index{fetch@{fetch}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{fetch()}{fetch()}}
+{\footnotesize\ttfamily std\+::optional$<$\hyperlink{classjawe_1_1utils_1_1empty}{empty}$>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl}{jawe\+::utils\+::scope\+\_\+pimpl}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\+::fetch (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{var\+\_\+name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1utils_1_1scope_aa0db4d0cbe6a4020ed496cd5cbcd8e6a}{jawe\+::utils\+::scope$<$\+T$>$\+::fetch()} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ab2950539698581fa27a3c59937ac9c1e}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ab2950539698581fa27a3c59937ac9c1e}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!fetch\+\_\+last@{fetch\+\_\+last}}
+\index{fetch\+\_\+last@{fetch\+\_\+last}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{fetch\+\_\+last()}{fetch\_last()}}
+{\footnotesize\ttfamily std\+::optional$<$\hyperlink{classjawe_1_1utils_1_1empty}{empty}$>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl}{jawe\+::utils\+::scope\+\_\+pimpl}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\+::fetch\+\_\+last (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{var\+\_\+name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1utils_1_1scope_a0c78dd9721664a665190297c4a5b06a7}{jawe\+::utils\+::scope$<$\+T$>$\+::fetch\+\_\+last()} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a882dea09bc4ee971c8effa5004b5dee3}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a882dea09bc4ee971c8effa5004b5dee3}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!insert@{insert}}
+\index{insert@{insert}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily void \hyperlink{classjawe_1_1utils_1_1scope__pimpl}{jawe\+::utils\+::scope\+\_\+pimpl}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\+::insert (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{var\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1utils_1_1scope_ab64ac5cc3bce5c9909aff566ac50fac0}{jawe\+::utils\+::scope$<$\+T$>$\+::insert()} 
+\end{DoxySeeAlso}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ad892ae47ebacee276bb9a4ac0aae408e}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_ad892ae47ebacee276bb9a4ac0aae408e}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!scope$<$ empty $>$@{scope$<$ empty $>$}}
+\index{scope$<$ empty $>$@{scope$<$ empty $>$}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{scope$<$ empty $>$}{scope< empty >}}
+{\footnotesize\ttfamily friend class \hyperlink{classjawe_1_1utils_1_1scope}{scope}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a54818451cbe56d4e17fa12c2a195c33a}\label{classjawe_1_1utils_1_1scope__pimpl_3_01empty_01_4_a54818451cbe56d4e17fa12c2a195c33a}} 
+\index{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}!m\+\_\+scope@{m\+\_\+scope}}
+\index{m\+\_\+scope@{m\+\_\+scope}!jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$@{jawe\+::utils\+::scope\+\_\+pimpl$<$ empty $>$}}
+\subsubsection{\texorpdfstring{m\+\_\+scope}{m\_scope}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::set$<$std\+::string$>$ $>$ \hyperlink{classjawe_1_1utils_1_1scope__pimpl}{jawe\+::utils\+::scope\+\_\+pimpl}$<$ \hyperlink{classjawe_1_1utils_1_1empty}{empty} $>$\+::m\+\_\+scope\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/utils/\hyperlink{scope_8hpp}{scope.\+hpp}\end{DoxyCompactItemize}

@@ -1,2 +1,3 @@
 #define jawe_VERSION_MAJOR @jawe_VERSION_MAJOR@
 #define jawe_VERSION_MINOR @jawe_VERSION_MINOR@
+#define jawe_VERSION_PATCH @jawe_VERSION_PATCH@

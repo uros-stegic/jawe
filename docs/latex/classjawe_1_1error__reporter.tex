@@ -1,0 +1,112 @@
+\hypertarget{classjawe_1_1error__reporter}{}\section{jawe\+:\+:error\+\_\+reporter Class Reference}
+\label{classjawe_1_1error__reporter}\index{jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}}
+
+
+Class used as main error reporting system throughout the project.  
+
+
+
+
+{\ttfamily \#include $<$error\+\_\+reporter.\+hpp$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classjawe_1_1error__reporter_acfa7b31326b9919ecdd1d1c13053c658}{error} (const std\+::string \&msg)
+\item 
+static void \hyperlink{classjawe_1_1error__reporter_a61739ea73525d07a47a1054ec3de88dc}{error} (const std\+::string \&msg, int row\+\_\+no, int col\+\_\+no)
+\item 
+static void \hyperlink{classjawe_1_1error__reporter_ad0ae5f6a65fb62897239a5efdf7d1d7b}{error} (const std\+::string \&msg, const \hyperlink{namespacejawe_a3f307481d921b6cbb50cc8511fc2b544}{shared\+\_\+node} \&node)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classjawe_1_1error__reporter_afd5cdb8c419376a45200d2b93dddd20b}{print\+\_\+line} (const std\+::string \&msg, int row\+\_\+no, int col\+\_\+no)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class used as main error reporting system throughout the project. 
+
+This class is can be used in all phases of compilation (parser, semantic analyzer...). 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classjawe_1_1error__reporter_acfa7b31326b9919ecdd1d1c13053c658}\label{classjawe_1_1error__reporter_acfa7b31326b9919ecdd1d1c13053c658}} 
+\index{jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}!error@{error}}
+\index{error@{error}!jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}}
+\subsubsection{\texorpdfstring{error()}{error()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void error\+\_\+reporter\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Reports error message.
+
+This function should be used only in parsing phase since it will gather location information from the reader (it\textquotesingle{}ll use lastly buffered state).
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message that is to be written to the user. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classjawe_1_1error__reporter_a61739ea73525d07a47a1054ec3de88dc}\label{classjawe_1_1error__reporter_a61739ea73525d07a47a1054ec3de88dc}} 
+\index{jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}!error@{error}}
+\index{error@{error}!jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}}
+\subsubsection{\texorpdfstring{error()}{error()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void error\+\_\+reporter\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{int}]{row\+\_\+no,  }\item[{int}]{col\+\_\+no }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Reports error message.
+
+This function is more safe to use for error reporting since programmer can explicitly tell on which row\&column error occured.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message that is to be written to the user. \\
+\hline
+{\em row\+\_\+no} & row number in which error has occured. \\
+\hline
+{\em col\+\_\+no} & column number in which error has occured. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classjawe_1_1error__reporter_ad0ae5f6a65fb62897239a5efdf7d1d7b}\label{classjawe_1_1error__reporter_ad0ae5f6a65fb62897239a5efdf7d1d7b}} 
+\index{jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}!error@{error}}
+\index{error@{error}!jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}}
+\subsubsection{\texorpdfstring{error()}{error()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void error\+\_\+reporter\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const \hyperlink{namespacejawe_a3f307481d921b6cbb50cc8511fc2b544}{shared\+\_\+node} \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Reports error message.
+
+This function is probably most practical since it can read location information directly from the passed A\+ST node.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message that is to be written to the user. \\
+\hline
+{\em node} & A\+ST node which provoked the error (it should contain location info). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classjawe_1_1error__reporter_afd5cdb8c419376a45200d2b93dddd20b}\label{classjawe_1_1error__reporter_afd5cdb8c419376a45200d2b93dddd20b}} 
+\index{jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}!print\+\_\+line@{print\+\_\+line}}
+\index{print\+\_\+line@{print\+\_\+line}!jawe\+::error\+\_\+reporter@{jawe\+::error\+\_\+reporter}}
+\subsubsection{\texorpdfstring{print\+\_\+line()}{print\_line()}}
+{\footnotesize\ttfamily void error\+\_\+reporter\+::print\+\_\+line (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{int}]{row\+\_\+no,  }\item[{int}]{col\+\_\+no }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Prints the actual message.
+
+This method does the heavy lifting and contains hardcoded format for error reporting.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message that is to be written to the user. \\
+\hline
+{\em row\+\_\+no} & row number in which error has occured. \\
+\hline
+{\em col\+\_\+no} & column number in which error has occured.\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classjawe_1_1error__reporter_acfa7b31326b9919ecdd1d1c13053c658}{jawe\+::error\+\_\+reporter\+::error()} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/utils/\hyperlink{error__reporter_8hpp}{error\+\_\+reporter.\+hpp}\item 
+src/utils/\hyperlink{error__reporter_8cpp}{error\+\_\+reporter.\+cpp}\end{DoxyCompactItemize}

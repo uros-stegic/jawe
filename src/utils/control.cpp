@@ -88,6 +88,8 @@ void control::m_print_version() const
 				<< jawe_VERSION_MAJOR
 				<< "."
 				<< jawe_VERSION_MINOR
+				<< "."
+				<< jawe_VERSION_PATCH
 				<< std::endl;
 	std::cout << "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>." << std::endl;
 	std::cout << "This is free software: you are free to change and redistribute it." << std::endl;

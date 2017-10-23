@@ -2,6 +2,7 @@
 #define __LAMBDA_COMPOSER_HPP__
 
 namespace jawe {
+	/** \brief Main tool for composing lambdas in pattern matching fashion in std::visit algorithm */
 	template<class... Ts>
 	struct lambda_composer: Ts... {
 		using Ts::operator()...;
@@ -10,3 +11,4 @@ namespace jawe {
 }
 
 #endif // __LAMBDA_COMPOSER_HPP__
+
