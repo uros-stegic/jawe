@@ -2,7 +2,7 @@ var searchData=
 [
   ['read',['read',['../classjawe_1_1reader.html#a5937acad6c1094dc46e1dfdadd9fd94b',1,'jawe::reader']]],
   ['reader',['reader',['../classjawe_1_1reader.html#a0a500fafc39cbd1ec6fdc4e91059ac53',1,'jawe::reader::reader(const reader &amp;)=delete'],['../classjawe_1_1reader.html#a8ca44a9f065253817097a060e2dc5b61',1,'jawe::reader::reader(const reader &amp;&amp;)=delete'],['../classjawe_1_1reader.html#a26cb352853e28ca605e4adae1be3932d',1,'jawe::reader::reader(std::string filename)']]],
-  ['remove',['remove',['../classjawe_1_1empty__remover.html#aa2e19828a73d38052e21dc5a58826916',1,'jawe::empty_remover::remove()'],['../classjawe_1_1command__block__node.html#a0eece1d8e15227e437204a6316ed5feb',1,'jawe::command_block_node::remove()'],['../classjawe_1_1hoister.html#a0ded030bc81ae44432c35d5cdc457f6b',1,'jawe::hoister::remove()']]],
+  ['remove',['remove',['../classjawe_1_1empty__remover.html#aa2e19828a73d38052e21dc5a58826916',1,'jawe::empty_remover::remove()'],['../classjawe_1_1command__block__node.html#a0eece1d8e15227e437204a6316ed5feb',1,'jawe::command_block_node::remove()']]],
   ['remove_5fcommand',['remove_command',['../classjawe_1_1command__block__node.html#a8100afe1d2ba0df43c8ac7827ced9d31',1,'jawe::command_block_node']]],
   ['remove_5ffun_5fdecl',['remove_fun_decl',['../classjawe_1_1command__block__node.html#a092957384e4095db729dc4f032676e59',1,'jawe::command_block_node']]],
   ['remove_5fimpl',['remove_impl',['../classjawe_1_1empty__remover.html#a4e97d479ce5a67b38fe904b7ab017f94',1,'jawe::empty_remover']]],

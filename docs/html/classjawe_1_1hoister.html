@@ -72,6 +72,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Transformation of AST that hoist variables according to ES standard.  
+ <a href="classjawe_1_1hoister.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="hoister_8hpp_source.html">hoister.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jawe::hoister:</div>
@@ -79,7 +82,7 @@ Inheritance diagram for jawe::hoister:</div>
  <div class="center">
   <img src="classjawe_1_1hoister.png" usemap="#jawe::hoister_map" alt=""/>
   <map id="jawe::hoister_map" name="jawe::hoister_map">
-<area href="classjawe_1_1basic__transformation.html" alt="jawe::basic_transformation" shape="rect" coords="0,0,161,24"/>
+<area href="classjawe_1_1basic__transformation.html" title="Base class of all AST transformation. " alt="jawe::basic_transformation" shape="rect" coords="0,0,161,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -93,16 +96,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a0ded030bc81ae44432c35d5cdc457f6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1hoister.html#a0ded030bc81ae44432c35d5cdc457f6b">remove</a> (const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;, const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;) const</td></tr>
-<tr class="separator:a0ded030bc81ae44432c35d5cdc457f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a873d522bfb787607d5d07cbe01ae4344"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1hoister.html#a873d522bfb787607d5d07cbe01ae4344">decouple</a> (const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;, const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;, const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;) const</td></tr>
-<tr class="separator:a873d522bfb787607d5d07cbe01ae4344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a729578bc18a61f77b20f5583446cf2f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1hoister.html#a729578bc18a61f77b20f5583446cf2f4">decouple</a> (const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;root, const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;parent_var, const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;parent_let) const</td></tr>
+<tr class="separator:a729578bc18a61f77b20f5583446cf2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade816feb01b1c0dc5bd56a5f78cb3947"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1hoister.html#ade816feb01b1c0dc5bd56a5f78cb3947">get_decl_ass_op</a> (const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;node) const</td></tr>
 <tr class="separator:ade816feb01b1c0dc5bd56a5f78cb3947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a873d522bfb787607d5d07cbe01ae4344"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a873d522bfb787607d5d07cbe01ae4344">&#9670;&nbsp;</a></span>decouple()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Transformation of AST that hoist variables according to ES standard. </p>
+<p>Hoists function declarations to the beginning of the global scope (or to the beginning of an outer function), variables declared with var keyword just after them, and variables declared with let keyword to the beginning of a block. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a729578bc18a61f77b20f5583446cf2f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a729578bc18a61f77b20f5583446cf2f4">&#9670;&nbsp;</a></span>decouple()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,6 +144,16 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Does the actual work of decoupling variable declarations from their definitions, and hoists them according to ES standard.</p>
+<p>It is a recursive function that memoizes (through arguments) where should corresponding let/var declarations get hoisted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root</td><td>current AST node in recursive descent. </td></tr>
+    <tr><td class="paramname">parent_var</td><td>AST node to which will var declarations get hoisted. </td></tr>
+    <tr><td class="paramname">parent_let</td><td>AST node to which will let declarations get hoisted. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -166,42 +180,13 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0ded030bc81ae44432c35d5cdc457f6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ded030bc81ae44432c35d5cdc457f6b">&#9670;&nbsp;</a></span>remove()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void jawe::hoister::remove </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespacejawe.html#a3f307481d921b6cbb50cc8511fc2b544">shared_node</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Returns std::optional of it's argument if argument is of type <a class="el" href="classjawe_1_1assign__node.html">jawe::assign_node</a>, empty std::optional otherwise.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>AST node to be examined. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -219,6 +204,8 @@ Private Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Starts the transformation.</p>
+<p>Calls <a class="el" href="classjawe_1_1hoister.html#a729578bc18a61f77b20f5583446cf2f4">jawe::hoister::decouple()</a> with global AST root as an argument. </p>
 
 </div>
 </div>
