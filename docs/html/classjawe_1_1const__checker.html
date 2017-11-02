@@ -73,6 +73,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Operation pass that checks for assignments to const declared variables.  
+ <a href="classjawe_1_1const__checker.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="const__checker_8hpp_source.html">const_checker.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jawe::const_checker:</div>
@@ -80,7 +83,7 @@ Inheritance diagram for jawe::const_checker:</div>
  <div class="center">
   <img src="classjawe_1_1const__checker.png" usemap="#jawe::const_5Fchecker_map" alt=""/>
   <map id="jawe::const_5Fchecker_map" name="jawe::const_5Fchecker_map">
-<area href="classbasic__operation.html" alt="basic_operation" shape="rect" coords="0,0,127,24"/>
+<area href="classbasic__operation.html" title="Operation class that all concrete operations extend. " alt="basic_operation" shape="rect" coords="0,0,127,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -103,7 +106,10 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a61092ccd1994ec0075ca03ec39ea4477"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjawe_1_1utils_1_1scope.html">scope</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1const__checker.html#a61092ccd1994ec0075ca03ec39ea4477">m_scopes</a></td></tr>
 <tr class="separator:a61092ccd1994ec0075ca03ec39ea4477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Operation pass that checks for assignments to const declared variables. </p>
+<p><a class="el" href="classjawe_1_1const__checker.html" title="Operation pass that checks for assignments to const declared variables. ">jawe::const_checker</a> class is part of semantic analyzer that traverses through AST and terminates the compilation with an error message if there is assignment to a const declared variable in the source code. This does not include initialization of a const variable. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a24bb1b4bee084d3ccd7f8310b6ffed97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a24bb1b4bee084d3ccd7f8310b6ffed97">&#9670;&nbsp;</a></span>check()</h2>
 

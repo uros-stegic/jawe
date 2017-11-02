@@ -73,6 +73,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Compilation phase that works on optimizing the AST.  
+ <a href="classjawe_1_1optimizer.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="optimizer_8hpp_source.html">optimizer.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jawe::optimizer&lt; Optimizations &gt;:</div>
@@ -80,7 +83,7 @@ Inheritance diagram for jawe::optimizer&lt; Optimizations &gt;:</div>
  <div class="center">
   <img src="classjawe_1_1optimizer.png" usemap="#jawe::optimizer_3C_20Optimizations_20_3E_map" alt=""/>
   <map id="jawe::optimizer_3C_20Optimizations_20_3E_map" name="jawe::optimizer_3C_20Optimizations_20_3E_map">
-<area href="classbasic__operation.html" alt="basic_operation" shape="rect" coords="0,0,192,24"/>
+<area href="classbasic__operation.html" title="Operation class that all concrete operations extend. " alt="basic_operation" shape="rect" coords="0,0,192,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -100,7 +103,14 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:afc3e9e241057c762915ff5f3f1a62b00"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Optimizations... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1optimizer.html#afc3e9e241057c762915ff5f3f1a62b00">m_optimizations</a></td></tr>
 <tr class="separator:afc3e9e241057c762915ff5f3f1a62b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename... Optimizations&gt;<br />
+class jawe::optimizer&lt; Optimizations &gt;</h3>
+
+<p>Compilation phase that works on optimizing the AST. </p>
+<p>Currently, only optimization available in jawe is hoisting the variables which is not an optimization per-se, but it's there to be a place holder for optimizations that will be developed in the future.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classjawe_1_1control.html" title="Singleton class that manages the state of compiler. ">jawe::control</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9f2cc9d996d8804137c40c5ac44899b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f2cc9d996d8804137c40c5ac44899b4">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
 

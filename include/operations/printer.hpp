@@ -5,6 +5,14 @@
 #include <abstract/shared_node.hpp>
 
 namespace jawe {
+
+/** \brief Operation pass that prints AST to the standard output.
+ *
+ * Depending on a flags that are passed to the compiler, this
+ * object is able to print back the source code but also to provide
+ * AST view (with memory addresses of AST nodees printed out if --memory
+ * flag is provided).
+ */
 class printer : public basic_operation {
 public:
 	void run() const;

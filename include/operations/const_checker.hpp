@@ -8,6 +8,13 @@
 
 namespace jawe {
 using namespace utils;
+/** \brief Operation pass that checks for assignments to const declared variables
+ *
+ * jawe::const_checker class is part of semantic analyzer that traverses through
+ * AST and terminates the compilation with an error message if there is assignment
+ * to a const declared variable in the source code. This does not include initialization
+ * of a const variable.
+ */
 class const_checker : public basic_operation {
 public:
 	void run();

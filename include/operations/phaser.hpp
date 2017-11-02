@@ -4,6 +4,14 @@
 #include <tuple>
 
 namespace jawe {
+/** \brief Implementation of phase based compilation.
+ *
+ * In compile time, decides which object to instantiates
+ * that represents compilation phases (i.e. parser, semantic analyzer etc.)
+ *
+ * \see jawe::control
+ * \see jawe::operations
+ */
 template<typename... Phases>
 class phaser {
 public:

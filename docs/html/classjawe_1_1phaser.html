@@ -73,6 +73,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Implementation of phase based compilation.  
+ <a href="classjawe_1_1phaser.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="phaser_8hpp_source.html">phaser.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -91,7 +94,16 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a14a41750a367d5ca484d1d3b6498c163"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Phases... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1phaser.html#a14a41750a367d5ca484d1d3b6498c163">m_phases</a></td></tr>
 <tr class="separator:a14a41750a367d5ca484d1d3b6498c163"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename... Phases&gt;<br />
+class jawe::phaser&lt; Phases &gt;</h3>
+
+<p>Implementation of phase based compilation. </p>
+<p>In compile time, decides which object to instantiates that represents compilation phases (i.e. parser, semantic analyzer etc.)</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classjawe_1_1control.html" title="Singleton class that manages the state of compiler. ">jawe::control</a> </dd>
+<dd>
+<a class="el" href="classjawe_1_1operations.html" title="Wrapper class around phaser object. ">jawe::operations</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8703078f2d472b978e291112850eb05d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8703078f2d472b978e291112850eb05d">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
 

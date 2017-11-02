@@ -4,6 +4,8 @@
 #include <operations/basic_operation.hpp>
 
 namespace jawe {
+/** \brief Operation phase that check avalability of files that contain sources.
+ */
 class file_checker : public basic_operation {
 public:
 	void run() const;

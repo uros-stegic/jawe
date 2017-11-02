@@ -8,6 +8,8 @@
 
 namespace jawe {
 using namespace utils;
+/** \ Operation pass which is part of semantic analyzer that checks availability of referenced variables.
+ */
 class reference_checker : public basic_operation {
 public:
 	void run();

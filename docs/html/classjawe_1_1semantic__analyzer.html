@@ -73,6 +73,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Compilation phase that it self is a phase based operation.  
+ <a href="classjawe_1_1semantic__analyzer.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="semantic__analyzer_8hpp_source.html">semantic_analyzer.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jawe::semantic_analyzer&lt; Analyzations &gt;:</div>
@@ -80,7 +83,7 @@ Inheritance diagram for jawe::semantic_analyzer&lt; Analyzations &gt;:</div>
  <div class="center">
   <img src="classjawe_1_1semantic__analyzer.png" usemap="#jawe::semantic_5Fanalyzer_3C_20Analyzations_20_3E_map" alt=""/>
   <map id="jawe::semantic_5Fanalyzer_3C_20Analyzations_20_3E_map" name="jawe::semantic_5Fanalyzer_3C_20Analyzations_20_3E_map">
-<area href="classbasic__operation.html" alt="basic_operation" shape="rect" coords="0,0,245,24"/>
+<area href="classbasic__operation.html" title="Operation class that all concrete operations extend. " alt="basic_operation" shape="rect" coords="0,0,245,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -100,7 +103,18 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:aef7214fcda1e7f3f97bb8af44de645da"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; Analyzations... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1semantic__analyzer.html#aef7214fcda1e7f3f97bb8af44de645da">m_analyzations</a></td></tr>
 <tr class="separator:aef7214fcda1e7f3f97bb8af44de645da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename... Analyzations&gt;<br />
+class jawe::semantic_analyzer&lt; Analyzations &gt;</h3>
+
+<p>Compilation phase that it self is a phase based operation. </p>
+<p>Like other phase based operations (<a class="el" href="classjawe_1_1phaser.html" title="Implementation of phase based compilation. ">jawe::phaser</a>, <a class="el" href="classjawe_1_1optimizer.html" title="Compilation phase that works on optimizing the AST. ">jawe::optimizer</a>), object of this class instantiates objects that does the real work.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classjawe_1_1control.html" title="Singleton class that manages the state of compiler. ">jawe::control</a> </dd>
+<dd>
+<a class="el" href="classjawe_1_1reference__checker.html">jawe::reference_checker</a> </dd>
+<dd>
+<a class="el" href="classjawe_1_1const__checker.html" title="Operation pass that checks for assignments to const declared variables. ">jawe::const_checker</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8a973f50059623550c152c1b253aea4b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a973f50059623550c152c1b253aea4b">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
 

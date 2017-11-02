@@ -10,6 +10,16 @@ namespace jawe {
 
 extern shared_node* program;
 
+
+/** \brief Compilation phase that it self is a phase based operation. 
+ *
+ * Like other phase based operations (jawe::phaser, jawe::optimizer), object
+ * of this class instantiates objects that does the real work.
+ *
+ * \see jawe::control
+ * \see jawe::reference_checker
+ * \see jawe::const_checker
+ */
 template<typename... Analyzations>
 class semantic_analyzer : public basic_operation {
 public:

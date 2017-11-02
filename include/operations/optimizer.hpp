@@ -11,6 +11,14 @@ namespace jawe {
 extern shared_node* program;
 
 template<typename... Optimizations>
+/** \brief Compilation phase that works on optimizing the AST.
+ *
+ * Currently, only optimization available in jawe is hoisting the variables
+ * which is not an optimization per-se, but it's there to be a place holder
+ * for optimizations that will be developed in the future.
+ *
+ * \see jawe::control
+ */
 class optimizer : public basic_operation {
 public:
 	void run() const {

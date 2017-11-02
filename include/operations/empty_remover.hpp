@@ -5,6 +5,8 @@
 #include <syntax.hpp>
 
 namespace jawe {
+/** \brief Operation pass that eliminates all empty statments from the AST.
+ */
 class empty_remover : public basic_operation {
 public:
 	void run() const;

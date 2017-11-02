@@ -14,6 +14,12 @@
 #include <operations/code_generator.hpp>
 
 namespace jawe {
+/** \brief Wrapper class around phaser object.
+ *
+ * NOTE: This class is non-copyable and it's only purpose
+ * is to provide an interface to run variadic number of compilation
+ * phases which is resolved at compile time.
+ */
 class operations {
 public:
 	operations() = delete;

@@ -10,6 +10,10 @@
 #include <utils/scope.hpp>
 
 namespace jawe {
+
+/** \brief Operation pass that creates LLVM IR code.
+ *
+ */
 class code_generator : public basic_operation {
 public:
 	code_generator();
