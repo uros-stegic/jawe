@@ -196,6 +196,16 @@ shared_node* make_node_ptr(Args... args)
 						   deleter());
 }
 
+/** \brief Base class of all AST node classes.
+ *
+ * In order to remove dynamic polymorphism (slowness of vtables etc.) every
+ * concrete class from this hierarchy is wrrapped inside std::variant. Every composite
+ * node (node that consists of other nodes i.e node that represents binary operator) needs
+ * a pointer to this variant. For this reason shared pointer to this variant is type aliased
+ * into shared_node. This type alias is basic block for constructing AST. AST nodes are constructed
+ * using jawe::make_node function. This shared_node gets assigned a custom deleter so that every time
+ * a node gets deleted it automatically deletes it's own AST subtree.
+ */
 class basic_node : public leak_checker<basic_node> {
 public:
 	std::string get_symbol() const;

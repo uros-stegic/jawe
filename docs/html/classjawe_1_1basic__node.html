@@ -73,6 +73,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Base class of all AST node classes.  
+ <a href="classjawe_1_1basic__node.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="shared__node_8hpp_source.html">shared_node.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for jawe::basic_node:</div>
@@ -141,7 +144,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a851cc284fe5cafb4a65c397c232f1d62 inherit pub_static_methods_classjawe_1_1leak__checker"><td class="memItemLeft" align="right" valign="top">static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjawe_1_1leak__checker.html#a851cc284fe5cafb4a65c397c232f1d62">end</a> ()</td></tr>
 <tr class="separator:a851cc284fe5cafb4a65c397c232f1d62 inherit pub_static_methods_classjawe_1_1leak__checker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class of all AST node classes. </p>
+<p>In order to remove dynamic polymorphism (slowness of vtables etc.) every concrete class from this hierarchy is wrrapped inside std::variant. Every composite node (node that consists of other nodes i.e node that represents binary operator) needs a pointer to this variant. For this reason shared pointer to this variant is type aliased into shared_node. This type alias is basic block for constructing AST. AST nodes are constructed using <a class="el" href="namespacejawe.html#a0a97be2462d600042105436fe23cd584">jawe::make_node</a> function. This shared_node gets assigned a custom deleter so that every time a node gets deleted it automatically deletes it's own AST subtree. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2779d04e09d128b926171d1d543508d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2779d04e09d128b926171d1d543508d9">&#9670;&nbsp;</a></span>basic_node()</h2>
 
