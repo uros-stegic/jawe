@@ -1,0 +1,25 @@
+language: cpp
+compiler:
+  - gcc
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - g++-7
+            - cmake-data
+            - cmake
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libxml2-dev libboost-all-dev libllvm3.9v4
+  - eval "${MATRIX_EVAL}"
+
+script: bundle exec mkdir build && bundle exec cd build && bundle exec cmake .. && bundle exec make
+
