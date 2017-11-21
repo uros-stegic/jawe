@@ -26,9 +26,10 @@ script:
     - export CC=/usr/bin/gcc-7
     - export CXX=/usr/bin/g++-7
     - mkdir build
-    - $(CC) -v
-    - $(CXX) -v
+    - gcc -v
+    - g++ -v
     - cd build
     - cmake ..
+    - cat /home/travis/build/uros-stegic/jawe/build/CMakeFiles/CMakeOutput.log
     - make
 
