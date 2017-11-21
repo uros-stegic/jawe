@@ -23,3 +23,5 @@ before_install:
 
 script: bundle exec mkdir build && bundle exec cd build && bundle exec cmake .. && bundle exec make
 
+dist: precise
+
