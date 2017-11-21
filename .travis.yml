@@ -21,9 +21,13 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 script:
+    - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+    - ln -s /usr/bin/g++-6 /usr/local/bin/g++
+    - export CC=/usr/bin/gcc-7
+    - export CXX=/usr/bin/g++-7
     - mkdir build
-    - gcc -v
-    - g++ -v
+    - $(CC) -v
+    - $(CXX) -v
     - cd build
     - cmake ..
     - make
