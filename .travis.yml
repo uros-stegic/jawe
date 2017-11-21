@@ -18,5 +18,9 @@ before_install:
   - sudo apt-get install -y libxml2-dev libboost-all-dev libllvm3.9v4
   - eval "${MATRIX_EVAL}"
 
-script: bundle exec mkdir build && bundle exec cd build && bundle exec cmake .. && bundle exec make
+script:
+    - bundle exec mkdir build
+    - gcc -v
+    - g++ -v
+    #- bundle exec cd build && bundle exec cmake .. && bundle exec make
 
