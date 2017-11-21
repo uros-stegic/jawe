@@ -19,7 +19,7 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 script:
-    - bundle exec mkdir build
+    - exec mkdir build
     - gcc -v
     - g++ -v
     #- bundle exec cd build && bundle exec cmake .. && bundle exec make
