@@ -10,6 +10,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
+            - bison
+            - flex
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
@@ -19,8 +21,10 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 script:
-    - exec mkdir build
+    - mkdir build
     - gcc -v
     - g++ -v
-    #- bundle exec cd build && bundle exec cmake .. && bundle exec make
+    - cd build
+    - cmake ..
+    - make
 
