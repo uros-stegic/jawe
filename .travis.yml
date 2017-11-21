@@ -20,6 +20,16 @@ before_install:
   - sudo apt-get install -y libxml2-dev libboost-all-dev libllvm3.9v4
   - eval "${MATRIX_EVAL}"
 
+    # CMake
+  - wget http://www.cmake.org/files/v3.4/cmake-3.4.1.tar.gz
+  - tar -xvzf cmake-3.4.1.tar.gz 
+  - cd cmake-3.4.1/
+  - ./configure 
+  - make
+  - sudo make install
+  - update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
+  - cmake --version
+
 script:
     - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
     - ln -s /usr/bin/g++-6 /usr/local/bin/g++
@@ -30,6 +40,5 @@ script:
     - g++ -v
     - cd build
     - cmake ..
-    - cat /home/travis/build/uros-stegic/jawe/build/CMakeFiles/CMakeOutput.log
     - make
 
