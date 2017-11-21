@@ -8,10 +8,9 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - george-edison55-precise-backports
+            - kalakris-cmake
           packages:
             - g++-7
-            - cmake-data
             - cmake
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
@@ -22,6 +21,4 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 script: bundle exec mkdir build && bundle exec cd build && bundle exec cmake .. && bundle exec make
-
-dist: precise
 
