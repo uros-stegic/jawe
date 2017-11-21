@@ -29,16 +29,16 @@ before_install:
   - sudo make install
   - sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
   - cmake --version
+  - cd ..
 
 script:
-    - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-    - ln -s /usr/bin/g++-6 /usr/local/bin/g++
-    - export CC=/usr/bin/gcc-7
-    - export CXX=/usr/bin/g++-7
-    - mkdir build
-    - gcc -v
-    - g++ -v
-    - cd build
-    - cmake ..
-    - make
-
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - export CC=/usr/bin/gcc-7
+  - export CXX=/usr/bin/g++-7
+  - mkdir build
+  - gcc -v
+  - g++ -v
+  - cd build
+  - cmake ..
+  - make
