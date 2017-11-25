@@ -41,5 +41,5 @@ script:
   - g++ -v
   - llvm-config --version
   - cd build
-  - cmake ..
+  - cmake .. -DCMAKE_CXX_FLAGS="-fno-rtti" -DCMAKE_C_FLAGS="-fno-rtti"
   - make
