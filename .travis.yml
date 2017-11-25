@@ -39,6 +39,7 @@ script:
   - mkdir build
   - gcc -v
   - g++ -v
+  - llvm-config --version
   - cd build
   - cmake ..
   - make

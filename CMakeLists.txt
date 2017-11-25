@@ -58,5 +58,5 @@ add_executable(${TARGET}
 	${SOURCES}
 )
 
-target_link_libraries(${TARGET} ${Boost_LIBRARIES} ${llvm_libs})
+target_link_libraries(${TARGET} ${Boost_LIBRARIES} ${llvm_libs} -fno-rtti)
 
